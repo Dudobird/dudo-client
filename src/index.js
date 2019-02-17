@@ -1,12 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {applyMiddleware, createStore, compose} from 'redux'
+import {Provider} from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import Login from './login';
+import Signup from './signup';
+// import Storage from './storage';
+import {Header} from './components';
+import IndexReducer from './index-reducers';
+import IndexSagas from './index-sagas';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+const sagaMiddleware = createSagaMiddleware()
+
+/*eslint-disable */
+const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 'object' &&  
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
+/*eslint-enable */
+
+
+const store = createStore(IndexReducer, composeSetup(applyMiddleware(sagaMiddleware)));
+
+sagaMiddleware.run(IndexSagas);
+
+
+ReactDOM.render(
+    <Provider store={store}>
+      <Router>
+        <div>
+          <Header/>
+          <Route path="/login" component={Login}/>
+          <Route path="/signup" component={Signup}/>
+        </div>
+      </Router>
+    </Provider>, 
+    document.getElementById('root')
+);

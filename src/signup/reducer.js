@@ -1,0 +1,23 @@
+import {SIGNUP_ERROR, SIGNUP_REQUESTING,SIGNUP_SUCCESS} from './constants'
+const initialState = {
+    requesting: false,
+    successful: false,
+    messages: [],
+    errors: [],
+}
+
+const reducer = function signupReducer (state = initialState, action){
+    switch(action.type){
+        case SIGNUP_REQUESTING:
+        return {
+            requesting: true,
+            successful: false,
+            messages:[{body:"Signing up...",time: new Date()}],
+            errors: [],
+        }
+        default: 
+        return state 
+    }
+}
+
+export default reducer;
