@@ -2,7 +2,8 @@ import React from 'react'
 
 import PropTypes from 'prop-types';
 
-function Message() {
+function Message(props) {
+  const { messages } = props;
   return (
     <div>
       <ul>
@@ -16,7 +17,7 @@ function Message() {
 
 Message.propTypes = {
     messages: PropTypes.string,
-    time: PropTypes.date,
+    time: PropTypes.any,
 }
 
 export default Message

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm , Field}from 'redux-form';
+import { Link } from 'react-router-dom'
 import { connect }from 'react-redux';
 import Messages from '../notifications/Messages';
+import Errors from '../notifications/Error';
 import { signupRequest } from './actions'
 
 class Signup extends Component{
