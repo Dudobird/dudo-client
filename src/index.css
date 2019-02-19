@@ -12,7 +12,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.right{
+  float:right;
+}
+.left{
+  float: left;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

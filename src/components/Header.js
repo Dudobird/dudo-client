@@ -5,13 +5,13 @@ const Header = () => (
   <div className={style.Header}>
       <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">首页</Link>
           </li>
-          <li>
-            <Link to="/signup">Signup</Link>
+          <li className="right">
+            <Link to="/login">用户登入</Link>
           </li>
-          <li>
-            <Link to="/login">Login</Link>
+          <li className="right">
+            <Link to="/signup">用户注册</Link>
           </li>
     </ul>
     </div>

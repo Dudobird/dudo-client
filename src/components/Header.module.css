@@ -1,13 +1,36 @@
 .Header{
-    background-color: black;
+    background-color: #2d2d2d;
+    height: 70px;
 }
 .Header > ul{
   display: block;
-  float: left;
+  width:100%;
   margin: 0;
   list-style: none;
 }
 .Header > ul > li{
-    position: relative;
-    display: block;
+  position: relative;
+  display: inline-block;
+  height: 70px;
+  width: 80px;
+  font-size: 16px;
+}
+
+.Header > ul > li.right{
+  float: right;
+}
+
+.Header > ul > li > a{
+  color: white;
+  padding-top: 20px;
+  height: 70px;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.Header > ul > li > a:hover{
+  background-color: darkorange;
+
 }

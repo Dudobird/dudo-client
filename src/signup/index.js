@@ -6,6 +6,7 @@ import { connect }from 'react-redux';
 import Messages from '../notifications/Messages';
 import Errors from '../notifications/Error';
 import { signupRequest } from './actions'
+import styles from './signup.module.css';
 
 class Signup extends Component{
    static propTypes = {
@@ -35,31 +36,46 @@ class Signup extends Component{
         } = this.props
 
         return (
-        <div className="signup">
-            <form className="widget-form" onSubmit={handleSubmit(this.submit)}>
-                <h1>Signup</h1>
-                <label htmlFor="email">Email</label>
-                <Field name="email" type="text" id="email" label="Email" component="input"/>
-                <label htmlFor="password">Password</label>
-                <Field name="password" type="password" id="password" label="Password" component="input"/>                
-                <button action="submit">Signup</button>
-            </form>
-            <div className="auth-messages">
-                {!requesting && !!errors.length && (
-                <Errors message="Failure to signup:" errors={errors} />
-                )}
-                {!requesting && !!messages.length && (
-                    <Messages messages={messages} />
-                )}
-                {!requesting && successful && (
-                    <div>
-                    Signup Successful! <Link to="/login">Click here to Login »</Link>
+        <div className={styles.login + " col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"}>
+            <div className="panel">
+                <div className={styles.panelHeading + " panel-heading"}>
+                    <div className={styles.panelTitle + " panel-title text-center"}>Dudo注册页面</div>
+                </div>     
+
+                <div className="panel-body" >
+                    <form className="form-horizontal widget-form" onSubmit={handleSubmit(this.submit)}>
+                        <div className="form-group">
+                            <label htmlFor="email">电子邮件</label>
+                            <Field className="form-control" name="email" type="text" id="email" label="Email" component="input"/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">登入密码</label>
+                            <Field className="form-control" name="password" type="password" id="password" label="Password" component="input"/>                
+                        </div>
+                        <div className="form-group">
+                            <div className="col-sm-12 controls">
+                            <button className="btn btn-primary pull-right"><i className="glyphicon glyphicon-log-in"></i> 注册</button>                          
+                        </div>
                     </div>
-                )}
-                {/* Redux Router's <Link> component for quick navigation of routes */}
-                {!requesting && !successful && (
-                    <Link to="/login">Already have account? Login Here »</Link>
-                )}
+                    </form>
+                </div>
+                <div className="auth-messages">
+                    {!requesting && !!errors.length && (
+                    <Errors message="Failure to signup:" errors={errors} />
+                    )}
+                    {!requesting && !!messages.length && (
+                        <Messages messages={messages} />
+                    )}
+                    {!requesting && successful && (
+                        <div>
+                        Signup Successful! <Link to="/login">Click here to Login »</Link>
+                        </div>
+                    )}
+                    {/* Redux Router's <Link> component for quick navigation of routes */}
+                    {!requesting && !successful && (
+                        <Link to="/login">已经注册账户? 点击这里登入 »</Link>
+                    )}
+                </div>
             </div>
         </div>
         )
