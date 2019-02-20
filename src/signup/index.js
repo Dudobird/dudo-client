@@ -7,6 +7,7 @@ import Messages from '../notifications/Messages';
 import Errors from '../notifications/Error';
 import { signupRequest } from './actions'
 import styles from './signup.module.css';
+import Message from '../notifications/Messages';
 
 class Signup extends Component{
    static propTypes = {
@@ -53,27 +54,26 @@ class Signup extends Component{
                             <Field className="form-control" name="password" type="password" id="password" label="Password" component="input"/>                
                         </div>
                         <div className="form-group">
-                            <div className="col-sm-12 controls">
-                            <button className="btn btn-primary pull-right"><i className="glyphicon glyphicon-log-in"></i> 注册</button>                          
+                            <div className="">
+                            <button type="submit" className="btn btn-primary pull-right"><i className="glyphicon glyphicon-log-in"></i> 注册</button>                          
                         </div>
                     </div>
                     </form>
                 </div>
                 <div className="auth-messages">
+                  {!requesting && !successful && (
+                        <Link to="/login">已经注册账户? 点击这里登入 »</Link>
+                    )}
                     {!requesting && !!errors.length && (
-                    <Errors message="Failure to signup:" errors={errors} />
+                    <Errors errors={errors} />
                     )}
                     {!requesting && !!messages.length && (
-                        <Messages messages={messages} />
+                    <Message messages={messages} />
                     )}
                     {!requesting && successful && (
-                        <div>
-                        Signup Successful! <Link to="/login">Click here to Login »</Link>
-                        </div>
-                    )}
-                    {/* Redux Router's <Link> component for quick navigation of routes */}
-                    {!requesting && !successful && (
-                        <Link to="/login">已经注册账户? 点击这里登入 »</Link>
+                    <div>
+                    注册成功! <Link to="/login">前往登入页面 »</Link>
+                    </div>
                     )}
                 </div>
             </div>

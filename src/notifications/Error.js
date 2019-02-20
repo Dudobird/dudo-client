@@ -6,11 +6,11 @@ const Errors = (props) => {
   const { errors } = props
   return (
     <div>
-      <ul>
-        {errors.map(errors => (
-          <li key={errors.time}>{errors.body}</li>
+        {errors.map(error => (
+          <div className="alert alert-danger" key={error.time}>
+            {error.body}
+          </div>
         ))}
-      </ul>
     </div>
   )
 }
@@ -19,7 +19,7 @@ Errors.propTypes = {
   errors: PropTypes.arrayOf(
       PropTypes.shape({
         body: PropTypes.string,
-        time: PropTypes.date,
+        time: PropTypes.instanceOf(Date),
       })),
 }
 

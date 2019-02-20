@@ -1,6 +1,6 @@
 import { CLIENT_SET , CLIENT_UNSET} from './constants'
 
-export function setClient(token) {
+export function setClient(token,userID) {
     return {
         type: CLIENT_SET,
         token,

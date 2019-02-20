@@ -6,18 +6,18 @@ function Message(props) {
   const { messages } = props;
   return (
     <div>
-      <ul>
           {messages.map(message=>(
-              <li key={message.time}>{message.body}</li>
+            <div className="alert alert-success" key={message.time}>
+              {message.body}
+            </div>
           ))}
-      </ul>
     </div>
   )
 }
 
 Message.propTypes = {
     messages: PropTypes.string,
-    time: PropTypes.any,
+    time: PropTypes.instanceOf(Date),
 }
 
 export default Message
