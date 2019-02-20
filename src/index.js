@@ -3,18 +3,19 @@ import ReactDOM from 'react-dom';
 import {applyMiddleware, createStore, compose} from 'redux'
 import {Provider} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
+import { Router, Route } from "react-router-dom";
+import history from './history';
 
 import './index.css';
 
 import Login from './login';
 import Signup from './signup';
-// import Storage from './storage';
+import Storage from './storage';
 import {Header} from './components';
 import IndexReducer from './index-reducers';
 import IndexSagas from './index-sagas';
 
+import { PrivateRoute } from './components';
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -30,11 +31,15 @@ const store = createStore(IndexReducer, composeSetup(applyMiddleware(sagaMiddlew
 sagaMiddleware.run(IndexSagas);
 
 
+
+
+
 ReactDOM.render(
     <Provider store={store}>
-      <Router>
+      <Router history={history}>
         <div>
-          <Header/>
+          <Header store={store}/>
+          <PrivateRoute path="/storage" store={store} component={Storage}/>
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
         </div>

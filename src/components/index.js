@@ -1,2 +1,4 @@
 import Header from './Header';
-export {Header} ;
+import PrivateRoute from './PrivateRoute';
+
+export {Header,PrivateRoute} ;

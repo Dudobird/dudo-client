@@ -7,7 +7,6 @@ import Messages from '../notifications/Messages';
 import Errors from '../notifications/Error';
 import { signupRequest } from './actions'
 import styles from './signup.module.css';
-import Message from '../notifications/Messages';
 
 class Signup extends Component{
    static propTypes = {
@@ -68,7 +67,7 @@ class Signup extends Component{
                     <Errors errors={errors} />
                     )}
                     {!requesting && !!messages.length && (
-                    <Message messages={messages} />
+                    <Messages messages={messages} />
                     )}
                     {!requesting && successful && (
                     <div>
