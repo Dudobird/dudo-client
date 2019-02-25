@@ -1,0 +1,37 @@
+
+.folder {
+    width: 100px;
+    height: 60px;
+    padding-top: 60px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+.folder:hover:after {
+    background:#a2bfff;
+}
+
+.folder:after {
+    content: " ";
+    width: 57px;
+    height: 40px;
+    border-radius: 0 5px 5px 5px;
+    box-shadow: 1px 1px 0 1px #CCCCCC;
+    display: inline-block;
+    background-color: hsla(221, 100%, 72%, 0.911);
+    position: absolute;
+    top: 15px;
+    left: 20px;    
+}
+
+.folder:before {
+    content: " ";
+    width: 25px;
+    height: 5px;
+    border-radius: 5px 15px 0 0;
+    display: inline-block;
+    background-color:#95a4c4;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}

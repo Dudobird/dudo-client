@@ -13,6 +13,7 @@ class Signup extends Component{
        handleSubmit: PropTypes.func,
        signupRequest: PropTypes.func,
        signup: PropTypes.shape({
+
            requesting: PropTypes.bool,
            successful: PropTypes.bool,
            messages: PropTypes.array,

@@ -6,6 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import { Router, Route } from "react-router-dom";
 import history from './history';
 
+import 'react-notifications/lib/notifications.css';
 import './index.css';
 
 import Login from './login';
@@ -29,10 +30,6 @@ const composeSetup = process.env.NODE_ENV !== 'production' && typeof window === 
 const store = createStore(IndexReducer, composeSetup(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(IndexSagas);
-
-
-
-
 
 ReactDOM.render(
     <Provider store={store}>

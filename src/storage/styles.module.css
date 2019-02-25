@@ -1,0 +1,13 @@
+
+.container{
+    width: 100%;
+    padding-top: 1em;
+}
+
+.createFolderModel{
+    text-align: center;
+    padding: 30px;
+}
+.createFolderModel label{
+    margin-right: 20px;
+}

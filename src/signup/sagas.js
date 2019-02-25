@@ -9,7 +9,6 @@ import {
 const signupApiUrl = `${process.env.REACT_APP_API_URL}/api/auth/signup`
 
 function signupApi(email,password){
-
     return fetch(signupApiUrl,{
             crossDomain:true,
             method: 'POST',

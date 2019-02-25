@@ -1,0 +1,41 @@
+.document {
+    display: inline-block;
+    width: 40px;
+    height: 50px;
+    margin: 0px 20px;
+    padding-top: 50px;
+    background: #d2d2d2;
+    position: relative;
+    border-radius: 2px;
+    text-align: center;
+}
+.document:hover{
+    background: #a5a5a5;
+}
+.document::before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-bottom-left-radius: 2px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #fff #fff rgba(255,255,255,.35) rgba(255,255,255,.35);
+}
+.document::after {
+    display: block;
+    content: attr(data-type);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 10px;
+    color: #fff;
+    text-transform: lowercase;
+    width: 100%;
+    padding: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+}

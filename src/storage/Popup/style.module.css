@@ -1,0 +1,36 @@
+.container{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+.btn{
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    font-size: 2em;
+    font-weight: 200;
+    background-color: hsla(221, 100%, 72%, 0.911);
+    color: white;
+    padding-bottom: 5px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.btn:hover{
+    background-color: rgb(155, 186, 253);
+}
+
+
+.menubox{
+    padding:5px 0px!important;
+    margin:5px 0px!important;
+}
+.menuitem{
+    display: block;
+    text-decoration: none!important;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    padding-left: 10px;
+}
+.menuitem:hover{
+    background: hsla(221, 100%, 72%, 0.911);
+    color:white;
+}

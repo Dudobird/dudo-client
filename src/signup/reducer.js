@@ -1,5 +1,6 @@
 import {SIGNUP_ERROR, SIGNUP_REQUESTING,SIGNUP_SUCCESS} from './constants'
 const initialState = {
+
     requesting: false,
     successful: false,
     messages: [],

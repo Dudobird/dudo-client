@@ -1,6 +1,12 @@
 
 import { setClient } from '../client/actions';
 
+export function getToken(){
+    const storedToken = localStorage.getItem("token")
+    const token = JSON.parse(storedToken)
+    return token.data.token
+}
+
 function checkAuthorization(dispatch){
     const storedToken = localStorage.getItem("token")
     if (storedToken){
