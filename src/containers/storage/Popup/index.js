@@ -11,7 +11,7 @@ export default function Popup(props) {
         </button>
         <div className={style.menubox+" dropdown-menu"} aria-labelledby="dropdownMenuButton">
             <div className={style.menuitem+" dropdown-item"} onClick={props.onCreateFolder}><FontAwesomeIcon icon={faFolderPlus}/> 创建文件夹</div>
-            <div className={style.menuitem+" dropdown-item"}><FontAwesomeIcon icon={faUpload}/> 上传文件</div>
+            <div className={style.menuitem+" dropdown-item"} onClick={props.onUploadFiles}><FontAwesomeIcon icon={faUpload}/> 上传文件</div>
             <div className={style.menuitem+" dropdown-item"}><FontAwesomeIcon icon={faTrash}/> 删除文件</div>
         </div>
         </div>

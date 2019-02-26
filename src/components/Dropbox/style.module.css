@@ -1,0 +1,15 @@
+.dropbox{
+    display: block;
+    margin: 10px;
+    border: 1px;
+    border-color: #808080ad;
+    border-style: dashed;
+    padding: 10px;
+    height: 100px;
+}
+
+.dropbox > p {
+    white-space: pre-line;
+    max-height: 100%;
+    overflow: auto;
+}

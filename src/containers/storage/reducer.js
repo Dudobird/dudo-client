@@ -16,7 +16,8 @@ const initialState = {
     successful: false,
     message: [],
     error: [],
-    files:[]
+    files:[],
+    uploadfiles: [],
 }
 
 const reducer = function signupReducer (state = initialState, action){
@@ -31,15 +32,8 @@ const reducer = function signupReducer (state = initialState, action){
             }
         case LIST_FILES_SUCCESS:
             let files = []
-            // let queryFolders = state.queryFolders
             if(action.response && action.response.data && Array.isArray(action.response.data)){
                 files = action.response.data
-                // console.log(files)
-                // for(var i=0;i<files.length;i++){
-                //     if(files[i].is_dir && files[i].is_dir === true){
-                //        queryFolders[files[i].id] = files[i].file_name
-                //     }
-                // }    
             }
             return {
                 ...state,
@@ -88,8 +82,9 @@ const reducer = function signupReducer (state = initialState, action){
                 parentID: action.parentID,
                 files:[],
             }
+        // case 
         default: 
-        return state 
+            return state 
     }
 }
 export default reducer;

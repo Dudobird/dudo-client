@@ -4,7 +4,7 @@ import { connect }from 'react-redux';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import style from './styles.module.css';
-import {Modal,StorageFiles} from '../../components';
+import {Modal,StorageFiles,Dropbox} from '../../components';
 
 import {
     createFolderRequest,
@@ -17,6 +17,7 @@ import Popup from './Popup';
 class Storage extends Component {
     state = {
         isShowCreateFolderModal: false,
+        isShowUploadFolderModal: false,
         newFolderName: "",
         currentParentID: "",
     }
@@ -37,6 +38,11 @@ class Storage extends Component {
     toggleCreateFolderModal=(showModel)=>{
         this.setState({
             isShowCreateFolderModal:showModel
+        })
+    }
+    toggleUploadFilesModal=(showModel)=>{
+        this.setState({
+            isShowUploadFolderModal:showModel
         })
     }
     handleInputChange=(e) =>{
@@ -96,6 +102,7 @@ class Storage extends Component {
                 <NotificationContainer/>
                 <Popup 
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
+                    onUploadFiles={()=>{this.toggleUploadFilesModal(true)}}
                 />
                 <Modal
                     title="新建文件夹"
@@ -117,6 +124,16 @@ class Storage extends Component {
                         </form> 
                     </div>                   
                 </Modal>
+
+                <Modal
+                    title="上传文件"
+                    show={this.state.isShowUploadFolderModal}
+                    onSubmit={this.submitCreateFolder}
+                    onClose={()=>{this.toggleUploadFilesModal(false)}}
+                >
+                    <Dropbox/>
+                </Modal>               
+
             </div>
         )
     }
