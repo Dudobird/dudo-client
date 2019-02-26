@@ -34,7 +34,8 @@ ReactDOM.render(
       <Router history={history}>
         <div>
           <Header store={store}/>
-          <PrivateRoute path="/storage" store={store} component={Storage}/>
+          <PrivateRoute path="/storage" exact store={store} component={Storage}/>
+          <PrivateRoute path="/storage/:id" store={store} component={Storage}/>
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
           <PrivateRoute path="/logout"  store={store} component={Logout}/>

@@ -1,16 +1,15 @@
 import { 
     CREATE_NEW_FOLDER,
     SET_DEFAULT_STATUS,
-
+    SWITCH_PARENTID,
     LIST_FILES,
 
 } from './constants';
 
-const createFolderRequest = function createFolderRequest({name, isTopLevel,parentID}){
+const createFolderRequest = function createFolderRequest({name,parentID}){
     return {
         type : CREATE_NEW_FOLDER,
         name,
-        isTopLevel,
         parentID,
     }
 }
@@ -28,8 +27,16 @@ const setDefaultStatus = function setDefaultStatus(){
     }   
 }
 
+const switchParentID = function switchParentID(parentID){
+    return {
+        type: SWITCH_PARENTID,
+        parentID
+    }
+}
+
 export { 
     createFolderRequest ,
     setDefaultStatus,
     listFiles,
+    switchParentID,
 }

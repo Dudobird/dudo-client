@@ -9,6 +9,7 @@ import {Modal,StorageFiles} from '../../components';
 import {
     createFolderRequest,
     setDefaultStatus,
+    switchParentID,
     listFiles
 } from './actions';
 
@@ -16,7 +17,8 @@ import Popup from './Popup';
 class Storage extends Component {
     state = {
         isShowCreateFolderModal: false,
-        newFolderName: ""
+        newFolderName: "",
+        currentParentID: "",
     }
     static propTypes = {
         createFolderRequest: PropTypes.func,
@@ -54,16 +56,25 @@ class Storage extends Component {
         }
         this.props.createFolderRequest({
             name,
-            isTopLevel: this.props.storage.isTopLevel,
-            parentID: this.props.storage.parentID
+            parentID: this.state.currentParentID
         })
     }
-    componentDidMount(){
-        let parentID = "" 
-        if(this.props.storage && this.props.storage.parentID !== ""){
-            parentID = this.props.storage.parentID
+    componentWillReceiveProps(nextProps){
+        let parentID = ""
+        if (nextProps.match.params && nextProps.match.params.id){
+            parentID = nextProps.match.params.id
         }
-        this.props.listFiles(parentID)
+        console.log(nextProps.match.params)
+        console.log(parentID,this.state.currentParentID)
+        if(parentID !== this.state.currentParentID){
+            this.props.switchParentID(parentID)
+            this.setState({currentParentID:parentID})
+            this.props.listFiles(parentID)
+        }
+        
+    }
+    componentDidMount(){
+        this.props.listFiles(this.state.currentParentID)
     }
     render(){
         if(this.props.storage.errors && this.props.storage.errors.length>0){
@@ -120,5 +131,6 @@ export default connect(
     {
         createFolderRequest,
         setDefaultStatus,
+        switchParentID,
         listFiles
     })(Storage);

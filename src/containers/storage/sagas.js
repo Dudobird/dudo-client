@@ -58,8 +58,8 @@ function createFolderApi(name,parentID){
 
 function* createFolderFlow(action){
     try {
-        const { name, isTopLevel, parentID } = action
-        const response = yield call(createFolderApi, name, isTopLevel,parentID)
+        const { name, parentID } = action
+        const response = yield call(createFolderApi, name,parentID)
         yield put({type: CREATE_NEW_FOLDER_SUCCESS, response})
         yield put({type: UPDATE_STORAGE_FILES,parentID})
     }catch(error){
@@ -77,8 +77,6 @@ function* listFolderFlow(action){
         yield put({type: LIST_FILES_FAIL, error})
     }
 }
-
-
 
 function* storageWatcher(){
     yield takeLatest(CREATE_NEW_FOLDER, createFolderFlow)
