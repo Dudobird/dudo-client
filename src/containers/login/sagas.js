@@ -1,16 +1,16 @@
 import { take, fork, cancel, call ,put, cancelled } from 'redux-saga/effects'
 
-import {handleApiErrors} from '../lib/api-errors'
+import {handleApiErrors} from '../../lib/api-errors'
 import history from '../history';
 
 import {
     setClient,
-    unsetClient
 } from '../client/actions'
-
+import {logout} from '../logout/sagas'
 import {
     CLIENT_UNSET
 } from '../client/constants'
+
 import { LOGIN_REQUESTING, LOGIN_ERROR, LOGIN_SUCCESS } from './constants';
 
 const signinApiUrl = `${process.env.REACT_APP_API_URL}/api/auth/signin`
@@ -30,11 +30,6 @@ function loginApi(email,password){
     .catch(error=>{throw error})
 }
 
-function* logout(){
-    yield put(unsetClient())
-    localStorage.removeItem('token')
-    history.push('/login')
-}
 
 function* loginFlow(email, password){
     let token 
@@ -55,6 +50,8 @@ function* loginFlow(email, password){
     return token
 }
 
+
+
 // 监听多个任务的执行
 function* loginWatcher(){
     while(true){
@@ -71,5 +68,4 @@ function* loginWatcher(){
         
     }
 }
-
-export default loginWatcher
+export default loginWatcher ;

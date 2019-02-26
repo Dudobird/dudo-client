@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm , Field}from 'redux-form';
 import { Link } from 'react-router-dom'
 import { connect }from 'react-redux';
-import Messages from '../notifications/Messages';
-import Errors from '../notifications/Error';
+import {Messages,Errors} from '../../components';
 import { loginRequest } from './actions'
 import styles from './login.module.css';
 class Login extends Component{

@@ -15,7 +15,7 @@ const createFolderRequest = function createFolderRequest({name, isTopLevel,paren
     }
 }
 
-const listFiles = function listFiles({parentID}){
+const listFiles = function listFiles(parentID){
     return {
         type: LIST_FILES,
         parentID

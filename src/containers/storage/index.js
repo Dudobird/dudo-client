@@ -4,9 +4,8 @@ import { connect }from 'react-redux';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import style from './styles.module.css';
-import { Modal } from './../components'
-// import File from './Files'
-// import Folder from './Folders'
+import {Modal,StorageFiles} from '../../components';
+
 import {
     createFolderRequest,
     setDefaultStatus,
@@ -24,6 +23,7 @@ class Storage extends Component {
         setDefaultStatus: PropTypes.func,
         storage: PropTypes.shape({
             isTopLevel: PropTypes.bool,
+            files: PropTypes.array,
             parentID: PropTypes.string,
             requesting: PropTypes.bool,
             successful: PropTypes.bool,
@@ -59,7 +59,11 @@ class Storage extends Component {
         })
     }
     componentDidMount(){
-        this.props.listFiles(this.props.storage.parentID)
+        let parentID = "" 
+        if(this.props.storage && this.props.storage.parentID !== ""){
+            parentID = this.props.storage.parentID
+        }
+        this.props.listFiles(parentID)
     }
     render(){
         if(this.props.storage.errors && this.props.storage.errors.length>0){
@@ -67,11 +71,17 @@ class Storage extends Component {
             this.props.setDefaultStatus()
         }
         if(this.props.storage.messages && this.props.storage.messages.length>0){
-            NotificationManager.info(this.props.storage.messages[0].body)
+            NotificationManager.success(this.props.storage.messages[0].body)
             this.props.setDefaultStatus()
+            this.setState({isShowCreateFolderModal:false})
+        }
+        let renderFiles = [];
+        if(this.props.storage.files && this.props.storage.files.length>0){
+            renderFiles = this.props.storage.files
         }
         return(
             <div className={style.container}>
+                <StorageFiles files={renderFiles}/>
                 <NotificationContainer/>
                 <Popup 
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}

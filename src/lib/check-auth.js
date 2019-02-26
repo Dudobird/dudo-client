@@ -1,5 +1,5 @@
 
-import { setClient } from '../client/actions';
+import { setClient } from '../containers/client/actions';
 
 export function getToken(){
     const storedToken = localStorage.getItem("token")

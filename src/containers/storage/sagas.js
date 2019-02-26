@@ -1,5 +1,5 @@
 import { takeLatest, put, call} from 'redux-saga/effects';
-import { handleApiErrors } from '../lib/api-errors'  
+import { handleApiErrors,getToken } from '../../lib'  
 import { 
     CREATE_NEW_FOLDER,
     CREATE_NEW_FOLDER_SUCCESS,
@@ -7,8 +7,8 @@ import {
     LIST_FILES,
     LIST_FILES_SUCCESS,
     LIST_FILES_FAIL,
+    UPDATE_STORAGE_FILES,
 } from './constants';
-import {getToken} from './../lib';
 
 const createFolderApiUrl = `${process.env.REACT_APP_API_URL}/api/storages`
 
@@ -61,6 +61,7 @@ function* createFolderFlow(action){
         const { name, isTopLevel, parentID } = action
         const response = yield call(createFolderApi, name, isTopLevel,parentID)
         yield put({type: CREATE_NEW_FOLDER_SUCCESS, response})
+        yield put({type: UPDATE_STORAGE_FILES,parentID})
     }catch(error){
         yield put({type: CREATE_NEW_FOLDER_FAIL, error})
     }
@@ -71,14 +72,17 @@ function* listFolderFlow(action){
         const { parentID } = action
         const response = yield call(listFolderFiles,parentID)
         yield put({type: LIST_FILES_SUCCESS, response})
+        
     }catch(error){
         yield put({type: LIST_FILES_FAIL, error})
     }
 }
 
 
+
 function* storageWatcher(){
     yield takeLatest(CREATE_NEW_FOLDER, createFolderFlow)
+    yield takeLatest(UPDATE_STORAGE_FILES, listFolderFlow)
     yield takeLatest(LIST_FILES, listFolderFlow)
 }
 

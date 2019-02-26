@@ -4,17 +4,15 @@ import {applyMiddleware, createStore, compose} from 'redux'
 import {Provider} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { Router, Route } from "react-router-dom";
-import history from './history';
+import history from './containers/history';
 
 import 'react-notifications/lib/notifications.css';
 import './index.css';
 
-import Login from './login';
-import Signup from './signup';
-import Storage from './storage';
+import {Login,Signup,Storage,Logout} from './containers';
 import {Header} from './components';
-import IndexReducer from './index-reducers';
-import IndexSagas from './index-sagas';
+import IndexReducer from './containers/reducers';
+import IndexSagas from './containers/sagas';
 
 import { PrivateRoute } from './components';
 
@@ -39,6 +37,7 @@ ReactDOM.render(
           <PrivateRoute path="/storage" store={store} component={Storage}/>
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={Signup}/>
+          <PrivateRoute path="/logout"  store={store} component={Logout}/>
         </div>
       </Router>
     </Provider>, 
