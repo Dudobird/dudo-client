@@ -6,13 +6,22 @@ import {
     UPDATE_UPLOAD_LIST,
     UPLOAD_FILES,
     DOWNLOAD_FILE,
-
+    CHANGE_DELETE_STATUS,
+    DELETE_FILE,
+    UPDATE_PENDING_DELETE_FILE,
 } from './constants';
 
 const updateUploadFiles = function updateUploadFiles(files){
     return {
         type: UPDATE_UPLOAD_LIST,
         files
+    }
+}
+
+const changeDeleteStatus = function changeDeleteStatus(status){
+    return {
+        type: CHANGE_DELETE_STATUS,
+        status,
     }
 }
 
@@ -23,6 +32,23 @@ const downloadFile = function downloadFile(id,filename){
         filename,
     }
 }
+
+const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
+    return {
+        type: UPDATE_PENDING_DELETE_FILE,
+        id,
+    }
+}
+
+
+const deleteFile = function deleteFile(id,parentID){
+    return {
+        type: DELETE_FILE,
+        id,
+        parentID,
+    }
+}
+
 const uploadfiles = function uploadfiles(files,parentID){
     return {
         type: UPLOAD_FILES,
@@ -66,5 +92,8 @@ export {
     switchParentID,
     updateUploadFiles,
     uploadfiles,
-    downloadFile
+    downloadFile,
+    changeDeleteStatus,
+    deleteFile,
+    updatePendingDeleteFile
 }

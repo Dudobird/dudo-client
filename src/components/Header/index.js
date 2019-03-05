@@ -20,8 +20,8 @@ const Header =({store})=>{
 
   return (<div className={style.Header}>
         <ul>
-            <li key={0}>
-              <Link to="/"><FontAwesomeIcon icon={faAtom} size="lg"/> 首页</Link>
+            <li key={0} className={style.logo}>
+              <Link to="/">内部存储系统</Link>
             </li>
             {menu}
       </ul>

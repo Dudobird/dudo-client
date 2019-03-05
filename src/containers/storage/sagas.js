@@ -14,7 +14,10 @@ import {
     UPLOAD_FILES,
     DOWNLOAD_FILE,
     DOWNLOAD_FILE_SUCCESS,
-    DOWNLOAD_FILE_FAIL
+    DOWNLOAD_FILE_FAIL,
+    DELETE_FILE,
+    DELETE_FILE_SUCCESS,
+    DELETE_FILE_FAIL
 } from './constants';
 
 
@@ -105,6 +108,10 @@ function downloadFile(id,filename){
 }
 
 
+function deleteFile(id){
+    console.log("try delete "+id)
+}
+
 function* createFolderFlow(action){
     try {
         const { name, parentID } = action
@@ -149,12 +156,26 @@ function* uploadFilesFlow(action){
     }
 }
 
+
+
+function* deleteFileFlow(action){
+    try {
+        const { id ,parentID } = action
+        const response = yield call(deleteFile,id)
+        yield put({type: DELETE_FILE_SUCCESS, response})
+        yield put({type: LIST_FILES,parentID})
+    }catch(error){
+        yield put({type: DELETE_FILE_FAIL, error})
+    }
+}
+
 function* storageWatcher(){
     yield takeLatest(CREATE_NEW_FOLDER, createFolderFlow)
     yield takeLatest(UPDATE_STORAGE_FILES, listFolderFlow)
     yield takeLatest(LIST_FILES, listFolderFlow)
     yield takeLatest(DOWNLOAD_FILE, downloadFileFlow)
     yield takeLatest(UPLOAD_FILES, uploadFilesFlow)
+    yield takeLatest(DELETE_FILE, deleteFileFlow)
 }
 
 export default storageWatcher;

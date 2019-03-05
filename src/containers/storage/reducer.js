@@ -12,10 +12,14 @@ import {
     UPLOAD_FILES_FAIL,
     UPLOAD_FILES_SUCCESS,
     UPLOAD_FILES,
+    CHANGE_DELETE_STATUS,
+    UPDATE_PENDING_DELETE_FILE
 } from './constants'
 
 const initialState = {
     parentID: "",
+    deleteStatus: false,
+    pendingDeleteFile: null,
     requesting: false,
     successful: false,
     message: [],
@@ -26,6 +30,16 @@ const initialState = {
 
 const reducer = function signupReducer (state = initialState, action){
     switch(action.type){
+        case UPDATE_PENDING_DELETE_FILE:
+            return{
+                ...state,
+                pendingDeleteFile: action.id
+            }
+        case CHANGE_DELETE_STATUS:
+            return {
+                ...state,
+                deleteStatus: action.status
+            }
         case SET_DEFAULT_STATUS:
             return {
                 ...state,

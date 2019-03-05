@@ -14,6 +14,9 @@ import {
     updateUploadFiles,
     uploadfiles,
     downloadFile,
+    changeDeleteStatus,
+    deleteFile,
+    updatePendingDeleteFile,
 } from './actions';
 
 import Popup from './Popup';
@@ -21,13 +24,17 @@ class Storage extends Component {
     state = {
         isShowCreateFolderModal: false,
         isShowUploadFolderModal: false,
+        isShowDeleteFilesModal: false,
         newFolderName: "",
         currentParentID: "",
+        deleteFileName:"",
     }
     static propTypes = {
         createFolderRequest: PropTypes.func,
         setDefaultStatus: PropTypes.func,
         storage: PropTypes.shape({
+            deleteStatus: PropTypes.bool,
+            pendingDeleteFile: PropTypes.string,
             isTopLevel: PropTypes.bool,
             files: PropTypes.array,
             parentID: PropTypes.string,
@@ -49,10 +56,22 @@ class Storage extends Component {
             isShowUploadFolderModal:showModel
         })
     }
+    toggleDeleteFilesModal=(showModel)=>{
+        this.setState({
+            isShowDeleteFilesModal:showModel
+        })
+    }
     handleInputChange=(e) =>{
         this.setState({
             [e.target.name]: e.target.value
         });
+    }
+    submitDeleteFile=()=>{
+        var parentID = "root"
+        if(this.props.storage && this.props.storage.parentID!==""){
+            parentID = this.props.storage.parentID;
+        }
+        this.props.deleteFile(this.props.storage.pendingDeleteFile, parentID)
     }
     submitUploadFiles=()=>{
         if(this.props.storage.uploadfiles.length===0){
@@ -101,6 +120,17 @@ class Storage extends Component {
         }
         NotificationManager.error('待下载文件找不到')
     }
+    showDeleteFileModal = (id,filename) =>{
+        if(id===""){
+            NotificationManager.error('待删除文件找不到')
+            return
+        }
+        this.props.updatePendingDeleteFile(id)
+        this.setState({
+            isShowDeleteFilesModal:true,
+            deleteFileName: filename,
+        })
+    }
     componentDidMount(){
         this.props.listFiles(this.state.currentParentID)
     }
@@ -120,12 +150,20 @@ class Storage extends Component {
         }
         return(
             <div className={style.container}>
-                <StorageFiles files={renderFiles} downloadFile={this.downloadFile}/>
+                <StorageFiles 
+                    deleteStatus={this.props.storage.deleteStatus} 
+                    files={renderFiles}
+                    deleteFile = {this.showDeleteFileModal}
+                    downloadFile={this.downloadFile}/>
                 <NotificationContainer/>
                 <Popup 
+                    onChangeDeleteStatus={()=>{this.props.changeDeleteStatus(true)}}
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
                     onUploadFiles={()=>{this.toggleUploadFilesModal(true)}}
                 />
+
+
+
                 <Modal
                     title="新建文件夹"
                     show={this.state.isShowCreateFolderModal}
@@ -158,6 +196,14 @@ class Storage extends Component {
                         updatefiles={this.props.updateUploadFiles}
                     />
                 </Modal>               
+                <Modal
+                    title="删除文件"
+                    show={this.state.isShowDeleteFilesModal}
+                    onSubmit={this.submitDeleteFile}
+                    onClose={()=>{this.toggleDeleteFilesModal(false)}}
+                >
+                   <div className={style.modalContent}>是否确定删除文件：<span className={style.modalContentSpan}>{this.state.deleteFileName}</span> ?</div>
+                </Modal>    
 
             </div>
         )
@@ -178,4 +224,7 @@ export default connect(
         updateUploadFiles,
         uploadfiles,
         downloadFile,
+        changeDeleteStatus,
+        deleteFile,
+        updatePendingDeleteFile,
     })(Storage);
