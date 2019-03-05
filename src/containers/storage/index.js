@@ -10,7 +10,10 @@ import {
     createFolderRequest,
     setDefaultStatus,
     switchParentID,
-    listFiles
+    listFiles,
+    updateUploadFiles,
+    uploadfiles,
+    downloadFile,
 } from './actions';
 
 import Popup from './Popup';
@@ -32,6 +35,7 @@ class Storage extends Component {
             successful: PropTypes.bool,
             messages: PropTypes.array,
             errors: PropTypes.array,
+            uploadfiles: PropTypes.array,
         }),
     }
  
@@ -49,6 +53,17 @@ class Storage extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
+    }
+    submitUploadFiles=()=>{
+        if(this.props.storage.uploadfiles.length===0){
+            NotificationManager.error('待上传文件列表为空')
+            return 
+        }
+        var parentID = "root"
+        if(this.props.storage && this.props.storage.parentID!==""){
+            parentID = this.props.storage.parentID;
+        }
+        this.props.uploadfiles(this.props.storage.uploadfiles,parentID);
     }
     submitCreateFolder=()=>{
         const name = this.state.newFolderName.trim()
@@ -79,6 +94,13 @@ class Storage extends Component {
         }
         
     }
+    downloadFile =  (id,filename)=>{
+        if(id!=="" && filename !== ""){
+            this.props.downloadFile(id,filename)
+            return
+        }
+        NotificationManager.error('待下载文件找不到')
+    }
     componentDidMount(){
         this.props.listFiles(this.state.currentParentID)
     }
@@ -98,7 +120,7 @@ class Storage extends Component {
         }
         return(
             <div className={style.container}>
-                <StorageFiles files={renderFiles}/>
+                <StorageFiles files={renderFiles} downloadFile={this.downloadFile}/>
                 <NotificationContainer/>
                 <Popup 
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
@@ -128,10 +150,13 @@ class Storage extends Component {
                 <Modal
                     title="上传文件"
                     show={this.state.isShowUploadFolderModal}
-                    onSubmit={this.submitCreateFolder}
+                    onSubmit={this.submitUploadFiles}
                     onClose={()=>{this.toggleUploadFilesModal(false)}}
                 >
-                    <Dropbox/>
+                    <Dropbox 
+                        files={this.props.storage.uploadfiles}
+                        updatefiles={this.props.updateUploadFiles}
+                    />
                 </Modal>               
 
             </div>
@@ -149,5 +174,8 @@ export default connect(
         createFolderRequest,
         setDefaultStatus,
         switchParentID,
-        listFiles
+        listFiles,
+        updateUploadFiles,
+        uploadfiles,
+        downloadFile,
     })(Storage);

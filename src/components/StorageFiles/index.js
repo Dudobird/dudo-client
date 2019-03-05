@@ -8,7 +8,7 @@ const StorageFiles =(props) =>{
       if(f.is_dir===true){
         return <Folder key={f.id} data={f}/>
       }
-      return <File key={f.id} data={f}/>
+      return <File key={f.id} data={f} downloadFile={props.downloadFile}/>
   })
   return (
     <div>

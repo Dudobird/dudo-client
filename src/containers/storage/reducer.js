@@ -8,6 +8,10 @@ import {
     LIST_FILES_SUCCESS,
     LIST_FILES_FAIL,
     SWITCH_PARENTID,
+    UPDATE_UPLOAD_LIST,
+    UPLOAD_FILES_FAIL,
+    UPLOAD_FILES_SUCCESS,
+    UPLOAD_FILES,
 } from './constants'
 
 const initialState = {
@@ -44,6 +48,15 @@ const reducer = function signupReducer (state = initialState, action){
                 files
             }
         case LIST_FILES:
+            return {
+                ...state,
+                parentID: action.parentID,
+                requesting: true,
+                successful: false,
+                messages:[],
+                errors: [],       
+            }            
+        case UPLOAD_FILES:
         case CREATE_NEW_FOLDER:
             return {
                 ...state,
@@ -52,6 +65,18 @@ const reducer = function signupReducer (state = initialState, action){
                 messages:[],
                 errors: [],       
             }
+        case UPLOAD_FILES_SUCCESS: {
+            return {
+                ...state,
+                errors: [],
+                messages: [{
+                    body: "上传文件成功",
+                    time: new Date()
+                }],
+                requesting: false,
+                successful: true,
+            }
+        }
         case CREATE_NEW_FOLDER_SUCCESS:{
             return {
                 ...state,
@@ -64,6 +89,7 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: true,
             }
         }
+        case UPLOAD_FILES_FAIL:
         case LIST_FILES_FAIL:
         case CREATE_NEW_FOLDER_FAIL:
             return {
@@ -81,6 +107,11 @@ const reducer = function signupReducer (state = initialState, action){
                 ...state,
                 parentID: action.parentID,
                 files:[],
+            }
+        case UPDATE_UPLOAD_LIST:
+            return {
+                ...state,
+                uploadfiles: action.files
             }
         // case 
         default: 

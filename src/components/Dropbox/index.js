@@ -6,20 +6,17 @@ import {NotificationManager} from 'react-notifications';
 
 class Dropbox extends Component {
   state = {
-    files: [],
     disabled: false,
   }
   onDrop = (acceptedFiles, rejectedFiles) => {
     // Do something with files
-    this.setState({files:acceptedFiles})
     if(rejectedFiles.length>0){
       NotificationManager.warn("部分文件由于格式问题,暂时无法上传")
     }
+    this.props.updatefiles(acceptedFiles)
   }
   onCancel = ()=> {
-    this.setState({
-      files: []
-    });
+    this.props.updatefiles([])
   }
   // 当上传的时候关闭文件的选择功能 通过redux store更新
   toggleDisabled() {
@@ -29,7 +26,7 @@ class Dropbox extends Component {
   }
   render() {
     let renderfilesName = `直接拖拽文件，或点击选择文件用于上传`
-    const files = this.state.files;
+    const files = this.props.files;
     if (files.length>0){
       renderfilesName = files.map(f=>`${f.path}\n`)
     }
