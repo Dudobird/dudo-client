@@ -5,7 +5,7 @@ const File = (props) =>{
     const fileNameLength = props.data.file_name.length;
     let displayFileName = props.data.file_name;
     if(fileNameLength>20){
-        displayFileName=props.data.file_name.slice(0,10)+"..."+props.data.file_name.slice(fileNameLength-10)
+        displayFileName=props.data.file_name.slice(0,10)+" ... "+props.data.file_name.slice(fileNameLength-10)
     }
     return(
             [<div 

@@ -28,6 +28,7 @@ const initialState = {
     error: [],
     files:[],
     uploadfiles: [],
+    styleFileList: true,
 }
 
 const reducer = function signupReducer (state = initialState, action){

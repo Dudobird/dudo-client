@@ -4,7 +4,11 @@ import { connect }from 'react-redux';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import style from './styles.module.css';
-import {Modal,StorageFiles,Dropbox} from '../../components';
+import {
+    Modal,
+    StorageFiles,
+    StorageFilesList,
+    Dropbox} from '../../components';
 
 import {
     createFolderRequest,
@@ -43,6 +47,7 @@ class Storage extends Component {
             messages: PropTypes.array,
             errors: PropTypes.array,
             uploadfiles: PropTypes.array,
+            styleFileList: PropTypes.bool,
         }),
     }
  
@@ -72,7 +77,6 @@ class Storage extends Component {
             parentID = this.props.storage.parentID;
         }
         this.props.deleteFile(this.props.storage.pendingDeleteFile, parentID)
-        this.toggleDeleteFilesModal(false)
     }
     submitUploadFiles=()=>{
         if(this.props.storage.uploadfiles.length===0){
@@ -133,6 +137,27 @@ class Storage extends Component {
     componentDidMount(){
         this.props.listFiles(this.state.currentParentID)
     }
+    renderFilesWithStyle=()=>{
+        let renderFilesContainer = null
+        let renderFiles = [];
+        if(this.props.storage.files && this.props.storage.files.length>0){
+            renderFiles = this.props.storage.files
+        }
+        if(this.props.storage.styleFileList===false){
+            renderFilesContainer = <StorageFilesList 
+            deleteStatus={this.props.storage.deleteStatus} 
+            files={renderFiles}
+            deleteFile = {this.showDeleteFileModal}
+            downloadFile={this.downloadFile}/>
+        }else{
+            renderFilesContainer =<StorageFiles 
+                    deleteStatus={this.props.storage.deleteStatus} 
+                    files={renderFiles}
+                    deleteFile = {this.showDeleteFileModal}
+                    downloadFile={this.downloadFile}/>
+        }
+        return renderFilesContainer
+    }
     render(){
         if(this.props.storage.errors && this.props.storage.errors.length>0){
             NotificationManager.error(this.props.storage.errors[0].body)
@@ -141,27 +166,24 @@ class Storage extends Component {
         if(this.props.storage.messages && this.props.storage.messages.length>0){
             NotificationManager.success(this.props.storage.messages[0].body)
             this.props.setDefaultStatus()
-            this.setState({isShowCreateFolderModal:false})
+            this.setState({
+                isShowCreateFolderModal:false,
+                isShowDeleteFilesModal:false,
+                isShowUploadFolderModal:false
+            })
         }
-        let renderFiles = [];
-        if(this.props.storage.files && this.props.storage.files.length>0){
-            renderFiles = this.props.storage.files
-        }
+
+
         return(
             <div className={style.container}>
-                <StorageFiles 
-                    deleteStatus={this.props.storage.deleteStatus} 
-                    files={renderFiles}
-                    deleteFile = {this.showDeleteFileModal}
-                    downloadFile={this.downloadFile}/>
+                
+                {this.renderFilesWithStyle()}
                 <NotificationContainer/>
                 <Popup 
                     onChangeDeleteStatus={()=>{this.props.changeDeleteStatus(true)}}
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
                     onUploadFiles={()=>{this.toggleUploadFilesModal(true)}}
                 />
-
-
 
                 <Modal
                     title="新建文件夹"
