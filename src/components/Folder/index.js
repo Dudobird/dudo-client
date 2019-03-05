@@ -11,8 +11,8 @@ const Folder = (props) =>{
         displayFileName=props.data.file_name.slice(0,10)+"..."+props.data.file_name.slice(fileNameLength-10)
     }
     return(
-        [<Link to={goToFolder}><div className={style.folder}></div></Link>,
-         <span className={style.title}>{displayFileName}</span>
+        [<Link to={goToFolder} key={props.data.id+"_1"}><div className={style.folder}></div></Link>,
+         <span key={props.data.id+"_2"} className={style.title}>{displayFileName}</span>
         ]
     )
 }

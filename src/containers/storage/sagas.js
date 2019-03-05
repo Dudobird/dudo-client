@@ -24,9 +24,9 @@ import {
 
 
 const createFolderApiUrl = `${process.env.REACT_APP_API_URL}/api/storages`
-const uploadFileAPI = `${process.env.REACT_APP_API_URL}/api/upload`
-const downloadFileAPI = `${process.env.REACT_APP_API_URL}/api/download`
-
+const uploadFileAPI = `${process.env.REACT_APP_API_URL}/api/upload/storage`
+const downloadFileAPI = `${process.env.REACT_APP_API_URL}/api/download/storage`
+const deleteFileAPI = `${process.env.REACT_APP_API_URL}/api/storage`
 
 function listFolderFiles(parentID){
     const listTopFolderFiles =  `${process.env.REACT_APP_API_URL}/api/storages`
@@ -109,7 +109,18 @@ function downloadFile(id,filename){
 
 
 function deleteFile(id){
-    console.log("try delete "+id)
+    const tokenRaw = localStorage.getItem("token");
+    const token = getToken(tokenRaw);
+    const apiUrl = `${deleteFileAPI}/${id}`
+    return fetch(apiUrl,{
+            crossDomain:true,
+            method: 'DELETE',
+            headers:{
+                'Authorization':`Bearer ${token}`,
+            }
+        }).then(response => response.json())
+        .then(handleApiErrors)
+        .then(json => json )
 }
 
 function* createFolderFlow(action){

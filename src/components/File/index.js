@@ -9,10 +9,10 @@ const File = (props) =>{
     }
     return(
             [<div 
-                className={style.document} 
+                className={style.document} key={props.data.id+"_1"}
                 onClick={()=>props.onClickFile(props.data.id, props.data.file_name)}>
             </div>,
-            <span className={style.title}>{displayFileName}</span>
+            <span key={props.data.id+"_2"} className={style.title}>{displayFileName}</span>
             ]
     )
 }

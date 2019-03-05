@@ -13,7 +13,9 @@ import {
     UPLOAD_FILES_SUCCESS,
     UPLOAD_FILES,
     CHANGE_DELETE_STATUS,
-    UPDATE_PENDING_DELETE_FILE
+    UPDATE_PENDING_DELETE_FILE,
+    DELETE_FILE_SUCCESS,
+    DELETE_FILE_FAIL
 } from './constants'
 
 const initialState = {
@@ -79,6 +81,18 @@ const reducer = function signupReducer (state = initialState, action){
                 messages:[],
                 errors: [],       
             }
+        case DELETE_FILE_SUCCESS:{
+            return {
+                ...state,
+                errors: [],
+                messages: [{
+                    body: "删除文件成功",
+                    time: new Date()
+                }],
+                requesting: false,
+                successful: true,
+            }
+        }
         case UPLOAD_FILES_SUCCESS: {
             return {
                 ...state,
@@ -103,6 +117,7 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: true,
             }
         }
+        case DELETE_FILE_FAIL:
         case UPLOAD_FILES_FAIL:
         case LIST_FILES_FAIL:
         case CREATE_NEW_FOLDER_FAIL:
@@ -119,6 +134,7 @@ const reducer = function signupReducer (state = initialState, action){
         case SWITCH_PARENTID:
             return {
                 ...state,
+                deleteStatus: false,
                 parentID: action.parentID,
                 files:[],
             }

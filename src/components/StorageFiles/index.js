@@ -47,7 +47,8 @@ const StorageFiles =(props) =>{
 
 StorageFiles.propTypes = {
     files: PropTypes.array.isRequired,
-    selectDeleteFile: PropTypes.func.isRequired,
+    downloadFile: PropTypes.func.isRequired,
+    deleteFile: PropTypes.func.isRequired,
 };
 
 export default StorageFiles

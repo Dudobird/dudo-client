@@ -72,6 +72,7 @@ class Storage extends Component {
             parentID = this.props.storage.parentID;
         }
         this.props.deleteFile(this.props.storage.pendingDeleteFile, parentID)
+        this.toggleDeleteFilesModal(false)
     }
     submitUploadFiles=()=>{
         if(this.props.storage.uploadfiles.length===0){
@@ -104,8 +105,6 @@ class Storage extends Component {
         if (nextProps.match.params && nextProps.match.params.id){
             parentID = nextProps.match.params.id
         }
-        console.log(nextProps.match.params)
-        console.log(parentID,this.state.currentParentID)
         if(parentID !== this.state.currentParentID){
             this.props.switchParentID(parentID)
             this.setState({currentParentID:parentID})

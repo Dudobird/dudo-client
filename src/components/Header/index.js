@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from './Header.module.css'
 import { isAuthSuccess } from '../../lib/check-auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAtom,faSignInAlt, faSignOutAlt, faWindowRestore,faUserPlus} from '@fortawesome/free-solid-svg-icons'
+import { faCoins,faSignInAlt, faSignOutAlt, faWindowRestore,faUserPlus} from '@fortawesome/free-solid-svg-icons'
 
 const Header =({store})=>{
   const isAuth = isAuthSuccess(store)
@@ -21,7 +21,7 @@ const Header =({store})=>{
   return (<div className={style.Header}>
         <ul>
             <li key={0} className={style.logo}>
-              <Link to="/">内部存储系统</Link>
+              <Link to="/"><FontAwesomeIcon icon={faCoins}/> 内部存储系统</Link>
             </li>
             {menu}
       </ul>
