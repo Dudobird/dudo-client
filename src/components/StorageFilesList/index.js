@@ -4,8 +4,8 @@ import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder, faFile,faTimesCircle} from '@fortawesome/free-solid-svg-icons'
 
-import Folder from '../Folder'
-import File from '../File'
+import Folder from './Folder'
+import File from './File'
 import styles from './style.module.css';
 
 const StorageFilesList =(props) =>{
@@ -23,13 +23,10 @@ const StorageFilesList =(props) =>{
       return (
             <div key={f.id} 
               className={
-              classNames(
-                styles.storageItem,
-                {[styles.deleteItemAnimation]:props.deleteStatus})
+              // classNames(
+                styles.storageItem
+                // {[styles.deleteItemAnimation]:props.deleteStatus})
             }>  
-                <div className={classNames(
-                styles.deleteIcon,
-                {[styles.hide]:!props.deleteStatus})}><FontAwesomeIcon size="2x" icon={faTimesCircle}/></div>
                 <File data={f} onClickFile={clickFileFunc}/>
             </div>
       )

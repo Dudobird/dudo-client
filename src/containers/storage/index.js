@@ -143,7 +143,7 @@ class Storage extends Component {
         if(this.props.storage.files && this.props.storage.files.length>0){
             renderFiles = this.props.storage.files
         }
-        if(this.props.storage.styleFileList===false){
+        if(this.props.storage.styleFileList===true){
             renderFilesContainer = <StorageFilesList 
             deleteStatus={this.props.storage.deleteStatus} 
             files={renderFiles}
