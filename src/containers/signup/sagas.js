@@ -6,7 +6,7 @@ import {
     SIGNUP_SUCCESS,
 } from './constants';
 
-const signupApiUrl = `${process.env.REACT_APP_API_URL}/api/auth/signup`
+const signupApiUrl = `${process.env.REACT_APP_DUDO_API}/api/auth/signup`
 
 function signupApi(email,password){
     return fetch(signupApiUrl,{

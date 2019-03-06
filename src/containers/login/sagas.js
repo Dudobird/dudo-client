@@ -13,7 +13,7 @@ import {
 
 import { LOGIN_REQUESTING, LOGIN_ERROR, LOGIN_SUCCESS } from './constants';
 
-const signinApiUrl = `${process.env.REACT_APP_API_URL}/api/auth/signin`
+const signinApiUrl = `${process.env.REACT_APP_DUDO_API}/api/auth/signin`
 
 function loginApi(email,password){
     return fetch(signinApiUrl,{

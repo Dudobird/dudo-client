@@ -23,16 +23,16 @@ import {
 
 
 
-const createFolderApiUrl = `${process.env.REACT_APP_API_URL}/api/storages`
-const uploadFileAPI = `${process.env.REACT_APP_API_URL}/api/upload/storage`
-const downloadFileAPI = `${process.env.REACT_APP_API_URL}/api/download/storage`
-const deleteFileAPI = `${process.env.REACT_APP_API_URL}/api/storage`
+const createFolderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/storages`
+const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/storage`
+const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/storage`
+const deleteFileAPI = `${process.env.REACT_APP_DUDO_API}/api/storage`
 
 function listFolderFiles(parentID){
-    const listTopFolderFiles =  `${process.env.REACT_APP_API_URL}/api/storages`
+    const listTopFolderFiles =  `${process.env.REACT_APP_DUDO_API}/api/storages`
     let apiUrl = listTopFolderFiles;
     if(parentID && parentID !== ""){
-        apiUrl = `${process.env.REACT_APP_API_URL}/api/storage/${parentID}/subfiles`
+        apiUrl = `${process.env.REACT_APP_DUDO_API}/api/storage/${parentID}/subfiles`
     }
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
