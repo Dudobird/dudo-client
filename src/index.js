@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { Router, Route } from "react-router-dom";
 import history from './containers/history';
-
+import 'moment/locale/zh-cn';
 import 'react-notifications/lib/notifications.css';
 import './index.css';
 

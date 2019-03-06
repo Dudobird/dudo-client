@@ -1,0 +1,27 @@
+.title{
+    font-weight: bold;
+}
+
+.container {
+    height: 30px; 
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.image{
+    height: 30px;
+    color: #314569;
+    padding-top: 5px;
+}
+.info{
+    padding-left: 10px;
+}
+
+.smallInfo{
+    font-size: .7em;
+    font-weight: 200;
+}
+
+.smallInfo > span{
+    padding-right: 15px;
+}
