@@ -6,17 +6,22 @@ import styles from './style.module.css';
 
 const StorageFilesList =(props) =>{
   const clickFileFunc = props.deleteStatus === false ? props.downloadFile : props.deleteFile
-  const render = props.files.map(f=>{
-      if(f.is_dir===true){
-        return (
+  const folders = props.files.filter(f=>{
+    return f.is_dir === true
+  })
+  const files = props.files.filter(f=>{
+    return f.is_dir !== true
+  })
+
+  const renderFolders = folders.map(f=>(
           <div  key={f.id}  
                 className={styles.storageItem}
           >
             <Folder data={f}/>
           </div>
         )
-      }
-      return (
+  )
+  const renderFiles = files.map(f=>(
             <div key={f.id} 
               className={
               // classNames(
@@ -26,10 +31,12 @@ const StorageFilesList =(props) =>{
                 <File data={f} onClickFile={clickFileFunc}/>
             </div>
       )
-  })
+  )
   return (
     <div className={styles.storageBox}>
-      {render}
+      {renderFolders}
+      {renderFiles}
+      
     </div>
   )
 }

@@ -15,6 +15,7 @@
 }
 .info{
     padding-left: 10px;
+    cursor: pointer;
 }
 
 .smallInfo{

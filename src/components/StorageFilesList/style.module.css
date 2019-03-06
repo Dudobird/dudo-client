@@ -6,6 +6,7 @@
     align-items: flex-start;
     position: relative;
     padding: 0px 50px;
+    margin-bottom: 20px;
 }
 .storageItem{
     width: auto;

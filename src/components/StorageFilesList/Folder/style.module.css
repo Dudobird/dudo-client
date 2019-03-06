@@ -10,11 +10,21 @@
 }
 .image{
     height: 30px;
-    color: cornflowerblue;
+    color: #314569;
     padding-top: 5px;
 }
 .info{
     padding-left: 10px;
+    cursor: pointer;
+}
+.info:hover {
+    color: yellow;
+}
+.info > a {
+    color: #314569;
+}
+.info > a:hover{
+    text-decoration-line: none;
 }
 
 .smallInfo{
