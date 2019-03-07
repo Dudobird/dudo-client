@@ -13,7 +13,7 @@ import {
 import {
     createFolderRequest,
     setDefaultStatus,
-    switchParentID,
+    switchFolder,
     listFiles,
     updateUploadFiles,
     uploadfiles,
@@ -30,7 +30,7 @@ class Storage extends Component {
         isShowUploadFolderModal: false,
         isShowDeleteFilesModal: false,
         newFolderName: "",
-        currentParentID: "",
+        currentFolderID: "root",
         deleteFileName:"",
     }
     static propTypes = {
@@ -41,7 +41,7 @@ class Storage extends Component {
             pendingDeleteFile: PropTypes.string,
             isTopLevel: PropTypes.bool,
             files: PropTypes.array,
-            parentID: PropTypes.string,
+            folderID: PropTypes.string,
             requesting: PropTypes.bool,
             successful: PropTypes.bool,
             messages: PropTypes.array,
@@ -72,22 +72,22 @@ class Storage extends Component {
         });
     }
     submitDeleteFile=()=>{
-        var parentID = "root"
-        if(this.props.storage && this.props.storage.parentID!==""){
-            parentID = this.props.storage.parentID;
+        var folderID = "root"
+        if(this.props.storage && this.props.storage.folderID!==""){
+            folderID = this.props.storage.folderID;
         }
-        this.props.deleteFile(this.props.storage.pendingDeleteFile, parentID)
+        this.props.deleteFile(this.props.storage.pendingDeleteFile, folderID)
     }
     submitUploadFiles=()=>{
         if(this.props.storage.uploadfiles.length===0){
             NotificationManager.error('待上传文件列表为空')
             return 
         }
-        var parentID = "root"
-        if(this.props.storage && this.props.storage.parentID!==""){
-            parentID = this.props.storage.parentID;
+        var folderID = "root"
+        if(this.props.storage && this.props.storage.folderID!==""){
+            folderID = this.props.storage.folderID;
         }
-        this.props.uploadfiles(this.props.storage.uploadfiles,parentID);
+        this.props.uploadfiles(this.props.storage.uploadfiles,folderID);
     }
     submitCreateFolder=()=>{
         const name = this.state.newFolderName.trim()
@@ -101,18 +101,18 @@ class Storage extends Component {
         }
         this.props.createFolderRequest({
             name,
-            parentID: this.state.currentParentID
+            folderID: this.state.currentFolderID
         })
     }
     componentWillReceiveProps(nextProps){
-        let parentID = ""
+        let folderID = "root"
         if (nextProps.match.params && nextProps.match.params.id){
-            parentID = nextProps.match.params.id
+            folderID = nextProps.match.params.id
         }
-        if(parentID !== this.state.currentParentID){
-            this.props.switchParentID(parentID)
-            this.setState({currentParentID:parentID})
-            this.props.listFiles(parentID)
+        if(folderID !== this.state.currentFolderID){
+            this.props.switchFolder(folderID)
+            this.setState({currentFolderID:folderID})
+            this.props.listFiles(folderID)
         }
         
     }
@@ -135,7 +135,7 @@ class Storage extends Component {
         })
     }
     componentDidMount(){
-        this.props.listFiles(this.state.currentParentID)
+        this.props.listFiles(this.state.currentFolderID)
     }
     renderFilesWithStyle=()=>{
         let renderFilesContainer = null
@@ -192,12 +192,12 @@ class Storage extends Component {
                     onClose={()=>{this.toggleCreateFolderModal(false)}}
                 >
                     <div className={style.createFolderModel}>
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="newfolder">文件夹名称: </label>
+                        <form className="form-inline">
+                            <div className="form-group">
+                                <label htmlFor="newfolder">文件夹名称: </label>
                                 <input 
                                     type="text" 
-                                    class="form-control" 
+                                    className="form-control" 
                                     name="newFolderName" 
                                     value={this.state.newFolderName}
                                     onChange={this.handleInputChange}/>
@@ -240,7 +240,7 @@ export default connect(
     {
         createFolderRequest,
         setDefaultStatus,
-        switchParentID,
+        switchFolder,
         listFiles,
         updateUploadFiles,
         uploadfiles,

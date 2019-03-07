@@ -1,7 +1,7 @@
 import { 
     CREATE_NEW_FOLDER,
     SET_DEFAULT_STATUS,
-    SWITCH_PARENTID,
+    SWITCH_FOLDER,
     LIST_FILES,
     UPDATE_UPLOAD_LIST,
     UPLOAD_FILES,
@@ -41,34 +41,34 @@ const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
 }
 
 
-const deleteFile = function deleteFile(id,parentID){
+const deleteFile = function deleteFile(id,folderID){
     return {
         type: DELETE_FILE,
         id,
-        parentID,
+        folderID,
     }
 }
 
-const uploadfiles = function uploadfiles(files,parentID){
+const uploadfiles = function uploadfiles(files,folderID){
     return {
         type: UPLOAD_FILES,
-        files: files,
-        parentID: parentID,
+        files,
+        folderID,
     }
 }
 
-const createFolderRequest = function createFolderRequest({name,parentID}){
+const createFolderRequest = function createFolderRequest({name,folderID}){
     return {
         type : CREATE_NEW_FOLDER,
         name,
-        parentID,
+        folderID,
     }
 }
 
-const listFiles = function listFiles(parentID){
+const listFiles = function listFiles(folderID){
     return {
         type: LIST_FILES,
-        parentID
+        folderID
     }
 }
 
@@ -78,10 +78,10 @@ const setDefaultStatus = function setDefaultStatus(){
     }   
 }
 
-const switchParentID = function switchParentID(parentID){
+const switchFolder = function switchFolder(folderID){
     return {
-        type: SWITCH_PARENTID,
-        parentID
+        type: SWITCH_FOLDER,
+        folderID
     }
 }
 
@@ -89,7 +89,7 @@ export {
     createFolderRequest ,
     setDefaultStatus,
     listFiles,
-    switchParentID,
+    switchFolder,
     updateUploadFiles,
     uploadfiles,
     downloadFile,

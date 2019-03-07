@@ -23,17 +23,16 @@ import {
 
 
 
-const createFolderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/storages`
-const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/storage`
-const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/storage`
-const deleteFileAPI = `${process.env.REACT_APP_DUDO_API}/api/storage`
+const createFolderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/folders`
+const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/files`
+const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/files`
+const deleteFileAPI = `${process.env.REACT_APP_DUDO_API}/api/files`
 
-function listFolderFiles(parentID){
-    const listTopFolderFiles =  `${process.env.REACT_APP_DUDO_API}/api/storages`
-    let apiUrl = listTopFolderFiles;
-    if(parentID && parentID !== ""){
-        apiUrl = `${process.env.REACT_APP_DUDO_API}/api/storage/${parentID}/subfiles`
+function listFolderFiles(folderID){
+    if(folderID ===""){
+        folderID = "root"
     }
+    const apiUrl = `${createFolderApiUrl}/${folderID}`
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     return fetch(apiUrl,{
@@ -50,7 +49,7 @@ function listFolderFiles(parentID){
      .catch(error=>{throw error})    
 }
 
-function createFolderApi(name,parentID){
+function createFolderApi(name,folderID){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     return fetch(createFolderApiUrl,{
@@ -62,7 +61,7 @@ function createFolderApi(name,parentID){
             },
             body:JSON.stringify({
                 file_name: name,
-                parent_id: parentID,
+                folder_id: folderID,
                 is_dir:true,
             })
         }
@@ -72,10 +71,10 @@ function createFolderApi(name,parentID){
      .catch(error=>{throw error})
 }
 
-function uploadFiles(files,parentID){
+function uploadFiles(files,folderID){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
-    const apiUrl = `${uploadFileAPI}/${parentID}`
+    const apiUrl = `${uploadFileAPI}/${folderID}`
     return Promise.all(files.map(file =>{
         let formData = new FormData()
         formData.append("uploadfile",file)
@@ -125,10 +124,10 @@ function deleteFile(id){
 
 function* createFolderFlow(action){
     try {
-        const { name, parentID } = action
-        const response = yield call(createFolderApi, name,parentID)
+        const { name, folderID } = action
+        const response = yield call(createFolderApi, name,folderID)
         yield put({type: CREATE_NEW_FOLDER_SUCCESS, response})
-        yield put({type: UPDATE_STORAGE_FILES,parentID})
+        yield put({type: UPDATE_STORAGE_FILES,folderID})
     }catch(error){
         yield put({type: CREATE_NEW_FOLDER_FAIL, error})
     }
@@ -136,8 +135,8 @@ function* createFolderFlow(action){
 
 function* listFolderFlow(action){
     try {
-        const { parentID } = action
-        const response = yield call(listFolderFiles,parentID)
+        const { folderID } = action
+        const response = yield call(listFolderFiles,folderID)
         yield put({type: LIST_FILES_SUCCESS, response})
         
     }catch(error){
@@ -158,10 +157,10 @@ function* downloadFileFlow(action){
 
 function* uploadFilesFlow(action){
     try {
-        const { files,parentID } = action
-        const response = yield call(uploadFiles,files,parentID)
+        const { files,folderID } = action
+        const response = yield call(uploadFiles,files,folderID)
         yield put({type: UPLOAD_FILES_SUCCESS, response})
-        yield put({type: LIST_FILES,parentID})
+        yield put({type: LIST_FILES,folderID})
     }catch(error){
         yield put({type: UPLOAD_FILES_FAIL, error})
     }
@@ -171,10 +170,10 @@ function* uploadFilesFlow(action){
 
 function* deleteFileFlow(action){
     try {
-        const { id ,parentID } = action
+        const { id ,folderID } = action
         const response = yield call(deleteFile,id)
         yield put({type: DELETE_FILE_SUCCESS, response})
-        yield put({type: LIST_FILES,parentID})
+        yield put({type: LIST_FILES,folderID})
     }catch(error){
         yield put({type: DELETE_FILE_FAIL, error})
     }

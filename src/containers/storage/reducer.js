@@ -7,7 +7,7 @@ import {
     LIST_FILES,
     LIST_FILES_SUCCESS,
     LIST_FILES_FAIL,
-    SWITCH_PARENTID,
+    SWITCH_FOLDER,
     UPDATE_UPLOAD_LIST,
     UPLOAD_FILES_FAIL,
     UPLOAD_FILES_SUCCESS,
@@ -19,7 +19,7 @@ import {
 } from './constants'
 
 const initialState = {
-    parentID: "",
+    folderID: "root",
     deleteStatus: false,
     pendingDeleteFile: null,
     requesting: false,
@@ -67,7 +67,7 @@ const reducer = function signupReducer (state = initialState, action){
         case LIST_FILES:
             return {
                 ...state,
-                parentID: action.parentID,
+                folderID: action.folderID,
                 requesting: true,
                 successful: false,
                 messages:[],
@@ -132,17 +132,21 @@ const reducer = function signupReducer (state = initialState, action){
                 requesting: false,
                 successful: false,
             }
-        case SWITCH_PARENTID:
+        case SWITCH_FOLDER:
             return {
                 ...state,
                 deleteStatus: false,
-                parentID: action.parentID,
+                folderID: action.folderID,
                 files:[],
+                messages:[],
+                errors: [],   
             }
         case UPDATE_UPLOAD_LIST:
             return {
                 ...state,
-                uploadfiles: action.files
+                uploadfiles: action.files,
+                messages:[],
+                errors: [],
             }
         // case 
         default: 
