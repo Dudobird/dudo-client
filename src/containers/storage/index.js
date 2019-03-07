@@ -19,8 +19,10 @@ import {
     uploadfiles,
     downloadFile,
     changeDeleteStatus,
+    toggleControlMode,
     deleteFile,
     updatePendingDeleteFile,
+    toggleFileDisplayStyle,
 } from './actions';
 
 import Popup from './Popup';
@@ -37,7 +39,6 @@ class Storage extends Component {
         createFolderRequest: PropTypes.func,
         setDefaultStatus: PropTypes.func,
         storage: PropTypes.shape({
-            deleteStatus: PropTypes.bool,
             pendingDeleteFile: PropTypes.string,
             isTopLevel: PropTypes.bool,
             files: PropTypes.array,
@@ -47,7 +48,8 @@ class Storage extends Component {
             messages: PropTypes.array,
             errors: PropTypes.array,
             uploadfiles: PropTypes.array,
-            styleFileList: PropTypes.bool,
+            fileListMode: PropTypes.bool,
+            controlMode: PropTypes.bool,
         }),
     }
  
@@ -143,15 +145,15 @@ class Storage extends Component {
         if(this.props.storage.files && this.props.storage.files.length>0){
             renderFiles = this.props.storage.files
         }
-        if(this.props.storage.styleFileList===true){
+        if(this.props.storage.fileListMode===true){
             renderFilesContainer = <StorageFilesList 
-            deleteStatus={this.props.storage.deleteStatus} 
+            controlMode={this.props.storage.controlMode} 
             files={renderFiles}
             deleteFile = {this.showDeleteFileModal}
             downloadFile={this.downloadFile}/>
         }else{
             renderFilesContainer =<StorageFiles 
-                    deleteStatus={this.props.storage.deleteStatus} 
+                    controlMode={this.props.storage.controlMode} 
                     files={renderFiles}
                     deleteFile = {this.showDeleteFileModal}
                     downloadFile={this.downloadFile}/>
@@ -180,7 +182,8 @@ class Storage extends Component {
                 {this.renderFilesWithStyle()}
                 <NotificationContainer/>
                 <Popup 
-                    onChangeDeleteStatus={()=>{this.props.changeDeleteStatus(true)}}
+                    onToggleFileDisplayStyle = {this.props.toggleFileDisplayStyle}
+                    onToggleControlMode={this.props.toggleControlMode}
                     onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
                     onUploadFiles={()=>{this.toggleUploadFilesModal(true)}}
                 />
@@ -246,6 +249,8 @@ export default connect(
         uploadfiles,
         downloadFile,
         changeDeleteStatus,
+        toggleControlMode,
         deleteFile,
         updatePendingDeleteFile,
+        toggleFileDisplayStyle,
     })(Storage);

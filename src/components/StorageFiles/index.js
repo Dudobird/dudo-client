@@ -9,16 +9,12 @@ import File from './File'
 import styles from './style.module.css';
 
 const StorageFiles =(props) =>{
-  const clickFileFunc = props.deleteStatus === false ? props.downloadFile : props.deleteFile
+  const clickFileFunc = props.controlMode === false ? props.downloadFile : props.deleteFile
   const render = props.files.map(f=>{
       if(f.is_dir===true){
         return (
           <div  key={f.id}  
                 className={styles.storageItem}
-                //   classNames(
-                //     styles.storageItem,
-                //     {[styles.deleteItemAnimation]:props.deleteStatus})
-                // }
           >
             <Folder data={f}/>
           </div>
@@ -29,11 +25,11 @@ const StorageFiles =(props) =>{
               className={
               classNames(
                 styles.storageItem,
-                {[styles.deleteItemAnimation]:props.deleteStatus})
+                {[styles.deleteItemAnimation]:props.controlMode})
             }>  
                 <div className={classNames(
                 styles.deleteIcon,
-                {[styles.hide]:!props.deleteStatus})}><FontAwesomeIcon size="2x" icon={faTimesCircle}/></div>
+                {[styles.hide]:!props.controlMode})}><FontAwesomeIcon size="2x" icon={faTimesCircle}/></div>
                 <File data={f} onClickFile={clickFileFunc}/>
             </div>
       )

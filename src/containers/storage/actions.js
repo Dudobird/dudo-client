@@ -9,7 +9,20 @@ import {
     CHANGE_DELETE_STATUS,
     DELETE_FILE,
     UPDATE_PENDING_DELETE_FILE,
+    TOGGLE_FILE_DISPLAY_STYLE,
+    TOGGLE_CONTROL_MODE,
 } from './constants';
+const toggleFileDisplayStyle = function toggleFileDisplayStyle(){
+    return {
+        type: TOGGLE_FILE_DISPLAY_STYLE,
+    }
+} 
+
+const toggleControlMode = function toggleControlMode(){
+    return {
+        type: TOGGLE_CONTROL_MODE,
+    }
+} 
 
 const updateUploadFiles = function updateUploadFiles(files){
     return {
@@ -95,5 +108,7 @@ export {
     downloadFile,
     changeDeleteStatus,
     deleteFile,
-    updatePendingDeleteFile
+    updatePendingDeleteFile,
+    toggleFileDisplayStyle,
+    toggleControlMode
 }

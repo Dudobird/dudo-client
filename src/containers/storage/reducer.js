@@ -12,15 +12,15 @@ import {
     UPLOAD_FILES_FAIL,
     UPLOAD_FILES_SUCCESS,
     UPLOAD_FILES,
-    CHANGE_DELETE_STATUS,
     UPDATE_PENDING_DELETE_FILE,
     DELETE_FILE_SUCCESS,
-    DELETE_FILE_FAIL
+    DELETE_FILE_FAIL,
+    TOGGLE_FILE_DISPLAY_STYLE,
+    TOGGLE_CONTROL_MODE
 } from './constants'
 
 const initialState = {
     folderID: "root",
-    deleteStatus: false,
     pendingDeleteFile: null,
     requesting: false,
     successful: false,
@@ -28,20 +28,29 @@ const initialState = {
     error: [],
     files:[],
     uploadfiles: [],
-    styleFileList: true,
+    fileListMode: true,
+    controlMode: false,
+    showDeleteModal: false,
+    showRenameModal: false,
+    showCreateFolderModal: false,
 }
 
 const reducer = function signupReducer (state = initialState, action){
     switch(action.type){
+        case TOGGLE_FILE_DISPLAY_STYLE:
+            return {
+                ...state,
+                fileListMode: !state.fileListMode
+            }
+        case TOGGLE_CONTROL_MODE:
+            return {
+                ...state,
+                controlMode: !state.controlMode
+            }
         case UPDATE_PENDING_DELETE_FILE:
             return{
                 ...state,
                 pendingDeleteFile: action.id
-            }
-        case CHANGE_DELETE_STATUS:
-            return {
-                ...state,
-                deleteStatus: action.status
             }
         case SET_DEFAULT_STATUS:
             return {

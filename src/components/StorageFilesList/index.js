@@ -5,7 +5,6 @@ import File from './File'
 import styles from './style.module.css';
 
 const StorageFilesList =(props) =>{
-  const clickFileFunc = props.deleteStatus === false ? props.downloadFile : props.deleteFile
   const folders = props.files.filter(f=>{
     return f.is_dir === true
   })
@@ -28,7 +27,12 @@ const StorageFilesList =(props) =>{
                 styles.storageItem
                 // {[styles.deleteItemAnimation]:props.deleteStatus})
             }>  
-                <File data={f} onClickFile={clickFileFunc}/>
+                <File 
+                    data={f} 
+                    controlMode={props.controlMode}
+                    onClickFile={props.downloadFile} 
+                    onDeleteFile={props.deleteFile}
+                />
             </div>
       )
   )
@@ -36,7 +40,6 @@ const StorageFilesList =(props) =>{
     <div className={styles.storageBox}>
       {renderFolders}
       {renderFiles}
-      
     </div>
   )
 }

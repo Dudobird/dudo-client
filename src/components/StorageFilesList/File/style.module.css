@@ -17,7 +17,12 @@
     padding-left: 10px;
     cursor: pointer;
 }
-
+.hidden {
+    display: none;
+}
+.filler{
+    flex-grow: 1;
+}
 .smallInfo{
     font-size: .7em;
     font-weight: 200;
@@ -25,4 +30,12 @@
 
 .smallInfo > span{
     padding-right: 15px;
+}
+
+.deleteBtn{
+    cursor: pointer; 
+    color: rgba(255, 0, 0, 0.40);
+}
+.deleteBtn:hover{
+    color: rgba(255, 0, 0, 0.80);
 }

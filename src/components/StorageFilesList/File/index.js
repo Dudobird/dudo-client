@@ -1,9 +1,10 @@
 import React from 'react'
 import style from './style.module.css'
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons'
+import { faFileAlt,faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 const File = (props) =>{
     return(
@@ -21,11 +22,16 @@ const File = (props) =>{
                     <span>文件大小:{props.data.file_size_readable}</span>
                 </div>
         </div>
+        <div className={style.filler}></div>
+        <div className={classnames({[style.hidden]: !props.controlMode})}>
+            <div className={style.deleteBtn} onClick={props.onDeleteFile}><FontAwesomeIcon size="2x" icon={faTimesCircle}/></div>
+        </div>
     </div>
     )
 }
 File.propTypes = {
     data: PropTypes.object.isRequired,
     onClickFile: PropTypes.func.isRequired,
+    onDeleteFile: PropTypes.func.isRequired,
 };
 export default File
