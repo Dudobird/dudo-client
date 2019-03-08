@@ -16,12 +16,14 @@ import {
     DELETE_FILE_SUCCESS,
     DELETE_FILE_FAIL,
     TOGGLE_FILE_DISPLAY_STYLE,
-    TOGGLE_CONTROL_MODE
+    TOGGLE_CONTROL_MODE,
+    SHOW_VIEW_MODAL,
 } from './constants'
 
 const initialState = {
     folderID: "root",
-    pendingDeleteFile: null,
+    pendingDeleteFileID: "",
+    pendingDeleteFileName: "",
     requesting: false,
     successful: false,
     message: [],
@@ -30,13 +32,17 @@ const initialState = {
     uploadfiles: [],
     fileListMode: true,
     controlMode: false,
-    showDeleteModal: false,
-    showRenameModal: false,
-    showCreateFolderModal: false,
+    modalName: "",
+
 }
 
 const reducer = function signupReducer (state = initialState, action){
     switch(action.type){
+        case SHOW_VIEW_MODAL:
+        return {
+            ...state,
+            modalName: action.modal,
+        }       
         case TOGGLE_FILE_DISPLAY_STYLE:
             return {
                 ...state,
@@ -50,7 +56,8 @@ const reducer = function signupReducer (state = initialState, action){
         case UPDATE_PENDING_DELETE_FILE:
             return{
                 ...state,
-                pendingDeleteFile: action.id
+                pendingDeleteFileID: action.id,
+                pendingDeleteFileName: action.filename,
             }
         case SET_DEFAULT_STATUS:
             return {
@@ -67,6 +74,7 @@ const reducer = function signupReducer (state = initialState, action){
             }
             return {
                 ...state,
+                modalName:"",
                 errors: [],
                 messages: [],
                 requesting: false,

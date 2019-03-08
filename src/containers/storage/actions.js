@@ -11,10 +11,19 @@ import {
     UPDATE_PENDING_DELETE_FILE,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
+    SHOW_VIEW_MODAL,
 } from './constants';
 const toggleFileDisplayStyle = function toggleFileDisplayStyle(){
     return {
         type: TOGGLE_FILE_DISPLAY_STYLE,
+    }
+} 
+
+
+const showViewModal = function showViewModal(modalName){
+    return {
+        type: SHOW_VIEW_MODAL,
+        modal: modalName,
     }
 } 
 
@@ -50,6 +59,7 @@ const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
     return {
         type: UPDATE_PENDING_DELETE_FILE,
         id,
+        filename,
     }
 }
 
@@ -110,5 +120,6 @@ export {
     deleteFile,
     updatePendingDeleteFile,
     toggleFileDisplayStyle,
-    toggleControlMode
+    toggleControlMode,
+    showViewModal,
 }

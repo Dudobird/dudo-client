@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect }from 'react-redux';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-
+import ModalSwitch from './ModalSwitch';
 import style from './styles.module.css';
 import {
-    Modal,
     StorageFiles,
-    StorageFilesList,
-    Dropbox} from '../../components';
+    StorageFilesList} from '../../components';
 
 import {
     createFolderRequest,
@@ -23,50 +21,38 @@ import {
     deleteFile,
     updatePendingDeleteFile,
     toggleFileDisplayStyle,
+    showViewModal,
 } from './actions';
 
 import Popup from './Popup';
 class Storage extends Component {
     state = {
-        isShowCreateFolderModal: false,
-        isShowUploadFolderModal: false,
-        isShowDeleteFilesModal: false,
         newFolderName: "",
         currentFolderID: "root",
         deleteFileName:"",
+        modalName: "",
     }
     static propTypes = {
         createFolderRequest: PropTypes.func,
         setDefaultStatus: PropTypes.func,
         storage: PropTypes.shape({
-            pendingDeleteFile: PropTypes.string,
-            isTopLevel: PropTypes.bool,
+            pendingDeleteFileID: PropTypes.string,
+            pendingDeleteFileName: PropTypes.string,
+
             files: PropTypes.array,
             folderID: PropTypes.string,
             requesting: PropTypes.bool,
             successful: PropTypes.bool,
             messages: PropTypes.array,
             errors: PropTypes.array,
+
             uploadfiles: PropTypes.array,
+
             fileListMode: PropTypes.bool,
             controlMode: PropTypes.bool,
+            // for modal display , empty means hide all modal
+            modalName: PropTypes.string,
         }),
-    }
- 
-    toggleCreateFolderModal=(showModel)=>{
-        this.setState({
-            isShowCreateFolderModal:showModel
-        })
-    }
-    toggleUploadFilesModal=(showModel)=>{
-        this.setState({
-            isShowUploadFolderModal:showModel
-        })
-    }
-    toggleDeleteFilesModal=(showModel)=>{
-        this.setState({
-            isShowDeleteFilesModal:showModel
-        })
     }
     handleInputChange=(e) =>{
         this.setState({
@@ -78,7 +64,7 @@ class Storage extends Component {
         if(this.props.storage && this.props.storage.folderID!==""){
             folderID = this.props.storage.folderID;
         }
-        this.props.deleteFile(this.props.storage.pendingDeleteFile, folderID)
+        this.props.deleteFile(this.props.storage.pendingDeleteFileID, folderID)
     }
     submitUploadFiles=()=>{
         if(this.props.storage.uploadfiles.length===0){
@@ -91,8 +77,8 @@ class Storage extends Component {
         }
         this.props.uploadfiles(this.props.storage.uploadfiles,folderID);
     }
-    submitCreateFolder=()=>{
-        const name = this.state.newFolderName.trim()
+    submitCreateFolder=(folderName)=>{
+        const name = folderName.trim()
         if(name===""){
             NotificationManager.error('请输入有效的文件名')
             return 
@@ -130,11 +116,8 @@ class Storage extends Component {
             NotificationManager.error('待删除文件找不到')
             return
         }
-        this.props.updatePendingDeleteFile(id)
-        this.setState({
-            isShowDeleteFilesModal:true,
-            deleteFileName: filename,
-        })
+        this.props.updatePendingDeleteFile(id,filename)
+        this.props.showViewModal("deleteFileModal")
     }
     componentDidMount(){
         this.props.listFiles(this.state.currentFolderID)
@@ -160,6 +143,16 @@ class Storage extends Component {
         }
         return renderFilesContainer
     }
+    renderModal = ()=>{
+        return <ModalSwitch 
+                    modalName={this.props.storage.modalName}
+                    onNewFolderSubmit={this.submitCreateFolder}
+                    onUploadModalSubmit={this.submitUploadFiles}
+                    onDeleteModalSubmit={this.submitDeleteFile}
+                    {...this.props}
+                />
+    }
+
     render(){
         if(this.props.storage.errors && this.props.storage.errors.length>0){
             NotificationManager.error(this.props.storage.errors[0].body)
@@ -177,58 +170,16 @@ class Storage extends Component {
 
 
         return(
-            <div className={style.container}>
-                
+            <div className={style.container}>         
                 {this.renderFilesWithStyle()}
+                {this.renderModal()}
                 <NotificationContainer/>
                 <Popup 
                     onToggleFileDisplayStyle = {this.props.toggleFileDisplayStyle}
                     onToggleControlMode={this.props.toggleControlMode}
-                    onCreateFolder={()=>{this.toggleCreateFolderModal(true)}}
-                    onUploadFiles={()=>{this.toggleUploadFilesModal(true)}}
-                />
-
-                <Modal
-                    title="新建文件夹"
-                    show={this.state.isShowCreateFolderModal}
-                    onSubmit={this.submitCreateFolder}
-                    onClose={()=>{this.toggleCreateFolderModal(false)}}
-                >
-                    <div className={style.createFolderModel}>
-                        <form className="form-inline">
-                            <div className="form-group">
-                                <label htmlFor="newfolder">文件夹名称: </label>
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    name="newFolderName" 
-                                    value={this.state.newFolderName}
-                                    onChange={this.handleInputChange}/>
-                            </div>
-                        </form> 
-                    </div>                   
-                </Modal>
-
-                <Modal
-                    title="上传文件"
-                    show={this.state.isShowUploadFolderModal}
-                    onSubmit={this.submitUploadFiles}
-                    onClose={()=>{this.toggleUploadFilesModal(false)}}
-                >
-                    <Dropbox 
-                        files={this.props.storage.uploadfiles}
-                        updatefiles={this.props.updateUploadFiles}
-                    />
-                </Modal>               
-                <Modal
-                    title="删除文件"
-                    show={this.state.isShowDeleteFilesModal}
-                    onSubmit={this.submitDeleteFile}
-                    onClose={()=>{this.toggleDeleteFilesModal(false)}}
-                >
-                   <div className={style.modalContent}>是否确定删除文件：<span className={style.modalContentSpan}>{this.state.deleteFileName}</span> ?</div>
-                </Modal>    
-
+                    onCreateFolder={()=>{this.props.showViewModal("newFolderModal")}}
+                    onUploadFiles={()=>{this.props.showViewModal("uploadFilesModal")}}
+                /> 
             </div>
         )
     }
@@ -253,4 +204,5 @@ export default connect(
         deleteFile,
         updatePendingDeleteFile,
         toggleFileDisplayStyle,
+        showViewModal
     })(Storage);

@@ -3,9 +3,6 @@ import style from './style.module.css'
 
 export default class Modal extends Component {
   render() {
-    if (!this.props.show){
-        return null
-    }
     return (
       <div className={style.modal}>
         <div className={style.modalMain}>
