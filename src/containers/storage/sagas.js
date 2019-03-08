@@ -17,7 +17,8 @@ import {
     DOWNLOAD_FILE_FAIL,
     DELETE_FILE,
     DELETE_FILE_SUCCESS,
-    DELETE_FILE_FAIL
+    DELETE_FILE_FAIL,
+    REMOVE_SUCCESS_UPLOADED_FILES
 } from './constants';
 
 
@@ -71,25 +72,23 @@ function createFolderApi(name,folderID){
      .catch(error=>{throw error})
 }
 
-function uploadFiles(files,folderID){
+ function uploadFile(file,folderID){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${uploadFileAPI}/${folderID}`
-    return Promise.all(files.map(file =>{
-        let formData = new FormData()
-        formData.append("uploadfile",file)
-        return fetch(apiUrl,{
-                crossDomain:true,
-                method: 'POST',
-                headers:{
-                    'Authorization':`Bearer ${token}`,
-                },
-                body: formData
-            }).then(response => response.json())
-            .then(handleApiErrors)
-            .then(json => json )
-        }
-    )).then(jsons => jsons);
+
+    let formData = new FormData()
+    formData.append("uploadfile",file)
+    return fetch(apiUrl,{
+        crossDomain:true,
+        method: 'POST',
+        headers:{
+            'Authorization':`Bearer ${token}`,
+        },
+        body: formData
+    }).then(response => response.json())
+    .then(handleApiErrors)
+    .then(json => json )
 }
 
 function downloadFile(id,filename){
@@ -158,8 +157,11 @@ function* downloadFileFlow(action){
 function* uploadFilesFlow(action){
     try {
         const { files,folderID } = action
-        const response = yield call(uploadFiles,files,folderID)
-        yield put({type: UPLOAD_FILES_SUCCESS, response})
+        for(let f of files){
+            yield call(uploadFile,f,folderID)
+            yield put({type: REMOVE_SUCCESS_UPLOADED_FILES,path:f.path})
+        }
+        yield put({type: UPLOAD_FILES_SUCCESS, response:"upload success"})
         yield put({type: LIST_FILES,folderID})
     }catch(error){
         yield put({type: UPLOAD_FILES_FAIL, error})

@@ -149,6 +149,7 @@ class Storage extends Component {
                     onNewFolderSubmit={this.submitCreateFolder}
                     onUploadModalSubmit={this.submitUploadFiles}
                     onDeleteModalSubmit={this.submitDeleteFile}
+                    onClose={()=>this.props.showViewModal("")}
                     {...this.props}
                 />
     }
@@ -161,11 +162,6 @@ class Storage extends Component {
         if(this.props.storage.messages && this.props.storage.messages.length>0){
             NotificationManager.success(this.props.storage.messages[0].body)
             this.props.setDefaultStatus()
-            this.setState({
-                isShowCreateFolderModal:false,
-                isShowDeleteFilesModal:false,
-                isShowUploadFolderModal:false
-            })
         }
 
 

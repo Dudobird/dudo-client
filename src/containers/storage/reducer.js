@@ -18,6 +18,7 @@ import {
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
     SHOW_VIEW_MODAL,
+    REMOVE_SUCCESS_UPLOADED_FILES,
 } from './constants'
 
 const initialState = {
@@ -109,6 +110,12 @@ const reducer = function signupReducer (state = initialState, action){
                 }],
                 requesting: false,
                 successful: true,
+            }
+        }
+        case REMOVE_SUCCESS_UPLOADED_FILES:{
+            return {
+                ...state,
+                uploadfiles:state.uploadfiles.filter(f=>f.path!==action.path)
             }
         }
         case UPLOAD_FILES_SUCCESS: {

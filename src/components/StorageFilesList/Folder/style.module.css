@@ -17,9 +17,6 @@
     padding-left: 10px;
     cursor: pointer;
 }
-.info:hover {
-    color: yellow;
-}
 .info > a {
     color: #314569;
 }
