@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import FileIcon from '../../Icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileAlt,faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 const File = (props) =>{
     return(
-     <div className={style.container}>
+     <div className={style.container} onClick={()=>props.onClickFile(props.data.id, props.data.file_name)}>
         <div className={style.image}>
             {/* <FontAwesomeIcon size="2x" icon={faFileAlt}/> */}
             <FileIcon type={props.data.file_type} fileName = {props.data.file_name}/>
         </div>
-        <div className={style.info}  onClick={()=>props.onClickFile(props.data.id, props.data.file_name)}>
+        <div className={style.info}>
                 <span className={style.title}>
                     {props.data.file_name}
                 </span>

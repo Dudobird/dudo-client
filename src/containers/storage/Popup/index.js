@@ -1,8 +1,6 @@
 import React from 'react'
 import style from './style.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolderPlus, faUpload, faTrash, faThList} from '@fortawesome/free-solid-svg-icons'
-
+import { FaFolderPlus,FaUpload,FaThList } from 'react-icons/fa'
 export default function Popup(props) {
   return (
         <div className={style.container+" dropup"}>
@@ -10,10 +8,21 @@ export default function Popup(props) {
             +
         </button>
         <div className={style.menubox+" dropdown-menu"} aria-labelledby="dropdownMenuButton">
-            <div className={style.menuitem+" dropdown-item"} onClick={props.onCreateFolder}><FontAwesomeIcon icon={faFolderPlus}/> 创建文件夹</div>
-            <div className={style.menuitem+" dropdown-item"} onClick={props.onUploadFiles}><FontAwesomeIcon icon={faUpload}/> 上传文件</div>
-            <div className={style.menuitem+" dropdown-item"} onClick={props.onToggleControlMode}><FontAwesomeIcon icon={faTrash}/> 切换操作模式</div>
-            <div className={style.menuitem+" dropdown-item"} onClick={props.onToggleFileDisplayStyle}><FontAwesomeIcon icon={faThList}/> 切换展示模式</div>
+            <div 
+                className={style.menuitem+" dropdown-item"} 
+                onClick={props.onCreateFolder}>
+                <FaFolderPlus/> 创建文件夹
+            </div>
+            <div 
+                className={style.menuitem+" dropdown-item"} 
+                onClick={props.onUploadFiles}>
+                <FaUpload /> 上传文件
+            </div>
+            <div 
+                className={style.menuitem+" dropdown-item"} 
+                onClick={props.onToggleFileDisplayStyle}>
+                <FaThList /> 切换展示模式
+            </div>
         </div>
         </div>
   )

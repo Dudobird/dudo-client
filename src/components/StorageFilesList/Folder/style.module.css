@@ -6,6 +6,7 @@
     height: 40px; 
     width: 100%;
     display: flex;
+    cursor: pointer;
     flex-direction: row;
 }
 .image{
@@ -15,12 +16,6 @@
 .info{
     padding-left: 10px;
     cursor: pointer;
-}
-.info > a {
-    color: #314569;
-}
-.info > a:hover{
-    text-decoration-line: none;
 }
 
 .smallInfo{

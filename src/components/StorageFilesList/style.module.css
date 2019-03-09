@@ -16,6 +16,13 @@
     width: 100%;
 }
 
+.storageItem > div > a:hover{
+    text-decoration: none;
+}
+.storageItem > div > a{
+    color:inherit;
+}
+
 .hide{
     display: none;
 }
