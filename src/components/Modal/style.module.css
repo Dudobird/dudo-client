@@ -11,7 +11,7 @@
 .modalMain {
     position:fixed;
     background: white;
-    width: 80%;
+    min-width: 40%;
     height: auto;
     left:50%;
     transform: translate(-50%,20%);
@@ -25,9 +25,9 @@
     padding-left: 15px;
     padding-bottom: 10px;
     font-size: 1.2em;
-    color: #00000080;
-    font-weight: 100px;
-    background-color: #ececec;
+    background-color: #ffffff;
+    font-weight: 300;
+    border-bottom: 1px solid #eee;
 }
 
 .footer{

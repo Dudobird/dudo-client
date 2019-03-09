@@ -1,0 +1,22 @@
+.errorMessage{
+    color: red;
+}
+
+.modalForm label{
+    margin-right: 20px;
+}
+.modalForm input{
+    width: 70%!important;
+}
+
+.modalContent{
+    padding: 40px 10px;
+    font-weight: 200;
+    text-align: center;
+    min-height: 150px;
+}
+.modalContent > span{
+    font-weight: 400;
+    color: #ff4646;
+    font-size: 1.4em;
+}

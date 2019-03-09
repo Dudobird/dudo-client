@@ -9,9 +9,11 @@ import {
     CHANGE_DELETE_STATUS,
     DELETE_FILE,
     UPDATE_PENDING_DELETE_FILE,
+    UPDATE_PENDING_RENAME_FILE,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
     SHOW_VIEW_MODAL,
+    RENAME_FILE,
 } from './constants';
 const toggleFileDisplayStyle = function toggleFileDisplayStyle(){
     return {
@@ -63,6 +65,17 @@ const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
     }
 }
 
+const updatePendingRenameFile = function updatePendingRenameFile(id,filename){
+    return {
+        type: UPDATE_PENDING_RENAME_FILE,
+        id,
+        filename,
+    }
+}
+
+
+
+
 
 const deleteFile = function deleteFile(id,folderID){
     return {
@@ -71,6 +84,17 @@ const deleteFile = function deleteFile(id,folderID){
         folderID,
     }
 }
+const renameFile = function renameFile(id,name,folderID){
+    return {
+        type: RENAME_FILE,
+        id,
+        name,
+        folderID
+    }
+}
+
+
+
 
 const uploadfiles = function uploadfiles(files,folderID){
     return {
@@ -119,7 +143,9 @@ export {
     changeDeleteStatus,
     deleteFile,
     updatePendingDeleteFile,
+    updatePendingRenameFile,
     toggleFileDisplayStyle,
     toggleControlMode,
+    renameFile,
     showViewModal,
 }

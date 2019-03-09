@@ -1,5 +1,5 @@
 import { takeLatest, put, call} from 'redux-saga/effects';
-import { handleApiErrors,getToken } from '../../lib'  
+import { handleResponseErrors, handleApiErrors,getToken } from '../../lib'  
 import { saveAs } from 'file-saver' 
 import { 
     CREATE_NEW_FOLDER,
@@ -18,22 +18,25 @@ import {
     DELETE_FILE,
     DELETE_FILE_SUCCESS,
     DELETE_FILE_FAIL,
-    REMOVE_SUCCESS_UPLOADED_FILES
+    REMOVE_SUCCESS_UPLOADED_FILES,
+    RENAME_FILE,
+    RENAME_FILE_SUCCESS,
+    RENAME_FILE_FAIL
 } from './constants';
 
 
 
 
-const createFolderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/folders`
+const folderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/folders`
 const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/files`
 const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/files`
-const deleteFileAPI = `${process.env.REACT_APP_DUDO_API}/api/files`
+const fileAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/files`
 
 function listFolderFiles(folderID){
     if(folderID ===""){
         folderID = "root"
     }
-    const apiUrl = `${createFolderApiUrl}/${folderID}`
+    const apiUrl = `${folderApiUrl}/${folderID}`
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     return fetch(apiUrl,{
@@ -53,7 +56,7 @@ function listFolderFiles(folderID){
 function createFolderApi(name,folderID){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
-    return fetch(createFolderApiUrl,{
+    return fetch(folderApiUrl,{
             crossDomain:true,
             method: 'POST',
             headers:{
@@ -89,6 +92,7 @@ function createFolderApi(name,folderID){
     }).then(response => response.json())
     .then(handleApiErrors)
     .then(json => json )
+    .catch(error=>{throw error})
 }
 
 function downloadFile(id,filename){
@@ -103,13 +107,14 @@ function downloadFile(id,filename){
             }
         }).then(response => response.blob())
         .then(blob => saveAs(blob,filename) )
+        .catch(error=>{throw error})
 }
 
 
 function deleteFile(id){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
-    const apiUrl = `${deleteFileAPI}/${id}`
+    const apiUrl = `${fileAPIUrl}/${id}`
     return fetch(apiUrl,{
             crossDomain:true,
             method: 'DELETE',
@@ -119,7 +124,30 @@ function deleteFile(id){
         }).then(response => response.json())
         .then(handleApiErrors)
         .then(json => json )
+        .catch(error=>{throw error})
 }
+
+function renameFile(id, name){
+    const tokenRaw = localStorage.getItem("token");
+    const token = getToken(tokenRaw);
+    const apiUrl = `${fileAPIUrl}/${id}`
+    return fetch(apiUrl,{
+            crossDomain:true,
+            method: 'PUT',
+            headers:{
+                'Authorization':`Bearer ${token}`,
+            },
+            body:JSON.stringify({
+                id: id,
+                file_name: name,
+            })
+        })
+        .then(handleResponseErrors)
+        .then(handleApiErrors)
+        .then(json => json )
+        .catch(error=>{throw error})  
+}
+
 
 function* createFolderFlow(action){
     try {
@@ -181,6 +209,17 @@ function* deleteFileFlow(action){
     }
 }
 
+function* renameFileFlow(action){
+    try {
+        const { id ,name, folderID} = action
+        const response = yield call(renameFile,id,name)
+        yield put({type: RENAME_FILE_SUCCESS, response})
+        yield put({type: LIST_FILES,folderID})
+    }catch(error){
+        yield put({type: RENAME_FILE_FAIL, error})
+    }
+}
+
 function* storageWatcher(){
     yield takeLatest(CREATE_NEW_FOLDER, createFolderFlow)
     yield takeLatest(UPDATE_STORAGE_FILES, listFolderFlow)
@@ -188,6 +227,7 @@ function* storageWatcher(){
     yield takeLatest(DOWNLOAD_FILE, downloadFileFlow)
     yield takeLatest(UPLOAD_FILES, uploadFilesFlow)
     yield takeLatest(DELETE_FILE, deleteFileFlow)
+    yield takeLatest(RENAME_FILE, renameFileFlow)
 }
 
 export default storageWatcher;

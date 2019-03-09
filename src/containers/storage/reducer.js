@@ -13,11 +13,15 @@ import {
     UPLOAD_FILES_SUCCESS,
     UPLOAD_FILES,
     UPDATE_PENDING_DELETE_FILE,
+    UPDATE_PENDING_RENAME_FILE,
     DELETE_FILE_SUCCESS,
     DELETE_FILE_FAIL,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
     SHOW_VIEW_MODAL,
+    RENAME_FILE_SUCCESS,
+    RENAME_FILE,
+    RENAME_FILE_FAIL,
     REMOVE_SUCCESS_UPLOADED_FILES,
 } from './constants'
 
@@ -25,6 +29,8 @@ const initialState = {
     folderID: "root",
     pendingDeleteFileID: "",
     pendingDeleteFileName: "",
+    pendingRenameFileID: "",
+    pendingRenameFileName: "",
     requesting: false,
     successful: false,
     message: [],
@@ -60,6 +66,12 @@ const reducer = function signupReducer (state = initialState, action){
                 pendingDeleteFileID: action.id,
                 pendingDeleteFileName: action.filename,
             }
+        case UPDATE_PENDING_RENAME_FILE:
+            return{
+                ...state,
+                pendingRenameFileID: action.id,
+                pendingRenameFileName: action.filename,
+            }
         case SET_DEFAULT_STATUS:
             return {
                 ...state,
@@ -90,7 +102,8 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: false,
                 messages:[],
                 errors: [],       
-            }            
+            }
+        case RENAME_FILE:        
         case UPLOAD_FILES:
         case CREATE_NEW_FOLDER:
             return {
@@ -99,6 +112,17 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: false,
                 messages:[],
                 errors: [],       
+            }
+        case RENAME_FILE_SUCCESS:
+            return {
+                ...state,
+                errors: [],
+                messages: [{
+                    body: "文件重命名成功",
+                    time: new Date()
+                }],
+                requesting: false,
+                successful: true, 
             }
         case DELETE_FILE_SUCCESS:{
             return {
@@ -142,6 +166,7 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: true,
             }
         }
+        case RENAME_FILE_FAIL:
         case DELETE_FILE_FAIL:
         case UPLOAD_FILES_FAIL:
         case LIST_FILES_FAIL:

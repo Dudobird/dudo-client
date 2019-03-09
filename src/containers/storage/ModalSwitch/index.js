@@ -3,25 +3,43 @@ import {
     Modal,
     Dropbox} from '../../../components';
 
-import style from '../styles.module.css';
+import style from './styles.module.css';
 
 class ModalSwitch extends Component {
   state = {
-    folderName: ""
+    folderName: "",
+    folderNameChanged: false,
+    renameFileName: "",
+    renameFileNameChanged:false,
+    error:""
   }
   handleInputChange=(e) =>{
     this.setState({
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
+        [`${e.target.name}Changed`]:true,
+        error: "",
     });
   }
-  renderNewFolderModal =() =>{
+  handleRenameSubmit = ()=>{
+    if(this.state.renameFileNameChanged === false){
+        this.setState({error:"请修改文件名后再提交"})
+        return 
+    }
+    if(this.state.renameFileName.trim() === ""){
+        this.setState({error:"不能重命名为空"})
+        return 
+    }    
+    this.props.onRenameModalSubmit(this.state.renameFileName)
+  }
+  renderNewFolderModal = () =>{
       return (<Modal
         title="新建文件夹"
         onSubmit = {()=>{this.props.onNewFolderSubmit(this.state.folderName)}} 
         onClose = {this.props.onClose}>
-                <div className={style.createFolderModel}>
+            <div className={style.modalContent}>
+                <div className={style.modalForm}>
                     <form className="form-inline">
-                        <div className="form-group">
+                        <div className="form-group col-md-12">
                             <label htmlFor="newfolder">文件夹名称: </label>
                             <input 
                                 type="text" 
@@ -31,7 +49,8 @@ class ModalSwitch extends Component {
                                 onChange = {this.handleInputChange}/>
                         </div>
                     </form> 
-                </div>                   
+                </div> 
+            </div>                  
             </Modal>)
   }
   renderUploadModal=()=>{
@@ -59,7 +78,38 @@ class ModalSwitch extends Component {
         </Modal>   
     )
   }
-    render(){
+
+  renderRenameFileModal = () =>{
+    return(
+        <Modal
+            title="文件(夹)重命名"
+            onSubmit={this.handleRenameSubmit}
+            onClose={this.props.onClose}
+        >
+           <div className={style.modalContent}>
+                <div className={style.modalForm}>
+                    <form className="form-inline">
+                        <div className="form-group col-md-12">
+                            <label htmlFor="newfolder">重命名为: </label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="renameFileName"
+                                value = {
+                                    (!this.state.renameFileNameChanged && this.props.storage.pendingRenameFileName) 
+                                    || this.state.renameFileName 
+                                }
+                                onChange = {this.handleInputChange}/>
+                            </div>
+                                           
+                    </form>
+                    <div className={style.errorMessage}>{this.state.error}</div>
+                </div>
+            </div>
+        </Modal>   
+    )    
+  }
+  render(){
         switch(this.props.modalName){
             case "newFolderModal":
                 return this.renderNewFolderModal()
@@ -67,6 +117,8 @@ class ModalSwitch extends Component {
                 return this.renderUploadModal()
             case "deleteFileModal":
                 return this.renderDeleteFileModal()
+            case "renameFileModal":
+                return this.renderRenameFileModal()
             default :
                 return null;
             }

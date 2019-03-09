@@ -10,22 +10,22 @@ const MENU_TYPE_FILE = 'STORAGE_LIST_FILE';
 const MENU_TYPE_FOLDER = 'STORAGE_LIST_FOLDER'
 
 class StorageFilesList extends Component{
-
-  handleFileRename =(e,data,target)=>{
-    console.log("rename file or folder")
-  }
   handleFileShare =(e,data,target)=>{
     console.log("share file")
   }
   handleFileDownload=(e,data,target)=>{
     const id = target.getAttribute("id")
-    const fileName = target.getAttribute("fileName")
+    const fileName = target.getAttribute("name")
     this.props.downloadFile(id,fileName)    
   }
-
+  handleFileRename = (e,data,target) =>{
+    const id = target.getAttribute("id")
+    const fileName = target.getAttribute("name")
+    this.props.renameFile(id,fileName)
+  }
   handleFileDelete = (e,data,target) =>{
     const id = target.getAttribute("id")
-    const fileName = target.getAttribute("fileName")
+    const fileName = target.getAttribute("name")
     this.props.deleteFile(id,fileName)
   }
   renderFolders = ()=>{
@@ -37,7 +37,7 @@ class StorageFilesList extends Component{
                   className={styles.storageItem}>
                   <ContextMenuTrigger 
                       id={MENU_TYPE_FOLDER} 
-                      attributes={f} 
+                      attributes={{id:f["id"],name:f["file_name"]}} 
                       holdToDisplay={1000}
                       collect={(props)=>{
                         return { name: props.name }}
@@ -60,7 +60,7 @@ class StorageFilesList extends Component{
                 // {[styles.deleteItemAnimation]:props.deleteStatus})
             }><ContextMenuTrigger 
                 id={MENU_TYPE_FILE} 
-                attributes={{id:f["id"],fileName:f["file_name"]}} 
+                attributes={{id:f["id"],name:f["file_name"]}} 
                 holdToDisplay={1000}
                 collect={(props)=>{
                   return { name: props.name }}

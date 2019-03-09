@@ -22,6 +22,7 @@ const File = (props) =>{
                 <div className={style.smallInfo}>
                     <span>创建于:{moment(props.data.CreatedAt).fromNow()}</span>
                     <span>文件大小:{props.data.file_size_readable}</span>
+                    <span>文件类型:{(props.data.file_type || "").toUpperCase()}</span>
                 </div>
         </div>
         <div className={style.filler}></div>

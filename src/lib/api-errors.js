@@ -4,3 +4,12 @@ export function handleApiErrors(response){
     }
     return response
 }
+
+export function handleResponseErrors(response){
+    if(response.ok){
+        return response.json()
+    }else{
+        throw Error("系统错误,请稍后再试:"+response.status)
+    }
+}
+
