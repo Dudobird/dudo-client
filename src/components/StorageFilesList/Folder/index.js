@@ -11,11 +11,10 @@ const Folder = (props) =>{
     return(
         <div className={style.container}>
             <div className={style.image}>
-                <FontAwesomeIcon size="2x" icon={faFolder}/>
+                <FontAwesomeIcon size="3x" icon={faFolder}/>
             </div>
             <div className={style.info}>
                 <Link to={goToFolder}>
-
                     <span className={style.title}>
                         {props.data.file_name}
                     </span>
