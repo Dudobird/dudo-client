@@ -1,3 +1,12 @@
 import {getToken} from './check-auth';
-import {handleApiErrors,handleResponseErrors} from './api-errors'
-export {getToken,handleApiErrors,handleResponseErrors}
+import {
+    handleApiErrors,
+    handleResponseErrors,
+    request,
+} from './api-errors'
+export {
+    getToken,
+    handleApiErrors,
+    handleResponseErrors,
+    request
+}

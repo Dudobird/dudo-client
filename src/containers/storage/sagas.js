@@ -1,5 +1,8 @@
 import { takeLatest, put, call} from 'redux-saga/effects';
-import { handleResponseErrors, handleApiErrors,getToken } from '../../lib'  
+import { 
+    getToken ,
+    request,
+} from '../../lib'  
 import { saveAs } from 'file-saver' 
 import { 
     CREATE_NEW_FOLDER,
@@ -39,7 +42,7 @@ function listFolderFiles(folderID){
     const apiUrl = `${folderApiUrl}/${folderID}`
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
-    return fetch(apiUrl,{
+    return request(apiUrl,{
             crossDomain:true,
             method: 'GET',
             headers:{
@@ -47,16 +50,13 @@ function listFolderFiles(folderID){
                 'Authorization':`Bearer ${token}`,
             }
         }
-    ).then(response => response.json())
-     .then(handleApiErrors)
-     .then(json => json )
-     .catch(error=>{throw error})    
+    )
 }
 
 function createFolderApi(name,folderID){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
-    return fetch(folderApiUrl,{
+    return request(folderApiUrl,{
             crossDomain:true,
             method: 'POST',
             headers:{
@@ -69,10 +69,7 @@ function createFolderApi(name,folderID){
                 is_dir:true,
             })
         }
-    ).then(response => response.json())
-     .then(handleApiErrors)
-     .then(json => json )
-     .catch(error=>{throw error})
+    )
 }
 
  function uploadFile(file,folderID){
@@ -82,17 +79,14 @@ function createFolderApi(name,folderID){
 
     let formData = new FormData()
     formData.append("uploadfile",file)
-    return fetch(apiUrl,{
+    return request(apiUrl,{
         crossDomain:true,
         method: 'POST',
         headers:{
             'Authorization':`Bearer ${token}`,
         },
         body: formData
-    }).then(response => response.json())
-    .then(handleApiErrors)
-    .then(json => json )
-    .catch(error=>{throw error})
+    })
 }
 
 function downloadFile(id,filename){
@@ -115,23 +109,20 @@ function deleteFile(id){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${fileAPIUrl}/${id}`
-    return fetch(apiUrl,{
+    return request(apiUrl,{
             crossDomain:true,
             method: 'DELETE',
             headers:{
                 'Authorization':`Bearer ${token}`,
             }
-        }).then(response => response.json())
-        .then(handleApiErrors)
-        .then(json => json )
-        .catch(error=>{throw error})
+        })
 }
 
 function renameFile(id, name){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${fileAPIUrl}/${id}`
-    return fetch(apiUrl,{
+    return request(apiUrl,{
             crossDomain:true,
             method: 'PUT',
             headers:{
@@ -142,10 +133,6 @@ function renameFile(id, name){
                 file_name: name,
             })
         })
-        .then(handleResponseErrors)
-        .then(handleApiErrors)
-        .then(json => json )
-        .catch(error=>{throw error})  
 }
 
 
