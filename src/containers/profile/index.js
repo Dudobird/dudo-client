@@ -1,63 +1,95 @@
-import React from 'react'
-
+import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { connect } from 'react-redux';
+import ProfileInfo from './ProfileInfo'
+import Password from './Password'
+import Billing from './Billing'
+import styles from './style.module.css'
 
-const routes = [
-  {
-    path: "/",
-    exact: true,
-    main: () => <h2>信息页面</h2>
-  },
-  {
-    path: "/password",
-    main: () => <h2>修改密码</h2>
-  },
-  {
-    path: "/billing",
-    main: () => <h2>配额管理</h2>
+import {
+  getUserProfile
+} from './actions'
+
+import {
+  setDefaultStatus
+} from '../storage/actions'
+
+class Profile extends Component {
+  componentDidMount() {
+    this.props.getUserProfile()
   }
-];
+  getSubPages = () => {
+    const routers = [
+      {
+        path: "/",
+        exact: true,
+        main: () => <ProfileInfo />
+      },
+      {
+        path: "/password",
+        main: () => <Password />
+      },
+      {
+        path: "/billing",
+        main: () => <Billing />
+      }
+    ];
+    return routers.map((route, index) => (
+      <Route
+        key={index}
+        path={route.path}
+        exact={route.exact}
+        component={route.main}
+      />
+    ))
+  }
 
-function Profile() {
-  return (
-    <Router basename="/profile">
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            padding: "10px",
-            width: "40%",
-            background: "#f0f0f0"
-          }}
-        >
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            <li>
-              <Link to="/">用户信息</Link>
-            </li>
-            <li>
-              <Link to="/password">密码管理</Link>
-            </li>
-            <li>
-              <Link to="/billing">配额管理</Link>
-            </li>
-          </ul>
+  getSideBar = () => {
+    return (<div className="list-group">
+      <a href="/" className="list-group-item disabled">
+        我的个人页面
+    </a>
+      <Link to="/" className="list-group-item">个人信息</Link>
+      <Link to="/password" className="list-group-item">密码管理</Link>
+      <Link to="/billing" className="list-group-item">配额设置</Link>
+    </div>)
+  }
+  render() {
+    if (this.props.profile.errors && this.props.profile.errors.length > 0) {
+      NotificationManager.error(this.props.profile.errors[0].body)
+      this.props.setDefaultStatus()
+    }
+    if (this.props.profile.messages && this.props.profile.messages.length > 0) {
+      NotificationManager.success(this.props.profile.messages[0].body)
+      this.props.setDefaultStatus()
+    }
+    return (
+      <Router basename="/profile">
 
-
+        <div className={"container " + styles.profileBox}>
+          <div className="row">
+            <div className="col-md-3">
+              {this.getSideBar()}
+            </div>
+            <div className="col-md-9">
+              {this.getSubPages()}
+            </div>
+          </div>
+          <NotificationContainer />
         </div>
-
-        <div style={{ flex: 1, padding: "10px" }}>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              component={route.main}
-            />
-          ))}
-        </div>
-      </div>
-    </Router>
-  );
+      </Router>
+    );
+  }
 }
 
+const mapStateToProps = state => ({
+  profile: state.profile,
+})
 
-export default Profile;
+export default connect(
+  mapStateToProps,
+  {
+    getUserProfile,
+    setDefaultStatus,
+  })(Profile);

@@ -35,7 +35,7 @@ const initialState = {
     successful: false,
     message: [],
     error: [],
-    files:[],
+    files: [],
     uploadfiles: [],
     fileListMode: true,
     controlMode: false,
@@ -43,13 +43,13 @@ const initialState = {
 
 }
 
-const reducer = function signupReducer (state = initialState, action){
-    switch(action.type){
+const reducer = function signupReducer(state = initialState, action) {
+    switch (action.type) {
         case SHOW_VIEW_MODAL:
-        return {
-            ...state,
-            modalName: action.modal,
-        }       
+            return {
+                ...state,
+                modalName: action.modal,
+            }
         case TOGGLE_FILE_DISPLAY_STYLE:
             return {
                 ...state,
@@ -61,13 +61,13 @@ const reducer = function signupReducer (state = initialState, action){
                 controlMode: !state.controlMode
             }
         case UPDATE_PENDING_DELETE_FILE:
-            return{
+            return {
                 ...state,
                 pendingDeleteFileID: action.id,
                 pendingDeleteFileName: action.filename,
             }
         case UPDATE_PENDING_RENAME_FILE:
-            return{
+            return {
                 ...state,
                 pendingRenameFileID: action.id,
                 pendingRenameFileName: action.filename,
@@ -75,19 +75,19 @@ const reducer = function signupReducer (state = initialState, action){
         case SET_DEFAULT_STATUS:
             return {
                 ...state,
-                errors:[],
-                messages:[],
-                requesting:false,
-                successful:false,
+                errors: [],
+                messages: [],
+                requesting: false,
+                successful: false,
             }
         case LIST_FILES_SUCCESS:
             let files = []
-            if(action.response && action.response.data && Array.isArray(action.response.data)){
+            if (action.response && action.response.data && Array.isArray(action.response.data)) {
                 files = action.response.data
             }
             return {
                 ...state,
-                modalName:"",
+                modalName: "",
                 errors: [],
                 messages: [],
                 requesting: false,
@@ -100,18 +100,18 @@ const reducer = function signupReducer (state = initialState, action){
                 folderID: action.folderID,
                 requesting: true,
                 successful: false,
-                messages:[],
-                errors: [],       
+                messages: [],
+                errors: [],
             }
-        case RENAME_FILE:        
+        case RENAME_FILE:
         case UPLOAD_FILES:
         case CREATE_NEW_FOLDER:
             return {
                 ...state,
                 requesting: true,
                 successful: false,
-                messages:[],
-                errors: [],       
+                messages: [],
+                errors: [],
             }
         case RENAME_FILE_SUCCESS:
             return {
@@ -122,9 +122,9 @@ const reducer = function signupReducer (state = initialState, action){
                     time: new Date()
                 }],
                 requesting: false,
-                successful: true, 
+                successful: true,
             }
-        case DELETE_FILE_SUCCESS:{
+        case DELETE_FILE_SUCCESS: {
             return {
                 ...state,
                 errors: [],
@@ -136,10 +136,10 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: true,
             }
         }
-        case REMOVE_SUCCESS_UPLOADED_FILES:{
+        case REMOVE_SUCCESS_UPLOADED_FILES: {
             return {
                 ...state,
-                uploadfiles:state.uploadfiles.filter(f=>f.path!==action.path)
+                uploadfiles: state.uploadfiles.filter(f => f.path !== action.path)
             }
         }
         case UPLOAD_FILES_SUCCESS: {
@@ -154,7 +154,7 @@ const reducer = function signupReducer (state = initialState, action){
                 successful: true,
             }
         }
-        case CREATE_NEW_FOLDER_SUCCESS:{
+        case CREATE_NEW_FOLDER_SUCCESS: {
             return {
                 ...state,
                 errors: [],
@@ -186,20 +186,20 @@ const reducer = function signupReducer (state = initialState, action){
                 ...state,
                 deleteStatus: false,
                 folderID: action.folderID,
-                files:[],
-                messages:[],
-                errors: [],   
+                files: [],
+                messages: [],
+                errors: [],
             }
         case UPDATE_UPLOAD_LIST:
             return {
                 ...state,
                 uploadfiles: action.files,
-                messages:[],
+                messages: [],
                 errors: [],
             }
         // case 
-        default: 
-            return state 
+        default:
+            return state
     }
 }
 export default reducer;

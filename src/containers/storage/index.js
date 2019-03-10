@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { connect }from 'react-redux';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { connect } from 'react-redux';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import ModalSwitch from './ModalSwitch';
 import style from './styles.module.css';
 import {
     StorageFiles,
-    StorageFilesList} from '../../components';
+    StorageFilesList,
+} from '../../components';
 
 import {
     createFolderRequest,
@@ -31,7 +32,7 @@ class Storage extends Component {
     state = {
         newFolderName: "",
         currentFolderID: "root",
-        deleteFileName:"",
+        deleteFileName: "",
         modalName: "",
     }
     static propTypes = {
@@ -56,20 +57,20 @@ class Storage extends Component {
             modalName: PropTypes.string,
         }),
     }
-    handleInputChange=(e) =>{
+    handleInputChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         });
     }
-    submitDeleteFile=()=>{
+    submitDeleteFile = () => {
         var folderID = "root"
-        if(this.props.storage && this.props.storage.folderID!==""){
+        if (this.props.storage && this.props.storage.folderID !== "") {
             folderID = this.props.storage.folderID;
         }
         this.props.deleteFile(this.props.storage.pendingDeleteFileID, folderID)
     }
-    submitRenameFile = (newName)=>{
-        if(newName.trim() === ""){
+    submitRenameFile = (newName) => {
+        if (newName.trim() === "") {
             NotificationManager.error("重命名不能为空")
             return
         }
@@ -77,141 +78,143 @@ class Storage extends Component {
             this.props.storage.pendingRenameFileID,
             newName.trim(),
             this.props.storage.folderID,
-        ) 
+        )
     }
 
-    submitUploadFiles=()=>{
-        if(this.props.storage.uploadfiles.length===0){
+    submitUploadFiles = () => {
+        if (this.props.storage.uploadfiles.length === 0) {
             NotificationManager.error('待上传文件列表为空')
-            return 
+            return
         }
         var folderID = "root"
-        if(this.props.storage && this.props.storage.folderID!==""){
+        if (this.props.storage && this.props.storage.folderID !== "") {
             folderID = this.props.storage.folderID;
         }
-        this.props.uploadfiles(this.props.storage.uploadfiles,folderID);
+        this.props.uploadfiles(this.props.storage.uploadfiles, folderID);
     }
-    submitCreateFolder=(folderName)=>{
+    submitCreateFolder = (folderName) => {
         const name = folderName.trim()
-        if(name===""){
+        if (name === "") {
             NotificationManager.error('请输入有效的文件名')
-            return 
+            return
         }
-        if(name.length>50){
+        if (name.length > 50) {
             NotificationManager.error('输入的文件名太长')
-            return            
+            return
         }
         this.props.createFolderRequest({
             name,
             folderID: this.state.currentFolderID
         })
     }
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         let folderID = "root"
-        if (nextProps.match.params && nextProps.match.params.id){
+        if (nextProps.match.params && nextProps.match.params.id) {
             folderID = nextProps.match.params.id
         }
-        if(folderID !== this.state.currentFolderID){
+        if (folderID !== this.state.currentFolderID) {
             this.props.switchFolder(folderID)
-            this.setState({currentFolderID:folderID})
+            this.setState({ currentFolderID: folderID })
             this.props.listFiles(folderID)
         }
-        
+
     }
-    downloadFile = (id,filename)=>{
-        if(id!=="" && filename !== ""){
-            this.props.downloadFile(id,filename)
+    downloadFile = (id, filename) => {
+        if (id !== "" && filename !== "") {
+            this.props.downloadFile(id, filename)
             return
         }
         NotificationManager.error('待下载文件找不到')
     }
-    showRenameFileModal = (id, filename) =>{
-        if(id===""){
+    showRenameFileModal = (id, filename) => {
+        if (id === "") {
             NotificationManager.error('待重命名文件找不到')
             return
         }
-        this.props.updatePendingRenameFile(id,filename)
-        this.props.showViewModal("renameFileModal")        
+        this.props.updatePendingRenameFile(id, filename)
+        this.props.showViewModal("renameFileModal")
     }
-    showDeleteFileModal = (id,filename) =>{
-        if(id===""){
+    showDeleteFileModal = (id, filename) => {
+        if (id === "") {
             NotificationManager.error('待删除文件找不到')
             return
         }
-        this.props.updatePendingDeleteFile(id,filename)
+        this.props.updatePendingDeleteFile(id, filename)
         this.props.showViewModal("deleteFileModal")
     }
-    componentDidMount(){
+    componentDidMount() {
         this.props.listFiles(this.state.currentFolderID)
     }
-    renderFilesWithStyle=()=>{
+    renderFilesWithStyle = () => {
         let renderFilesContainer = null
         let renderFiles = [];
-        if(this.props.storage.files && this.props.storage.files.length>0){
+        if (this.props.storage.files && this.props.storage.files.length > 0) {
             renderFiles = this.props.storage.files
         }
-        if(this.props.storage.fileListMode===true){
-            renderFilesContainer = <StorageFilesList 
-            controlMode={this.props.storage.controlMode} 
-            files={renderFiles}
-            renameFile = {this.showRenameFileModal}
-            deleteFile = {this.showDeleteFileModal}
-            downloadFile={this.downloadFile}/>
-        }else{
-            renderFilesContainer =<StorageFiles 
-                    controlMode={this.props.storage.controlMode} 
-                    files={renderFiles}
-                    renameFile = {this.showRenameFileModal}
-                    deleteFile = {this.showDeleteFileModal}
-                    downloadFile={this.downloadFile}/>
+        if (this.props.storage.fileListMode === true) {
+            renderFilesContainer = <StorageFilesList
+                controlMode={this.props.storage.controlMode}
+                files={renderFiles}
+                renameFile={this.showRenameFileModal}
+                deleteFile={this.showDeleteFileModal}
+                downloadFile={this.downloadFile} />
+        } else {
+            renderFilesContainer = <StorageFiles
+                controlMode={this.props.storage.controlMode}
+                files={renderFiles}
+                renameFile={this.showRenameFileModal}
+                deleteFile={this.showDeleteFileModal}
+                downloadFile={this.downloadFile} />
         }
         return renderFilesContainer
     }
-    renderModal = ()=>{
-        return <ModalSwitch 
-                    modalName={this.props.storage.modalName}
-                    onNewFolderSubmit={this.submitCreateFolder}
-                    onUploadModalSubmit={this.submitUploadFiles}
-                    onDeleteModalSubmit={this.submitDeleteFile}
-                    onRenameModalSubmit={this.submitRenameFile}
-                    onClose={()=>this.props.showViewModal("")}
-                    {...this.props}
-                />
+    renderModal = () => {
+        return <ModalSwitch
+            modalName={this.props.storage.modalName}
+            onNewFolderSubmit={this.submitCreateFolder}
+            onUploadModalSubmit={this.submitUploadFiles}
+            onDeleteModalSubmit={this.submitDeleteFile}
+            onRenameModalSubmit={this.submitRenameFile}
+            onClose={() => this.props.showViewModal("")}
+            {...this.props}
+        />
     }
 
-    render(){
-        if(this.props.storage.errors && this.props.storage.errors.length>0){
+    render() {
+        if (this.props.storage.errors && this.props.storage.errors.length > 0) {
             NotificationManager.error(this.props.storage.errors[0].body)
             this.props.setDefaultStatus()
         }
-        if(this.props.storage.messages && this.props.storage.messages.length>0){
+        if (this.props.storage.messages && this.props.storage.messages.length > 0) {
             NotificationManager.success(this.props.storage.messages[0].body)
             this.props.setDefaultStatus()
         }
-
-
-        return(
-            <div className={style.container}>         
-                {this.renderFilesWithStyle()}
-                {this.renderModal()}
-                <NotificationContainer/>
-                <Popup 
-                    onToggleFileDisplayStyle = {this.props.toggleFileDisplayStyle}
-                    onToggleControlMode={this.props.toggleControlMode}
-                    onCreateFolder={()=>{this.props.showViewModal("newFolderModal")}}
-                    onUploadFiles={()=>{this.props.showViewModal("uploadFilesModal")}}
-                /> 
+        return (
+            <div className="container-fluid">
+                <div className="row">
+                    <div className={style.container}>
+                        {this.renderFilesWithStyle()}
+                        {this.renderModal()}
+                        <NotificationContainer />
+                        <Popup
+                            onToggleFileDisplayStyle={this.props.toggleFileDisplayStyle}
+                            onToggleControlMode={this.props.toggleControlMode}
+                            onCreateFolder={() => { this.props.showViewModal("newFolderModal") }}
+                            onUploadFiles={() => { this.props.showViewModal("uploadFilesModal") }}
+                        />
+                    </div>
+                </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
     storage: state.storage,
 })
 
 export default connect(
-    mapStateToProps, 
+    mapStateToProps,
     {
         createFolderRequest,
         setDefaultStatus,

@@ -1,0 +1,18 @@
+.profileBox{
+    padding-top: 20px;
+}
+.title {
+    font-size: 2em;
+}
+.titleID{
+    font-size: 16px;
+    float: right;
+    font-style: italic;
+    font-weight: 300;
+    display: inline-block;
+    margin-top: 10px;
+}
+.headerImage{
+    height: 140px;
+    width: 140px;
+}
