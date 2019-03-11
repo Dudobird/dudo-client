@@ -16,3 +16,20 @@
     height: 140px;
     width: 140px;
 }
+
+.error {
+    color: red;
+    font-weight: 400;
+    font-size: 1em;
+}
+.warning{
+    color: orange;
+    font-weight: 400;
+    font-size: 1em;
+}
+
+.infobar{
+    display: inline-block;
+    width: 80px;
+    font-weight: 500;
+}

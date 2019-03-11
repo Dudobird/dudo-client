@@ -8,12 +8,12 @@ import Billing from './Billing'
 import styles from './style.module.css'
 
 import {
-  getUserProfile
+  getUserProfile,
+  updateProfileInfo,
+  setDefaultStatus,
+  changeUserPassword,
 } from './actions'
 
-import {
-  setDefaultStatus
-} from '../storage/actions'
 
 class Profile extends Component {
   componentDidMount() {
@@ -24,15 +24,19 @@ class Profile extends Component {
       {
         path: "/",
         exact: true,
-        main: () => <ProfileInfo />
+        main: () => <ProfileInfo
+          onSubmit = {this.props.updateProfileInfo}
+          profile={this.props.profile.profile}/>
       },
       {
         path: "/password",
-        main: () => <Password />
+        main: () => <Password 
+        onSubmit = {this.props.changeUserPassword}
+        />
       },
       {
         path: "/billing",
-        main: () => <Billing />
+        main: () => <Billing profile={this.props.profile.profile}/>
       }
     ];
     return routers.map((route, index) => (
@@ -56,13 +60,14 @@ class Profile extends Component {
     </div>)
   }
   render() {
+    console.log(this.props)
     if (this.props.profile.errors && this.props.profile.errors.length > 0) {
-      NotificationManager.error(this.props.profile.errors[0].body)
-      this.props.setDefaultStatus()
+        NotificationManager.error(this.props.profile.errors[0].body)
+        this.props.setDefaultStatus()
     }
-    if (this.props.profile.messages && this.props.profile.messages.length > 0) {
-      NotificationManager.success(this.props.profile.messages[0].body)
-      this.props.setDefaultStatus()
+    if ( this.props.profile.messages && this.props.profile.messages.length > 0) {
+        NotificationManager.success(this.props.profile.messages[0].body)
+        this.props.setDefaultStatus()
     }
     return (
       <Router basename="/profile">
@@ -90,6 +95,8 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
+    updateProfileInfo,
     getUserProfile,
     setDefaultStatus,
+    changeUserPassword
   })(Profile);
