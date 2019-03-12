@@ -56,11 +56,10 @@ class Profile extends Component {
     </a>
       <Link to="/" className="list-group-item">个人信息</Link>
       <Link to="/password" className="list-group-item">密码管理</Link>
-      <Link to="/billing" className="list-group-item">配额设置</Link>
+      <Link to="/billing" className="list-group-item">配额信息</Link>
     </div>)
   }
   render() {
-    console.log(this.props)
     if (this.props.profile.errors && this.props.profile.errors.length > 0) {
         NotificationManager.error(this.props.profile.errors[0].body)
         this.props.setDefaultStatus()

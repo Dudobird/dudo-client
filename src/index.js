@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { applyMiddleware, createStore, compose } from 'redux'
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import { Router, Route } from "react-router-dom";
+import { Router, Route,Redirect } from "react-router-dom";
 import history from './containers/history';
 import 'moment/locale/zh-cn';
 import 'react-notifications/lib/notifications.css';
@@ -33,13 +33,14 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <div>
-        <Header store={store} />
-        <PrivateRoute path="/profile" store={store} component={Profile} />
-        <PrivateRoute path="/storage" exact store={store} component={Storage} />
-        <PrivateRoute path="/storage/:id" store={store} component={Storage} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <PrivateRoute path="/logout" store={store} component={Logout} />
+          <Header store={store} />
+          <Redirect from='/' to='/storage'/>
+          <PrivateRoute path="/profile" store={store} component={Profile} />
+          <PrivateRoute path="/storage" exact store={store} component={Storage} />
+          <PrivateRoute path="/storage/:id" store={store} component={Storage} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <PrivateRoute path="/logout" store={store} component={Logout} />
       </div>
     </Router>
   </Provider>,

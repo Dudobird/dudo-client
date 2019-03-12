@@ -89,7 +89,7 @@ class StorageFilesList extends Component{
         </ContextMenu>
 
         <ContextMenu id={MENU_TYPE_FOLDER}>
-          <MenuItem onClick={this.handleFileDownload}><MdFileDownload /> 点击进入</MenuItem>
+          <MenuItem onClick={this.handleFileDownload}><MdFileDownload /> 下载文件夹</MenuItem>
           <MenuItem onClick={this.handleFileRename}><MdBorderColor /> 文件夹重命名</MenuItem>
           <MenuItem onClick={this.handleFileDelete}><MdDeleteForever /> 删除文件夹</MenuItem>
         </ContextMenu>
