@@ -33,8 +33,8 @@ const initialState = {
     pendingRenameFileName: "",
     requesting: false,
     successful: false,
-    message: [],
-    error: [],
+    messages: [],
+    errors: [],
     files: [],
     uploadfiles: [],
     fileListMode: true,
@@ -63,12 +63,20 @@ const reducer = function signupReducer(state = initialState, action) {
         case UPDATE_PENDING_DELETE_FILE:
             return {
                 ...state,
+                errors: [],
+                messages: [],
+                requesting: false,
+                successful: false,
                 pendingDeleteFileID: action.id,
                 pendingDeleteFileName: action.filename,
             }
         case UPDATE_PENDING_RENAME_FILE:
             return {
                 ...state,
+                errors: [],
+                messages: [],
+                requesting: false,
+                successful: false,
                 pendingRenameFileID: action.id,
                 pendingRenameFileName: action.filename,
             }

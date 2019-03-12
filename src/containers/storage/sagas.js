@@ -2,7 +2,12 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 import {
     getToken,
     request,
+
 } from '../../lib'
+import {
+    b64EncodeUnicode
+} from '../utils'
+
 import { saveAs } from 'file-saver'
 import {
     CREATE_NEW_FOLDER,
@@ -76,7 +81,6 @@ function uploadFile(file, folderID) {
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${uploadFileAPI}/${folderID}`
-
     let formData = new FormData()
     formData.append("uploadfile", file)
     return request(apiUrl, {
@@ -84,6 +88,7 @@ function uploadFile(file, folderID) {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`,
+            'X-FilePath':b64EncodeUnicode(file.path),
         },
         body: formData
     })
