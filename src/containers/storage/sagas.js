@@ -98,6 +98,10 @@ function downloadFile(id, filename) {
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${downloadFileAPI}/${id}`
+    let isFolder = false
+    if(id.startsWith("folder")){
+        isFolder = true
+    }
     return fetch(apiUrl, {
         crossDomain: true,
         method: 'GET',
@@ -105,7 +109,7 @@ function downloadFile(id, filename) {
             'Authorization': `Bearer ${token}`,
         }
     }).then(response => response.blob())
-        .then(blob => saveAs(blob, filename))
+        .then(blob => saveAs(blob, isFolder?filename+".zip":filename))
         .catch(error => { throw error })
 }
 
@@ -165,8 +169,8 @@ function* listFolderFlow(action) {
 
 function* downloadFileFlow(action) {
     try {
-        const { id, filename } = action
-        const response = yield call(downloadFile, id, filename)
+        const { id, filename,isFolder } = action
+        const response = yield call(downloadFile, id, filename,isFolder)
         yield put({ type: DOWNLOAD_FILE_SUCCESS, response })
     } catch (error) {
         yield put({ type: DOWNLOAD_FILE_FAIL, error })
