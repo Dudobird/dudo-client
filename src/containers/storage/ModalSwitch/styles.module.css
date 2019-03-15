@@ -15,6 +15,9 @@
     text-align: center;
     min-height: 150px;
 }
+.modalContentLeft{
+    text-align: left
+}
 .modalContent > span{
     font-weight: 400;
     color: #ff4646;

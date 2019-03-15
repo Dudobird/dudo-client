@@ -11,6 +11,7 @@ class ModalSwitch extends Component {
     folderNameChanged: false,
     renameFileName: "",
     renameFileNameChanged:false,
+    shareExpire: 7,
     error:""
   }
   handleInputChange=(e) =>{
@@ -20,6 +21,16 @@ class ModalSwitch extends Component {
         error: "",
     });
   }
+
+  handleShareFileSubmit = () =>{
+    const date = parseInt(this.state.shareExpire)
+    if(typeof date !== 'number' || date <=0){
+        this.setState({error:"请输入正确的共享时间长度，默认为7天"})
+        return
+    }
+    this.props.onShareFileSubmit(date)
+  }
+
   handleRenameSubmit = ()=>{
     if(this.state.renameFileNameChanged === false){
         this.setState({error:"请修改文件名后再提交"})
@@ -101,7 +112,48 @@ class ModalSwitch extends Component {
                                 }
                                 onChange = {this.handleInputChange}/>
                             </div>
-                                           
+                                          
+                    </form>
+                    <div className={style.errorMessage}>{this.state.error}</div>
+                </div>
+            </div>
+        </Modal>   
+    )    
+  }
+
+
+  renderShareFileModal = () =>{
+    return(
+        <Modal
+            title="共享文件"
+            onSubmit={this.handleShareFileSubmit}
+            onClose={this.props.onClose}
+        >
+           <div className={style.modalContentLeft}>
+                <div className={style.modalForm}>
+                    <form>
+                        <div className="form-group">
+                            <label  className="col-sm-12"  htmlFor="expiredata">设置有效期(天)</label>
+                            <div  className="col-sm-12">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    name="shareExpire"
+                                    value = {this.state.shareExpire} 
+                                    onChange = {this.handleInputChange}/>
+                            </div>
+                            </div>   
+                            <div className="form-group hidden" id="shareLinkInfoBox">
+                                <label  className="col-sm-12"  htmlFor="linkinfo">链接信息</label>
+                                <div className="col-sm-12">
+                                <textarea 
+                                    readOnly
+                                    rows="3"
+                                    id="shareLinkInfo"
+                                    type="textarea" 
+                                    className="form-control" 
+                                    name="shareExpire"></textarea></div>
+                            </div>
                     </form>
                     <div className={style.errorMessage}>{this.state.error}</div>
                 </div>
@@ -119,6 +171,8 @@ class ModalSwitch extends Component {
                 return this.renderDeleteFileModal()
             case "renameFileModal":
                 return this.renderRenameFileModal()
+            case "shareFileModal":
+                return this.renderShareFileModal()
             default :
                 return null;
             }

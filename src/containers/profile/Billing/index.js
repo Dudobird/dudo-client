@@ -8,7 +8,7 @@ function Billing(props) {
   let usageReadable = "0 B"
   let diskLimitReadable ="0 B"
   if(typeof usage_disk_size === 'number' && typeof disk_limit ==='number'){
-    usage = usage_disk_size/disk_limit * 100 + ""
+    usage = ((usage_disk_size/disk_limit) * 100).toFixed(2) + ""
     // usageStyle = {"width":""+usage+"%"}
     usageReadable = humanFileSize(usage_disk_size,false)
     diskLimitReadable = humanFileSize(disk_limit,false)

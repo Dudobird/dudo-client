@@ -14,6 +14,7 @@ import {
     UPLOAD_FILES,
     UPDATE_PENDING_DELETE_FILE,
     UPDATE_PENDING_RENAME_FILE,
+    UPDATE_PENDING_SHARE_FILE,
     DELETE_FILE_SUCCESS,
     DELETE_FILE_FAIL,
     TOGGLE_FILE_DISPLAY_STYLE,
@@ -23,12 +24,16 @@ import {
     RENAME_FILE,
     RENAME_FILE_FAIL,
     REMOVE_SUCCESS_UPLOADED_FILES,
+    SHARE_FILE,
+    SHARE_FILE_FAIL,
+    SHARE_FILE_SUCCESS,
 } from './constants'
-
+import {b64EncodeUnicode} from '../utils'
 const initialState = {
     folderID: "root",
     pendingDeleteFileID: "",
     pendingDeleteFileName: "",
+    pendingShareFileID:"",
     pendingRenameFileID: "",
     pendingRenameFileName: "",
     requesting: false,
@@ -42,6 +47,7 @@ const initialState = {
     modalName: "",
 
 }
+const sharePublicAPIUrl = `${process.env.REACT_APP_DUDO_API}/shares`
 
 const reducer = function signupReducer(state = initialState, action) {
     switch (action.type) {
@@ -70,6 +76,15 @@ const reducer = function signupReducer(state = initialState, action) {
                 pendingDeleteFileID: action.id,
                 pendingDeleteFileName: action.filename,
             }
+        case UPDATE_PENDING_SHARE_FILE:
+            return {
+                ...state,
+                errors: [],
+                messages: [],
+                requesting: false,
+                successful: false,
+                pendingShareFileID: action.id,
+            }            
         case UPDATE_PENDING_RENAME_FILE:
             return {
                 ...state,
@@ -111,6 +126,7 @@ const reducer = function signupReducer(state = initialState, action) {
                 messages: [],
                 errors: [],
             }
+        case SHARE_FILE:
         case RENAME_FILE:
         case UPLOAD_FILES:
         case CREATE_NEW_FOLDER:
@@ -138,6 +154,23 @@ const reducer = function signupReducer(state = initialState, action) {
                 errors: [],
                 messages: [{
                     body: "删除文件成功",
+                    time: new Date()
+                }],
+                requesting: false,
+                successful: true,
+            }
+        }
+        case SHARE_FILE_SUCCESS: {
+            const token =  action.response && 
+                           action.response.data && 
+                           action.response.data.token; 
+            window.$('#shareLinkInfoBox').removeClass('hidden')
+            window.$('#shareLinkInfo').val(`${sharePublicAPIUrl}?token=${b64EncodeUnicode(token)}`)
+            return {
+                ...state,
+                errors: [],
+                messages: [{
+                    body: "创建共享文件成功",
                     time: new Date()
                 }],
                 requesting: false,
@@ -174,6 +207,7 @@ const reducer = function signupReducer(state = initialState, action) {
                 successful: true,
             }
         }
+        case SHARE_FILE_FAIL:
         case RENAME_FILE_FAIL:
         case DELETE_FILE_FAIL:
         case UPLOAD_FILES_FAIL:

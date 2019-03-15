@@ -29,8 +29,12 @@ import {
     REMOVE_SUCCESS_UPLOADED_FILES,
     RENAME_FILE,
     RENAME_FILE_SUCCESS,
-    RENAME_FILE_FAIL
+    RENAME_FILE_FAIL,
+    SHARE_FILE,
+    SHARE_FILE_SUCCESS,
+    SHARE_FILE_FAIL
 } from './constants';
+
 
 
 
@@ -39,6 +43,8 @@ const folderApiUrl = `${process.env.REACT_APP_DUDO_API}/api/folders`
 const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/files`
 const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/files`
 const fileAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/files`
+const shareAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/shares`
+
 
 function listFolderFiles(folderID) {
     if (folderID === "") {
@@ -144,6 +150,22 @@ function renameFile(id, name) {
     })
 }
 
+function shareFile(id,days){
+    const tokenRaw = localStorage.getItem("token");
+    const token = getToken(tokenRaw);
+    const apiUrl = `${shareAPIUrl}`
+    return request(apiUrl, {
+        crossDomain: true,
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            file_id: id,
+            expire_days: days,
+        })
+    })    
+}
 
 function* createFolderFlow(action) {
     try {
@@ -216,6 +238,17 @@ function* renameFileFlow(action) {
     }
 }
 
+function* shareFileFlow(action) {
+    try {
+        const { id,days } = action
+        const response = yield call(shareFile, id,days)
+        yield put({ type: SHARE_FILE_SUCCESS, response })
+    } catch (error) {
+        yield put({ type: SHARE_FILE_FAIL, error })
+    }
+}
+
+
 function* storageWatcher() {
     yield takeLatest(CREATE_NEW_FOLDER, createFolderFlow)
     yield takeLatest(UPDATE_STORAGE_FILES, listFolderFlow)
@@ -224,6 +257,7 @@ function* storageWatcher() {
     yield takeLatest(UPLOAD_FILES, uploadFilesFlow)
     yield takeLatest(DELETE_FILE, deleteFileFlow)
     yield takeLatest(RENAME_FILE, renameFileFlow)
+    yield takeLatest(SHARE_FILE, shareFileFlow)
 }
 
 export default storageWatcher;

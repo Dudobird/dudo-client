@@ -12,6 +12,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.hidden{
+  display: none;
+}
+.show{
+  display: normal;
+}
+
 .react-contextmenu {
   background-color: #ffffff;
   background-clip: padding-box;

@@ -10,13 +10,14 @@ const MENU_TYPE_FILE = 'STORAGE_LIST_FILE';
 const MENU_TYPE_FOLDER = 'STORAGE_LIST_FOLDER'
 
 class StorageFilesList extends Component{
-  handleFileShare =(e,data,target)=>{
-    console.log("share file")
-  }
   handleFileDownload=(e,data,target)=>{
     const id = target.getAttribute("id")
     const fileName = target.getAttribute("name")
     this.props.downloadFile(id,fileName)    
+  }
+  handleFileShare=(e,data,target)=>{
+    const id = target.getAttribute("id")
+    this.props.shareFile(id)    
   }
   handleFileRename = (e,data,target) =>{
     const id = target.getAttribute("id")
@@ -70,6 +71,7 @@ class StorageFilesList extends Component{
                     controlMode={this.props.controlMode}
                     onClickFile={this.props.downloadFile} 
                     onDeleteFile={this.props.deleteFile}
+                    onShareFile ={this.props.shareFile}
                 />
               </ContextMenuTrigger>
             </div>
@@ -103,6 +105,7 @@ StorageFilesList.propTypes = {
     files: PropTypes.array.isRequired,
     downloadFile: PropTypes.func.isRequired,
     deleteFile: PropTypes.func.isRequired,
+    shareFile: PropTypes.func.isRequired,
 };
 
 export default StorageFilesList

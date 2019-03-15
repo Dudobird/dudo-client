@@ -17,12 +17,14 @@ import {
     updateUploadFiles,
     uploadfiles,
     downloadFile,
+    shareFile,
     changeDeleteStatus,
     toggleControlMode,
     deleteFile,
     renameFile,
     updatePendingDeleteFile,
     updatePendingRenameFile,
+    updatePendingShareFileID,
     toggleFileDisplayStyle,
     showViewModal,
 } from './actions';
@@ -80,7 +82,12 @@ class Storage extends Component {
             this.props.storage.folderID,
         )
     }
-
+    submitShareFile = (days) =>{
+        this.props.shareFile(
+            this.props.storage.pendingShareFileID,
+            days,
+        )
+    }
     submitUploadFiles = () => {
         if (this.props.storage.uploadfiles.length === 0) {
             NotificationManager.error('待上传文件列表为空')
@@ -134,6 +141,14 @@ class Storage extends Component {
         this.props.updatePendingRenameFile(id, filename)
         this.props.showViewModal("renameFileModal")
     }
+    showShareFileModal = (id) => {
+        if (id === "") {
+            NotificationManager.error('待重命名文件找不到')
+            return
+        }
+        this.props.updatePendingShareFileID(id)
+        this.props.showViewModal("shareFileModal")
+    }
     showDeleteFileModal = (id, filename) => {
         if (id === "") {
             NotificationManager.error('待删除文件找不到')
@@ -157,12 +172,15 @@ class Storage extends Component {
                 files={renderFiles}
                 renameFile={this.showRenameFileModal}
                 deleteFile={this.showDeleteFileModal}
+                shareFile = {this.showShareFileModal}
                 downloadFile={this.downloadFile} />
+                
         } else {
             renderFilesContainer = <StorageFiles
                 controlMode={this.props.storage.controlMode}
                 files={renderFiles}
                 renameFile={this.showRenameFileModal}
+                shareFile = {this.showShareFileModal}
                 deleteFile={this.showDeleteFileModal}
                 downloadFile={this.downloadFile} />
         }
@@ -175,6 +193,7 @@ class Storage extends Component {
             onUploadModalSubmit={this.submitUploadFiles}
             onDeleteModalSubmit={this.submitDeleteFile}
             onRenameModalSubmit={this.submitRenameFile}
+            onShareFileSubmit = {this.submitShareFile}
             onClose={() => this.props.showViewModal("")}
             {...this.props}
         />
@@ -227,8 +246,10 @@ export default connect(
         toggleControlMode,
         deleteFile,
         renameFile,
+        shareFile,
         updatePendingDeleteFile,
         updatePendingRenameFile,
+        updatePendingShareFileID,
         toggleFileDisplayStyle,
         showViewModal
     })(Storage);
