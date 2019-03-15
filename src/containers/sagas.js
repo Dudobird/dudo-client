@@ -4,6 +4,7 @@ import LoginSaga from './login/sagas';
 import StorageSaga from './storage/sagas';
 import LogoutSaga from './logout/sagas';
 import ProfileSaga from './profile/sagas';
+import ShareSaga from './share/sagas';
 export default function* IndexSaga() {
   yield all([
     SignupSaga(),
@@ -11,5 +12,6 @@ export default function* IndexSaga() {
     LogoutSaga(),
     StorageSaga(),
     ProfileSaga(),
+    ShareSaga()
   ])
 }

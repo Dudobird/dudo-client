@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import { applyMiddleware, createStore, compose } from 'redux'
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import { Router, Route,Redirect } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import history from './containers/history';
 import 'moment/locale/zh-cn';
 import 'react-notifications/lib/notifications.css';
 import './index.css';
 
-import { Login, Signup, Storage, Logout, Profile } from './containers';
+import { Login, Signup, Storage, Logout, Profile,Share } from './containers';
 import { Header } from './components';
 import IndexReducer from './containers/reducers';
 import IndexSagas from './containers/sagas';
@@ -34,7 +34,7 @@ ReactDOM.render(
     <Router history={history}>
       <div>
           <Header store={store} />
-          <Redirect from='/' to='/storage'/>
+          <PrivateRoute path="/share" store={store} component={Share} />
           <PrivateRoute path="/profile" store={store} component={Profile} />
           <PrivateRoute path="/storage" exact store={store} component={Storage} />
           <PrivateRoute path="/storage/:id" store={store} component={Storage} />

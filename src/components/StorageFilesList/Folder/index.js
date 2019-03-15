@@ -8,23 +8,28 @@ import { Link } from 'react-router-dom'
 
 const Folder = (props) =>{
     const goToFolder = `/storage/${props.data.id}`;
+    const disable = typeof props.disable != 'boolean'?false:true;
+
+    const renderFolder = (  <div className={style.container}>
+        <div className={style.image}>
+            <MdFolder size={'3em'}/>
+        </div>
+        <div className={style.info}>
+                <span className={style.title}>
+                    {props.data.file_name}
+                </span>
+                <div className={style.smallInfo}>
+                    创建于:{moment(props.data.CreatedAt).fromNow()}
+                </div>
+        </div> 
+    </div>)
+
+    if(disable===true){
+        return renderFolder
+    }
     return(
         <Link to={goToFolder}>
-            <div className={style.container}>
-            
-                <div className={style.image}>
-                    <MdFolder size={'3em'}/>
-                </div>
-                <div className={style.info}>
-                        <span className={style.title}>
-                            {props.data.file_name}
-                        </span>
-                        <div className={style.smallInfo}>
-                            创建于:{moment(props.data.CreatedAt).fromNow()}
-                        </div>
-                </div>
-                
-            </div>
+          {renderFolder}
         </Link>
     )
 }

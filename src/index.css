@@ -96,8 +96,6 @@ padding: 0;
   right: 7px;
 }
 
-
-
 .right{
   float:right;
 }
@@ -110,4 +108,17 @@ code {
 }
 
 
+.rt-tr-group{
+  text-align: center;
+}
 
+.rt-tr-group > .rt-tr > .rt-td:first-child{
+  text-align: left!important;
+}
+.ReactTable .rt-thead .rt-tr{
+  padding: 5px 0;
+}
+
+.ReactTable .rt-thead.-header{
+  box-shadow:0 1px 1px 0 rgba(0, 0, 0, 0.08); 
+}

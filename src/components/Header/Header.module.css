@@ -44,4 +44,12 @@
 }
 .Header > ul > li:hover{
   background-color: darkorange;
+  border-bottom: 3px solid #fff;
+}
+
+.headeritem{
+  display: inline-block;
+  position: relative;
+  top: -2px;
+  padding-left: 5px;
 }

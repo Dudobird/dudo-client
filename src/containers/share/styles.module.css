@@ -1,0 +1,19 @@
+.shareBox{
+    padding:30px;
+}
+.btn{
+    display: inline-block;
+    height: 30px;
+    width: 50px;
+    font-size: 1.2em;
+    border-radius: 30px;
+    padding-top: 5px;
+    margin-top: 3px;
+    color: #ff0000a1;
+    border-color: transparent;
+    background-color: transparent;
+}
+.btn:focus{
+    outline: none;
+    border: 1px solid white;
+}
