@@ -23,7 +23,7 @@ const File = (props) =>{
                 </div>
         </div>
         <div className={style.filler}></div>
-        <div className={classnames({"hidden":props.hiddenBtn})}>
+        <div className={classnames({"hidden":props.hiddenBtn,[style["btn-group"]]:true})}>
             <button className="btn" onClick={()=>props.onRenameFile(props.data.id,props.data.file_name)}><MdModeEdit/></button>
             <button className="btn" onClick={()=>props.onClickFile(props.data.id, props.data.file_name)}><MdCloudDownload/></button>
             <button className="btn" onClick={()=>props.onShareFile(props.data.id)}><MdShare/></button>

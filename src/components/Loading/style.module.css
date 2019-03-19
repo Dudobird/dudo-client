@@ -3,3 +3,8 @@
     color: #a0a0a0;
     margin-top: 1em;
 }
+
+.loading {
+    position: absolute;
+    left: 50%;
+}
