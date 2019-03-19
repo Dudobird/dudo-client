@@ -20,7 +20,7 @@ class Share extends Component {
     const file = props.value;
     if (file.is_dir === false){
         return <File data={file}
-                    controlMode={false}
+                    hiddenBtn= {true}
                     onClickFile={()=>{}} 
                     onDeleteFile={()=>{}}
                     onShareFile ={()=>{}}/>

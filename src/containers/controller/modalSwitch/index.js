@@ -1,7 +1,8 @@
 import React ,{Component}from 'react'
 import {
     Modal,
-    Dropbox} from '../../../components';
+    Dropbox
+} from '../../../components';
 
 import style from './styles.module.css';
 
@@ -12,7 +13,8 @@ class ModalSwitch extends Component {
     renameFileName: "",
     renameFileNameChanged:false,
     shareExpire: 7,
-    error:""
+    shareDescription: "",
+    error:"",
   }
   handleInputChange=(e) =>{
     this.setState({
@@ -28,7 +30,7 @@ class ModalSwitch extends Component {
         this.setState({error:"请输入正确的共享时间长度，默认为7天"})
         return
     }
-    this.props.onShareFileSubmit(date)
+    this.props.onShareFileSubmit(date,this.state.shareDescription)
   }
 
   handleRenameSubmit = ()=>{
@@ -140,6 +142,15 @@ class ModalSwitch extends Component {
                                     className="form-control" 
                                     name="shareExpire"
                                     value = {this.state.shareExpire} 
+                                    onChange = {this.handleInputChange}/>
+                            </div>
+                            <label  className="col-sm-12"  htmlFor="expiredata">备注信息</label>
+                            <div  className="col-sm-12">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    name="shareDescription"
+                                    value = {this.state.shareDescription} 
                                     onChange = {this.handleInputChange}/>
                             </div>
                             </div>   

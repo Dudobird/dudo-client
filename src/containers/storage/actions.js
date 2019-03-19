@@ -12,22 +12,14 @@ import {
     UPDATE_PENDING_RENAME_FILE,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
-    SHOW_VIEW_MODAL,
     RENAME_FILE,
     SHARE_FILE,
     UPDATE_PENDING_SHARE_FILE,
 } from './constants';
+
 const toggleFileDisplayStyle = function toggleFileDisplayStyle(){
     return {
         type: TOGGLE_FILE_DISPLAY_STYLE,
-    }
-} 
-
-
-const showViewModal = function showViewModal(modalName){
-    return {
-        type: SHOW_VIEW_MODAL,
-        modal: modalName,
     }
 } 
 
@@ -60,11 +52,12 @@ const downloadFile = function downloadFile(id,filename){
 }
 
 
-const shareFile = function shareFile(id,days){
+const shareFile = function shareFile(id,days,description){
     return {
         type: SHARE_FILE,
         id,
-        days
+        days,
+        description,
     }
 }
 const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
@@ -166,5 +159,4 @@ export {
     toggleControlMode,
     renameFile,
     shareFile,
-    showViewModal,
 }

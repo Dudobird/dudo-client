@@ -1,34 +1,11 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types';
-import {MdDeleteForever,MdBorderColor,MdShare,MdFileDownload} from 'react-icons/md'
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Folder from './Folder'
 import File from './File'
 
 import styles from './style.module.css';
-const MENU_TYPE_FILE = 'STORAGE_LIST_FILE';
-const MENU_TYPE_FOLDER = 'STORAGE_LIST_FOLDER'
 
 class StorageFilesList extends Component{
-  handleFileDownload=(e,data,target)=>{
-    const id = target.getAttribute("id")
-    const fileName = target.getAttribute("name")
-    this.props.downloadFile(id,fileName)    
-  }
-  handleFileShare=(e,data,target)=>{
-    const id = target.getAttribute("id")
-    this.props.shareFile(id)    
-  }
-  handleFileRename = (e,data,target) =>{
-    const id = target.getAttribute("id")
-    const fileName = target.getAttribute("name")
-    this.props.renameFile(id,fileName)
-  }
-  handleFileDelete = (e,data,target) =>{
-    const id = target.getAttribute("id")
-    const fileName = target.getAttribute("name")
-    this.props.deleteFile(id,fileName)
-  }
   renderFolders = ()=>{
     const folders = this.props.files.filter(f=>{
       return f.is_dir === true
@@ -36,15 +13,12 @@ class StorageFilesList extends Component{
     return folders.map(f=>(
             <div  key={f.id}  
                   className={styles.storageItem}>
-                  <ContextMenuTrigger 
-                      id={MENU_TYPE_FOLDER} 
-                      attributes={{id:f["id"],name:f["file_name"]}} 
-                      holdToDisplay={1000}
-                      collect={(props)=>{
-                        return { name: props.name }}
-                      }>
-                      <Folder data={f}/>
-                  </ContextMenuTrigger>
+              <Folder data={f}
+                      hiddenBtn = {false}
+                      onClickFile={this.props.downloadFile} 
+                      onDeleteFile={this.props.deleteFile}
+                      onRenameFile = {this.props.renameFile}
+                      onShareFile ={this.props.shareFile}/>
             </div>
           )
     )
@@ -56,24 +30,16 @@ class StorageFilesList extends Component{
    return  files.map(f=>(
             <div key={f.id} 
               className={
-              // classNames(
                 styles.storageItem
-                // {[styles.deleteItemAnimation]:props.deleteStatus})
-            }><ContextMenuTrigger 
-                id={MENU_TYPE_FILE} 
-                attributes={{id:f["id"],name:f["file_name"]}} 
-                holdToDisplay={1000}
-                collect={(props)=>{
-                  return { name: props.name }}
-                }>
+            }>
                 <File 
+                    hiddenBtn = {false}
                     data={f} 
-                    controlMode={this.props.controlMode}
                     onClickFile={this.props.downloadFile} 
                     onDeleteFile={this.props.deleteFile}
                     onShareFile ={this.props.shareFile}
+                    onRenameFile = {this.props.renameFile}
                 />
-              </ContextMenuTrigger>
             </div>
       )
   )
@@ -83,18 +49,6 @@ class StorageFilesList extends Component{
       <div className={styles.storageBox}>
         {this.renderFolders()}
         {this.renderFiles()}
-        <ContextMenu id={MENU_TYPE_FILE}>
-          <MenuItem onClick={this.handleFileDownload}><MdFileDownload /> 下载文件</MenuItem>
-          <MenuItem onClick={this.handleFileShare}><MdShare /> 共享文件</MenuItem>
-          <MenuItem onClick={this.handleFileRename}><MdBorderColor /> 文件重命名</MenuItem>
-          <MenuItem onClick={this.handleFileDelete}><MdDeleteForever /> 删除文件</MenuItem>
-        </ContextMenu>
-
-        <ContextMenu id={MENU_TYPE_FOLDER}>
-          <MenuItem onClick={this.handleFileDownload}><MdFileDownload /> 下载文件夹</MenuItem>
-          <MenuItem onClick={this.handleFileRename}><MdBorderColor /> 文件夹重命名</MenuItem>
-          <MenuItem onClick={this.handleFileDelete}><MdDeleteForever /> 删除文件夹</MenuItem>
-        </ContextMenu>
       </div>
     )
   }
@@ -106,6 +60,7 @@ StorageFilesList.propTypes = {
     downloadFile: PropTypes.func.isRequired,
     deleteFile: PropTypes.func.isRequired,
     shareFile: PropTypes.func.isRequired,
+    renameFile: PropTypes.func.isRequired,
 };
 
 export default StorageFilesList

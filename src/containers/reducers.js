@@ -5,6 +5,7 @@ import login from './login/reducer';
 import storage from './storage/reducer';
 import profile from './profile/reducer';
 import shares from './share/reducer';
+import controller from './controller/reducer'
 import { reducer as form } from 'redux-form';
 
 const IndexReducer = combineReducers({
@@ -15,6 +16,7 @@ const IndexReducer = combineReducers({
     storage,
     profile,
     shares,
+    controller,
 });
 
 

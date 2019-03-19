@@ -35,6 +35,7 @@ import {
     SHARE_FILE_FAIL
 } from './constants';
 
+import { SHOW_VIEW_MODAL } from '../controller/constants'
 
 
 
@@ -150,7 +151,7 @@ function renameFile(id, name) {
     })
 }
 
-function shareFile(id,days){
+function shareFile(id,days,description){
     const tokenRaw = localStorage.getItem("token");
     const token = getToken(tokenRaw);
     const apiUrl = `${shareAPIUrl}`
@@ -163,6 +164,7 @@ function shareFile(id,days){
         body: JSON.stringify({
             file_id: id,
             expire_days: days,
+            description,
         })
     })    
 }
@@ -172,6 +174,7 @@ function* createFolderFlow(action) {
         const { name, folderID } = action
         const response = yield call(createFolderApi, name, folderID)
         yield put({ type: CREATE_NEW_FOLDER_SUCCESS, response })
+        yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: UPDATE_STORAGE_FILES, folderID })
     } catch (error) {
         yield put({ type: CREATE_NEW_FOLDER_FAIL, error })
@@ -221,6 +224,7 @@ function* deleteFileFlow(action) {
         const { id, folderID } = action
         const response = yield call(deleteFile, id)
         yield put({ type: DELETE_FILE_SUCCESS, response })
+        yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
     } catch (error) {
         yield put({ type: DELETE_FILE_FAIL, error })
@@ -232,6 +236,7 @@ function* renameFileFlow(action) {
         const { id, name, folderID } = action
         const response = yield call(renameFile, id, name)
         yield put({ type: RENAME_FILE_SUCCESS, response })
+        yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
     } catch (error) {
         yield put({ type: RENAME_FILE_FAIL, error })
@@ -240,8 +245,8 @@ function* renameFileFlow(action) {
 
 function* shareFileFlow(action) {
     try {
-        const { id,days } = action
-        const response = yield call(shareFile, id,days)
+        const { id,days,description } = action
+        const response = yield call(shareFile, id,days,description)
         yield put({ type: SHARE_FILE_SUCCESS, response })
     } catch (error) {
         yield put({ type: SHARE_FILE_FAIL, error })

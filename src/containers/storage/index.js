@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import ModalSwitch from './ModalSwitch';
+import ModalSwitch from '../controller/modalSwitch';
 import style from './styles.module.css';
 import {
     StorageFiles,
@@ -26,8 +26,11 @@ import {
     updatePendingRenameFile,
     updatePendingShareFileID,
     toggleFileDisplayStyle,
-    showViewModal,
 } from './actions';
+
+import {
+    showViewModal
+} from '../controller/actions'
 
 import Popup from './Popup';
 class Storage extends Component {
@@ -40,6 +43,9 @@ class Storage extends Component {
     static propTypes = {
         createFolderRequest: PropTypes.func,
         setDefaultStatus: PropTypes.func,
+        controller: PropTypes.shape({
+            modalName: PropTypes.string,
+        }),
         storage: PropTypes.shape({
             pendingDeleteFileID: PropTypes.string,
             pendingDeleteFileName: PropTypes.string,
@@ -50,13 +56,9 @@ class Storage extends Component {
             successful: PropTypes.bool,
             messages: PropTypes.array,
             errors: PropTypes.array,
-
             uploadfiles: PropTypes.array,
-
             fileListMode: PropTypes.bool,
             controlMode: PropTypes.bool,
-            // for modal display , empty means hide all modal
-            modalName: PropTypes.string,
         }),
     }
     handleInputChange = (e) => {
@@ -82,10 +84,11 @@ class Storage extends Component {
             this.props.storage.folderID,
         )
     }
-    submitShareFile = (days) =>{
+    submitShareFile = (days,descriptions) =>{
         this.props.shareFile(
             this.props.storage.pendingShareFileID,
             days,
+            descriptions,
         )
     }
     submitUploadFiles = () => {
@@ -188,7 +191,7 @@ class Storage extends Component {
     }
     renderModal = () => {
         return <ModalSwitch
-            modalName={this.props.storage.modalName}
+            modalName={this.props.controller.modalName}
             onNewFolderSubmit={this.submitCreateFolder}
             onUploadModalSubmit={this.submitUploadFiles}
             onDeleteModalSubmit={this.submitDeleteFile}
@@ -230,6 +233,7 @@ class Storage extends Component {
 
 const mapStateToProps = state => ({
     storage: state.storage,
+    controller: state.controller,
 })
 
 export default connect(

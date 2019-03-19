@@ -1,0 +1,1 @@
+export const SHOW_VIEW_MODAL = 'SHOW_VIEW_MODAL'

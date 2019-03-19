@@ -19,7 +19,6 @@ import {
     DELETE_FILE_FAIL,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
-    SHOW_VIEW_MODAL,
     RENAME_FILE_SUCCESS,
     RENAME_FILE,
     RENAME_FILE_FAIL,
@@ -44,18 +43,11 @@ const initialState = {
     uploadfiles: [],
     fileListMode: true,
     controlMode: false,
-    modalName: "",
-
 }
 const sharePublicAPIUrl = `${process.env.REACT_APP_DUDO_API}/shares`
 
 const reducer = function signupReducer(state = initialState, action) {
     switch (action.type) {
-        case SHOW_VIEW_MODAL:
-            return {
-                ...state,
-                modalName: action.modal,
-            }
         case TOGGLE_FILE_DISPLAY_STYLE:
             return {
                 ...state,

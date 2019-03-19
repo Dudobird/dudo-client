@@ -9,15 +9,23 @@
     cursor: pointer;
     flex-direction: row;
 }
+.container > a{
+    display: inherit;
+}
 .image{
     height: 40px;
     color: #769ee4;
+    position: relative;
+    top: -10px;
+
 }
 .info{
     padding-left: 10px;
     cursor: pointer;
 }
-
+.filler{
+    flex-grow: 1;
+}
 .smallInfo{
     font-size: .7em;
     font-weight: 200;
