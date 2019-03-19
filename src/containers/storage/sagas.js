@@ -11,32 +11,18 @@ import {
 import { saveAs } from 'file-saver'
 import {
     CREATE_NEW_FOLDER,
-    CREATE_NEW_FOLDER_SUCCESS,
-    CREATE_NEW_FOLDER_FAIL,
     LIST_FILES,
     LIST_FILES_SUCCESS,
-    LIST_FILES_FAIL,
     UPDATE_STORAGE_FILES,
-    UPLOAD_FILES_SUCCESS,
-    UPLOAD_FILES_FAIL,
     UPLOAD_FILES,
     DOWNLOAD_FILE,
-    DOWNLOAD_FILE_SUCCESS,
-    DOWNLOAD_FILE_FAIL,
     DELETE_FILE,
-    DELETE_FILE_SUCCESS,
-    DELETE_FILE_FAIL,
     REMOVE_SUCCESS_UPLOADED_FILES,
     RENAME_FILE,
-    RENAME_FILE_SUCCESS,
-    RENAME_FILE_FAIL,
     SHARE_FILE,
-    SHARE_FILE_SUCCESS,
-    SHARE_FILE_FAIL
 } from './constants';
 
-import { SHOW_VIEW_MODAL } from '../controller/constants'
-
+import { SHOW_VIEW_MODAL, FETCHING_SUCCESS, FETCHING_FAIL, FETCHING_START } from '../controller/constants'
 
 
 
@@ -45,7 +31,7 @@ const uploadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/upload/files`
 const downloadFileAPI = `${process.env.REACT_APP_DUDO_API}/api/download/files`
 const fileAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/files`
 const shareAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/shares`
-
+const sharePublicAPIUrl = `${process.env.REACT_APP_DUDO_API}/shares`
 
 function listFolderFiles(folderID) {
     if (folderID === "") {
@@ -172,33 +158,35 @@ function shareFile(id,days,description){
 function* createFolderFlow(action) {
     try {
         const { name, folderID } = action
-        const response = yield call(createFolderApi, name, folderID)
-        yield put({ type: CREATE_NEW_FOLDER_SUCCESS, response })
+        yield call(createFolderApi, name, folderID)
+        yield put({type: FETCHING_SUCCESS, message:"创建文件夹成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: UPDATE_STORAGE_FILES, folderID })
     } catch (error) {
-        yield put({ type: CREATE_NEW_FOLDER_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 
 function* listFolderFlow(action) {
     try {
         const { folderID } = action
+        yield put({type: FETCHING_START})
         const response = yield call(listFolderFiles, folderID)
         yield put({ type: LIST_FILES_SUCCESS, response })
-
+        yield put({type: FETCHING_SUCCESS})
     } catch (error) {
-        yield put({ type: LIST_FILES_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 
 function* downloadFileFlow(action) {
     try {
         const { id, filename,isFolder } = action
-        const response = yield call(downloadFile, id, filename,isFolder)
-        yield put({ type: DOWNLOAD_FILE_SUCCESS, response })
+        yield put({type: FETCHING_START})
+        yield call(downloadFile, id, filename,isFolder)
+        yield put({type: FETCHING_SUCCESS, message:"下载文件成功"})
     } catch (error) {
-        yield put({ type: DOWNLOAD_FILE_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 
@@ -206,14 +194,15 @@ function* downloadFileFlow(action) {
 function* uploadFilesFlow(action) {
     try {
         const { files, folderID } = action
+        yield put({type: FETCHING_START})
         for (let f of files) {
             yield call(uploadFile, f, folderID)
             yield put({ type: REMOVE_SUCCESS_UPLOADED_FILES, path: f.path })
         }
-        yield put({ type: UPLOAD_FILES_SUCCESS, response: "upload success" })
+        yield put({type: FETCHING_SUCCESS, message:"上传文件成功"})
         yield put({ type: LIST_FILES, folderID })
     } catch (error) {
-        yield put({ type: UPLOAD_FILES_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 
@@ -222,34 +211,41 @@ function* uploadFilesFlow(action) {
 function* deleteFileFlow(action) {
     try {
         const { id, folderID } = action
-        const response = yield call(deleteFile, id)
-        yield put({ type: DELETE_FILE_SUCCESS, response })
+        yield put({type: FETCHING_START})
+        yield call(deleteFile, id)
+        yield put({type: FETCHING_SUCCESS, message:"删除文件成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
     } catch (error) {
-        yield put({ type: DELETE_FILE_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 
 function* renameFileFlow(action) {
     try {
         const { id, name, folderID } = action
-        const response = yield call(renameFile, id, name)
-        yield put({ type: RENAME_FILE_SUCCESS, response })
+        yield put({type: FETCHING_START})
+        yield call(renameFile, id, name)
+        yield put({type: FETCHING_SUCCESS, message:"文件重命名成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
     } catch (error) {
-        yield put({ type: RENAME_FILE_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
+
 
 function* shareFileFlow(action) {
     try {
         const { id,days,description } = action
+        yield put({type: FETCHING_START})
         const response = yield call(shareFile, id,days,description)
-        yield put({ type: SHARE_FILE_SUCCESS, response })
+        yield put({type: FETCHING_SUCCESS, message:"生成共享文件成功"})
+        const token =  response && response.data && response.data.token; 
+        window.$('#shareLinkInfoBox').removeClass('hidden')
+        window.$('#shareLinkInfo').val(`${sharePublicAPIUrl}?token=${b64EncodeUnicode(token)}`)
     } catch (error) {
-        yield put({ type: SHARE_FILE_FAIL, error })
+        yield put({type: FETCHING_FAIL, error})
     }
 }
 

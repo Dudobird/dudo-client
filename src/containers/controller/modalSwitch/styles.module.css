@@ -18,8 +18,8 @@
 .modalContentLeft{
     text-align: left
 }
-.modalContent > span{
+.modalContent > div{
     font-weight: 400;
     color: #ff4646;
-    font-size: 1.4em;
+    font-size: 1.2em;
 }

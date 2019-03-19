@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import ModalSwitch from '../controller/modalSwitch';
+import { NotificationManager } from 'react-notifications';
 import style from './styles.module.css';
 import {
     StorageFiles,
@@ -29,7 +29,7 @@ import {
 } from './actions';
 
 import {
-    showViewModal
+    showViewModal,
 } from '../controller/actions'
 
 import Popup from './Popup';
@@ -203,21 +203,12 @@ class Storage extends Component {
     }
 
     render() {
-        if (this.props.storage.errors && this.props.storage.errors.length > 0) {
-            NotificationManager.error(this.props.storage.errors[0].body)
-            this.props.setDefaultStatus()
-        }
-        if (this.props.storage.messages && this.props.storage.messages.length > 0) {
-            NotificationManager.success(this.props.storage.messages[0].body)
-            this.props.setDefaultStatus()
-        }
         return (
             <div className="container-fluid">
                 <div className="row">
                     <div className={style.container}>
                         {this.renderFilesWithStyle()}
                         {this.renderModal()}
-                        <NotificationContainer />
                         <Popup
                             onToggleFileDisplayStyle={this.props.toggleFileDisplayStyle}
                             onToggleControlMode={this.props.toggleControlMode}

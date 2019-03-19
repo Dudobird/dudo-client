@@ -7,10 +7,15 @@ import {
 import { 
     GET_SHARE_FILES,
     GET_SHARE_FILES_SUCCESS,
-    GET_SHARE_FILES_FAIL,
     DELETE_SHARE_FILE,
     DELETE_SHARE_FILE_SUCCESS,
 } from './constants';
+
+import {
+    FETCHING_FAIL,
+    FETCHING_SUCCESS,
+    FETCHING_START,
+} from './../controller/constants'
 
 const shareFilesAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/shares`
 const shareFileAPIUrl = `${process.env.REACT_APP_DUDO_API}/api/share`
@@ -43,20 +48,24 @@ function deleteShareFileAPI(id){
 
 function* getShareFilesFlow(){
     try {
+        yield put({type: FETCHING_START})
         const response = yield call(getShareFiles)
         yield put({ type: GET_SHARE_FILES_SUCCESS, response })
+        yield put({type: FETCHING_SUCCESS})
     } catch (error) {
-        yield put({ type: GET_SHARE_FILES_FAIL, error })
+        yield put({type: FETCHING_FAIL,error})
     }
 }
 
 function* deleteShareFilesFlow(action){
     try {
         const { id } = action
+        yield put({type: FETCHING_START})
         const response = yield call(deleteShareFileAPI,id)
         yield put({ type: DELETE_SHARE_FILE_SUCCESS, id,response })
+        yield put({type: FETCHING_SUCCESS})
     } catch (error) {
-        yield put({ type: GET_SHARE_FILES_FAIL, error })
+        yield put({type: FETCHING_FAIL,error})
     }
 }
 

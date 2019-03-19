@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import style from './style.module.css'
 
 export default class Modal extends Component {
+  componentDidMount(){
+    if(this.props.reset){
+      this.props.reset()
+    }
+  }
   render() {
     return (
       <div className={style.modal}>

@@ -23,7 +23,9 @@ class ModalSwitch extends Component {
         error: "",
     });
   }
-
+  componentWillUnmount(){
+      console.log("unmount")
+  }
   handleShareFileSubmit = () =>{
     const date = parseInt(this.state.shareExpire)
     if(typeof date !== 'number' || date <=0){
@@ -84,9 +86,9 @@ class ModalSwitch extends Component {
             onClose={this.props.onClose}
         >
            <div className={style.modalContent}>是否确定删除文件：
-                <span className={style.modalContentSpan}>
-                {this.props.storage.pendingDeleteFileName}?
-                </span>
+                <div className={style.modalContentSpan}>
+                    {this.props.storage.pendingDeleteFileName}
+                </div>
             </div>
         </Modal>   
     )
@@ -98,6 +100,7 @@ class ModalSwitch extends Component {
             title="文件(夹)重命名"
             onSubmit={this.handleRenameSubmit}
             onClose={this.props.onClose}
+            reset = {()=>{this.setState({renameFileNameChanged:false,renameFileName:""})}}
         >
            <div className={style.modalContent}>
                 <div className={style.modalForm}>
@@ -130,6 +133,7 @@ class ModalSwitch extends Component {
             title="共享文件"
             onSubmit={this.handleShareFileSubmit}
             onClose={this.props.onClose}
+            reset = {()=>{this.setState({shareExpire:7,shareDescription:""})}}
         >
            <div className={style.modalContentLeft}>
                 <div className={style.modalForm}>
