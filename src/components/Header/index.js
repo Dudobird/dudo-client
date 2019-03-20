@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import style from './Header.module.css'
 import { isAuthSuccess } from '../../lib/check-auth';
 import {MdStorage,MdAccountCircle} from 'react-icons/md'
-import {FaSignInAlt, FaSignOutAlt, FaWindowRestore,FaUserPlus,FaShareAltSquare} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaWindowRestore,FaUserPlus,FaShareAltSquare,FaSearch} from 'react-icons/fa'
 
 const Header =({store})=>{
   const isAuth = isAuthSuccess(store)
@@ -17,12 +17,15 @@ const Header =({store})=>{
 </li>,
 <li key={4} className="right">
   <Link to="/profile"><MdAccountCircle /><span className={style.headeritem}>个人信息</span></Link>
+</li>,
+<li key={5} className="right">
+  <Link to="/share"><FaShareAltSquare /><span className={style.headeritem}>我的分享</span></Link>
 </li>
-,<li key={5} className="right">
+,<li key={6} className="right">
   <Link to="/storage"><FaWindowRestore /><span className={style.headeritem}>我的文件</span></Link>
 </li>,
-<li key={6} className="right">
-  <Link to="/share"><FaShareAltSquare /><span className={style.headeritem}>我的分享</span></Link>
+<li key={7} className="right">
+  <Link to="/search"><FaSearch /><span className={style.headeritem}>搜索文件</span></Link>
 </li>])
 
   return (<div className={style.Header}>

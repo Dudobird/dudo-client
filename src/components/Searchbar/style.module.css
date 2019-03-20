@@ -1,0 +1,11 @@
+.searchbar{
+    margin-top: 1em;
+}
+.searchbar input {
+    border-radius: 0em;
+}
+.searchbar  button{
+    background-color: #1d1d1d;
+    color: white;
+    border-radius: 0em;
+}

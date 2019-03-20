@@ -5,6 +5,7 @@ import Logout from './logout'
 import Profile from './profile'
 import Share from './share'
 import Controller from './controller'
+import Search from './search'
 export {
     Login,
     Signup,
@@ -13,4 +14,5 @@ export {
     Profile,
     Share,
     Controller,
+    Search,
 }
