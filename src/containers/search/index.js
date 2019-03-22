@@ -29,11 +29,15 @@ class Search extends Component {
       this.props.clearSearchResult()
   }
   render() {
-    let renderFiles = [];
     let renderFilesView = this.state.touched === true ? <HTTP404/> : null
     if (this.props.search.files && this.props.search.files.length > 0) {
-        renderFiles = this.props.search.files
-        renderFilesView = <FilesList files={renderFiles} afterSubmit={this.onSearch} />
+        let files = this.props.search.files.map(f=>{
+            let file = f.file
+            file["pID"] =f.parent_id
+            file["pFileName"] = f.parent_filename
+            return file
+        })
+        renderFilesView = <FilesList files={files} afterSubmit={this.onSearch} />
     }
     return (
       <div>

@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import PropTypes from 'prop-types';
 import Folder from './Folder'
 import File from './File'
-
 import styles from './style.module.css';
 
 class StorageFilesList extends Component{
@@ -24,25 +23,25 @@ class StorageFilesList extends Component{
     )
   }
   renderFiles = ()=>{
+ 
     const files = this.props.files.filter(f=>{
       return f.is_dir !== true
     })   
-   return  files.map(f=>(
-            <div key={f.id} 
-              className={
-                styles.storageItem
-            }>
-                <File 
-                    hiddenBtn = {false}
-                    data={f} 
-                    onClickFile={this.props.downloadFile} 
-                    onDeleteFile={this.props.deleteFile}
-                    onShareFile ={this.props.shareFile}
-                    onRenameFile = {this.props.renameFile}
-                />
-            </div>
-      )
-  )
+    return files.map(f=>(
+              <div key={f.id} 
+                className={
+                  styles.storageItem
+              }>
+                  <File 
+                      hiddenBtn = {false}
+                      data={f} 
+                      onClickFile={this.props.downloadFile} 
+                      onDeleteFile={this.props.deleteFile}
+                      onShareFile ={this.props.shareFile}
+                      onRenameFile = {this.props.renameFile}
+                  />
+              </div>
+        ))
   }
   render(){
     return (

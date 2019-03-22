@@ -103,7 +103,7 @@ class ModalSwitch extends Component {
                 <div className={style.modalForm}>
                     <form className="form-inline">
                         <div className="form-group col-md-12">
-                            <label htmlFor="newfolder">重命名为: </label>
+                            <label htmlFor="renameFile">重命名为: </label>
                             <input 
                                 type="text" 
                                 className="form-control" 
