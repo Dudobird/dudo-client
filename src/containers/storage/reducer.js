@@ -6,8 +6,6 @@ import {
     UPDATE_PENDING_DELETE_FILE,
     UPDATE_PENDING_RENAME_FILE,
     UPDATE_PENDING_SHARE_FILE,
-    TOGGLE_FILE_DISPLAY_STYLE,
-    TOGGLE_CONTROL_MODE,
     REMOVE_SUCCESS_UPLOADED_FILES,
 } from './constants'
 
@@ -20,22 +18,10 @@ const initialState = {
     pendingRenameFileName: "",
     files: [],
     uploadfiles: [],
-    fileListMode: true,
-    controlMode: false,
 }
 
 const reducer = function signupReducer(state = initialState, action) {
     switch (action.type) {
-        case TOGGLE_FILE_DISPLAY_STYLE:
-            return {
-                ...state,
-                fileListMode: !state.fileListMode
-            }
-        case TOGGLE_CONTROL_MODE:
-            return {
-                ...state,
-                controlMode: !state.controlMode
-            }
         case UPDATE_PENDING_DELETE_FILE:
             return {
                 ...state,

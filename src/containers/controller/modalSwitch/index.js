@@ -23,9 +23,6 @@ class ModalSwitch extends Component {
         error: "",
     });
   }
-  componentWillUnmount(){
-      console.log("unmount")
-  }
   handleShareFileSubmit = () =>{
     const date = parseInt(this.state.shareExpire)
     if(typeof date !== 'number' || date <=0){

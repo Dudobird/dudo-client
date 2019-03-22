@@ -5,6 +5,7 @@ import StorageFiles from './StorageFiles'
 import {Errors, Messages }from './Notifications'
 import Dropbox from './Dropbox'
 import StorageFilesList from './StorageFilesList'
+import SearchBar from './Searchbar'
 export {
     Header,
     PrivateRoute, 
@@ -13,5 +14,6 @@ export {
     StorageFilesList,
     Errors, 
     Dropbox,
-    Messages
+    Messages,
+    SearchBar,
 };

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import ModalSwitch from '../../controller/modalSwitch';
+
 import { connect } from 'react-redux';
-import ModalSwitch from '../controller/modalSwitch';
 import { NotificationManager } from 'react-notifications';
-import style from './styles.module.css';
+
+
 import {
-    StorageFilesList,
-} from '../../components';
+    showViewModal,
+} from '../../controller/actions'
+
 
 import {
     createFolderRequest,
@@ -24,37 +26,10 @@ import {
     updatePendingDeleteFile,
     updatePendingRenameFile,
     updatePendingShareFileID,
-} from './actions';
+} from '../actions';
 
-import {
-    showViewModal,
-} from '../controller/actions'
+class FileList extends Component {
 
-import Popup from './Popup';
-class Storage extends Component {
-    state = {
-        currentFolderID: "root",
-    }
-    static propTypes = {
-        createFolderRequest: PropTypes.func,
-        setDefaultStatus: PropTypes.func,
-        controller: PropTypes.shape({
-            modalName: PropTypes.string,
-        }),
-        storage: PropTypes.shape({
-            pendingDeleteFileID: PropTypes.string,
-            pendingDeleteFileName: PropTypes.string,
-            files: PropTypes.array,
-            folderID: PropTypes.string,
-            requesting: PropTypes.bool,
-            successful: PropTypes.bool,
-            messages: PropTypes.array,
-            errors: PropTypes.array,
-            uploadfiles: PropTypes.array,
-            fileListMode: PropTypes.bool,
-            controlMode: PropTypes.bool,
-        }),
-    }
     handleInputChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -96,32 +71,6 @@ class Storage extends Component {
         }
         this.props.uploadfiles(this.props.storage.uploadfiles, folderID);
     }
-    submitCreateFolder = (folderName) => {
-        const name = folderName.trim()
-        if (name === "") {
-            NotificationManager.error('请输入有效的文件名')
-            return
-        }
-        if (name.length > 50) {
-            NotificationManager.error('输入的文件名太长')
-            return
-        }
-        this.props.createFolderRequest({
-            name,
-            folderID: this.state.currentFolderID
-        })
-    }
-    componentWillReceiveProps(nextProps) {
-        let folderID = "root"
-        if (nextProps.match.params && nextProps.match.params.id) {
-            folderID = nextProps.match.params.id
-        }
-        if (folderID !== this.state.currentFolderID) {
-            this.props.switchFolder(folderID)
-            this.setState({ currentFolderID: folderID })
-            this.props.listFiles(folderID)
-        }
-    }
     downloadFile = (id, filename) => {
         if (id !== "" && filename !== "") {
             this.props.downloadFile(id, filename)
@@ -153,25 +102,7 @@ class Storage extends Component {
         this.props.updatePendingDeleteFile(id, filename)
         this.props.showViewModal("deleteFileModal")
     }
-    componentDidMount() {
-        this.props.listFiles(this.state.currentFolderID)
-    }
-    renderFilesWithStyle = () => {
-        let renderFilesContainer = null
-        let renderFiles = [];
-        if (this.props.storage.files && this.props.storage.files.length > 0) {
-            renderFiles = this.props.storage.files
-        }
-        renderFilesContainer=  <StorageFilesList
-                controlMode={this.props.storage.controlMode}
-                files={renderFiles}
-                renameFile={this.showRenameFileModal}
-                deleteFile={this.showDeleteFileModal}
-                shareFile = {this.showShareFileModal}
-                downloadFile={this.downloadFile} />
-        return renderFilesContainer
-    }
-    renderModal = () => {
+  renderModal = () => {
         return <ModalSwitch
             modalName={this.props.controller.modalName}
             onNewFolderSubmit={this.submitCreateFolder}
@@ -182,31 +113,22 @@ class Storage extends Component {
             onClose={() => this.props.showViewModal("")}
             {...this.props}
         />
-    }
-
-    render() {
-        return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className={style.container}>
-                        {this.renderFilesWithStyle()}
-                        {this.renderModal()}
-                        <Popup
-                            onToggleControlMode={this.props.toggleControlMode}
-                            onCreateFolder={() => { this.props.showViewModal("newFolderModal") }}
-                            onUploadFiles={() => { this.props.showViewModal("uploadFilesModal") }}
-                        />
-                    </div>
-                </div>
-            </div>
-        )
-    }
+  }
+  render() {
+    return (
+      <div>
+           {this.renderFilesWithStyle()}
+           {this.renderModal()}
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = state => ({
     storage: state.storage,
     controller: state.controller,
 })
+
 
 export default connect(
     mapStateToProps,
@@ -227,4 +149,4 @@ export default connect(
         updatePendingRenameFile,
         updatePendingShareFileID,
         showViewModal
-    })(Storage);
+    })(FileList);

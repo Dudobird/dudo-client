@@ -158,6 +158,7 @@ function shareFile(id,days,description){
 function* createFolderFlow(action) {
     try {
         const { name, folderID } = action
+        yield put({type: FETCHING_START})
         yield call(createFolderApi, name, folderID)
         yield put({type: FETCHING_SUCCESS, message:"创建文件夹成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
