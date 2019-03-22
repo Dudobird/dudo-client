@@ -39,11 +39,12 @@ function searchFiles(filename) {
 
 function* searchFilesFlow(action) {
     try {
-        const { search } = action
+        const { search,cb } = action
         yield put({type: FETCHING_START})
         const response = yield call(searchFiles, search)
         yield put({type: SEARCH_FILES_SUCCESS, response})
         yield put({type: FETCHING_SUCCESS})
+        cb()
     } catch (error) {
         yield put({type: FETCHING_FAIL, error})
     }

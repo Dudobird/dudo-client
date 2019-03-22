@@ -7,6 +7,7 @@ import {
     UPDATE_PENDING_RENAME_FILE,
     UPDATE_PENDING_SHARE_FILE,
     REMOVE_SUCCESS_UPLOADED_FILES,
+    UPDATE_UPLOAD_LIST
 } from './constants'
 
 const initialState = {
@@ -27,6 +28,11 @@ const reducer = function signupReducer(state = initialState, action) {
                 ...state,
                 pendingDeleteFileID: action.id,
                 pendingDeleteFileName: action.filename,
+            }
+        case UPDATE_UPLOAD_LIST:
+            return{
+                ...state,
+                uploadfiles:action.files
             }
         case UPDATE_PENDING_SHARE_FILE:
             return {

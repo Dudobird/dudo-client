@@ -43,21 +43,23 @@ const changeDeleteStatus = function changeDeleteStatus(status){
     }
 }
 
-const downloadFile = function downloadFile(id,filename){
+const downloadFile = function downloadFile(id,filename,cb){
     return {
         type: DOWNLOAD_FILE,
         id,
         filename,
+        cb
     }
 }
 
 
-const shareFile = function shareFile(id,days,description){
+const shareFile = function shareFile(id,days,description,cb){
     return {
         type: SHARE_FILE,
         id,
         days,
         description,
+        cb
     }
 }
 const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
@@ -87,19 +89,21 @@ const updatePendingShareFileID = function updatePendingShareFile(id){
 
 
 
-const deleteFile = function deleteFile(id,folderID){
+const deleteFile = function deleteFile(id,folderID,cb){
     return {
         type: DELETE_FILE,
         id,
         folderID,
+        cb
     }
 }
-const renameFile = function renameFile(id,name,folderID){
+const renameFile = function renameFile(id,name,folderID,cb){
     return {
         type: RENAME_FILE,
         id,
         name,
-        folderID
+        folderID,
+        cb
     }
 }
 

@@ -1,6 +1,7 @@
 import { 
     UPDATE_SEARCH_ITEM,
-    SEARCH_FILES_SUCCESS
+    SEARCH_FILES_SUCCESS,
+    CLEAR_SEARCH_RESULT,
 } from "./constants";
 
 const initialState = {
@@ -15,6 +16,8 @@ const reducer = function shareFileReducer(state = initialState, action) {
                 ...state,
                 search:action.search
             }
+        case CLEAR_SEARCH_RESULT:
+            return initialState
         case  SEARCH_FILES_SUCCESS:
             let files = []
             if (action.response && action.response.data && Array.isArray(action.response.data)) {

@@ -1,6 +1,7 @@
 import {
     UPDATE_SEARCH_ITEM, 
-    SEARCH_FILES
+    SEARCH_FILES,
+    CLEAR_SEARCH_RESULT
 } from './constants'
 
 function updateSearchItem(search){
@@ -9,15 +10,21 @@ function updateSearchItem(search){
         search
     }
 }
-
-function searchFiles(search){
+function clearSearchResult(){
+    return{
+        type:CLEAR_SEARCH_RESULT
+    }
+}
+function searchFiles(search,cb){
     return {
         type: SEARCH_FILES,
-        search
+        search,
+        cb
     }
 }
 
 export {
     updateSearchItem,
-    searchFiles
+    searchFiles,
+    clearSearchResult
 }

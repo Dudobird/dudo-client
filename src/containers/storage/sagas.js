@@ -182,10 +182,11 @@ function* listFolderFlow(action) {
 
 function* downloadFileFlow(action) {
     try {
-        const { id, filename,isFolder } = action
+        const { id, filename,isFolder,cb } = action
         yield put({type: FETCHING_START})
         yield call(downloadFile, id, filename,isFolder)
         yield put({type: FETCHING_SUCCESS, message:"下载文件成功"})
+        cb()
     } catch (error) {
         yield put({type: FETCHING_FAIL, error})
     }
@@ -211,12 +212,13 @@ function* uploadFilesFlow(action) {
 
 function* deleteFileFlow(action) {
     try {
-        const { id, folderID } = action
+        const { id, folderID,cb } = action
         yield put({type: FETCHING_START})
         yield call(deleteFile, id)
         yield put({type: FETCHING_SUCCESS, message:"删除文件成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
+        cb()
     } catch (error) {
         yield put({type: FETCHING_FAIL, error})
     }
@@ -224,12 +226,13 @@ function* deleteFileFlow(action) {
 
 function* renameFileFlow(action) {
     try {
-        const { id, name, folderID } = action
+        const { id, name, folderID,cb } = action
         yield put({type: FETCHING_START})
         yield call(renameFile, id, name)
         yield put({type: FETCHING_SUCCESS, message:"文件重命名成功"})
         yield put({ type: SHOW_VIEW_MODAL, modal:"" })
         yield put({ type: LIST_FILES, folderID })
+        cb()
     } catch (error) {
         yield put({type: FETCHING_FAIL, error})
     }
@@ -238,13 +241,14 @@ function* renameFileFlow(action) {
 
 function* shareFileFlow(action) {
     try {
-        const { id,days,description } = action
+        const { id,days,description,cb } = action
         yield put({type: FETCHING_START})
         const response = yield call(shareFile, id,days,description)
         yield put({type: FETCHING_SUCCESS, message:"生成共享文件成功"})
         const token =  response && response.data && response.data.token; 
         window.$('#shareLinkInfoBox').removeClass('hidden')
         window.$('#shareLinkInfo').val(`${sharePublicAPIUrl}?token=${b64EncodeUnicode(token)}`)
+        cb()
     } catch (error) {
         yield put({type: FETCHING_FAIL, error})
     }

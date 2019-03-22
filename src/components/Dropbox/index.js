@@ -13,6 +13,7 @@ class Dropbox extends Component {
     if(rejectedFiles.length>0){
       NotificationManager.warn("部分文件由于格式问题,暂时无法上传")
     }
+    console.log("update")
     this.props.updatefiles(acceptedFiles)
   }
   onCancel = ()=> {
