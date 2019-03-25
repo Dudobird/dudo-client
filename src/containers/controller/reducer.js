@@ -4,10 +4,12 @@ import {
     FETCHING_START,
     FETCHING_SUCCESS,
     FETCHING_FAIL,
-    SET_DEFAULT_STATUS
+    SET_DEFAULT_STATUS,
+    SWITCH_FOLDER
 } from './constants'
 const initialState = {
     modalName: "",
+    currentFolderID: "root",
     requesting: false,
     successful: false,
     messages: [],
@@ -21,6 +23,11 @@ const reducer = function signupReducer(state = initialState, action) {
                 ...state,
                 modalName: action.modal,
             }
+        case SWITCH_FOLDER:
+            return {
+                ...state,
+                currentFolderID: action.folderID,
+            }
         case SET_DEFAULT_STATUS:
             return {
                 ...state,
@@ -30,28 +37,28 @@ const reducer = function signupReducer(state = initialState, action) {
                 errors: [],                
             }
         case FETCHING_START:
-        return{
-            ...state,
-            errors: [],
-            messages: [],
-            requesting: true,
-            successful: false,
-        }
-        case FETCHING_SUCCESS:
-        let messages = state.messages
-        if(action.message){
-            messages = messages.concat([{
-                body: action.message,
-                time: new Date()
-            }])
-        }
-        return{
+            return{
                 ...state,
                 errors: [],
-                messages: messages,
-                requesting: false,
+                messages: [],
+                requesting: true,
                 successful: false,
-        }
+            }
+        case FETCHING_SUCCESS:
+            let messages = state.messages
+            if(action.message){
+                messages = messages.concat([{
+                    body: action.message,
+                    time: new Date()
+                }])
+            }
+            return{
+                    ...state,
+                    errors: [],
+                    messages: messages,
+                    requesting: false,
+                    successful: false,
+            }
         case FETCHING_FAIL:
         return{
                 ...state,

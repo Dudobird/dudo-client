@@ -1,6 +1,7 @@
 import { 
     SHOW_VIEW_MODAL,
-    SET_DEFAULT_STATUS
+    SET_DEFAULT_STATUS,
+    SWITCH_FOLDER
 } from './constants';
 
 
@@ -16,7 +17,16 @@ const setDefaultStatus = function setDefaultStatus(){
         type: SET_DEFAULT_STATUS,
     }   
 }
+
+const switchFolder = function switchFolder(folderID){
+    return {
+        type: SWITCH_FOLDER,
+        folderID
+    }
+}
+
 export {
+    switchFolder,
     showViewModal,
     setDefaultStatus
 }

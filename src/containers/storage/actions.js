@@ -139,18 +139,12 @@ const setDefaultStatus = function setDefaultStatus(){
     }   
 }
 
-const switchFolder = function switchFolder(folderID){
-    return {
-        type: SWITCH_FOLDER,
-        folderID
-    }
-}
+
 
 export { 
     createFolderRequest ,
     setDefaultStatus,
     listFiles,
-    switchFolder,
     updateUploadFiles,
     uploadfiles,
     downloadFile,

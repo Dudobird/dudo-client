@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver'
+
 export function handleApiErrors(response) {
     if (response.status >= 400 && response.message) {
         throw Error(response.message)
@@ -41,3 +43,23 @@ export function request(url, options) {
     })
 }
 
+export function requestFile(url, options,isFolder,filename){
+    return new Promise((resolve,reject)=>{
+        fetch(url, options)
+                .then(response =>{
+                    if(response.status === 200 ){
+                        return response.blob()
+                    }
+                    return response.json()
+                }).then(object=>{
+                    if (object.status){
+                        // json response
+                        throw(new Error(object.message))
+                    }
+                    return object
+                })
+                .then(blob => saveAs(blob, isFolder?filename+".zip":filename))
+                .then(()=>resolve())
+                .catch((error) => reject("错误:" + error.message))
+    })
+}

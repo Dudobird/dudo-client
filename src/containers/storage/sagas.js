@@ -2,13 +2,13 @@ import { takeLatest, put, call } from 'redux-saga/effects';
 import {
     getToken,
     request,
-
+    requestFile,
 } from '../../lib'
 import {
     b64EncodeUnicode
 } from '../utils'
 
-import { saveAs } from 'file-saver'
+
 import {
     CREATE_NEW_FOLDER,
     LIST_FILES,
@@ -95,15 +95,13 @@ function downloadFile(id, filename) {
     if(id.startsWith("folder")){
         isFolder = true
     }
-    return fetch(apiUrl, {
+    return requestFile(apiUrl, {
         crossDomain: true,
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
         }
-    }).then(response => response.blob())
-        .then(blob => saveAs(blob, isFolder?filename+".zip":filename))
-        .catch(error => { throw error })
+    },isFolder,filename)
 }
 
 

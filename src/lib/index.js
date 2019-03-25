@@ -3,10 +3,12 @@ import {
     handleApiErrors,
     handleResponseErrors,
     request,
+    requestFile,
 } from './api-errors'
 export {
     getToken,
     handleApiErrors,
     handleResponseErrors,
-    request
+    request,
+    requestFile,
 }

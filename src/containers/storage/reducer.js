@@ -2,7 +2,6 @@
 import {
     LIST_FILES,
     LIST_FILES_SUCCESS,
-    SWITCH_FOLDER,
     UPDATE_PENDING_DELETE_FILE,
     UPDATE_PENDING_RENAME_FILE,
     UPDATE_PENDING_SHARE_FILE,
@@ -11,7 +10,6 @@ import {
 } from './constants'
 
 const initialState = {
-    folderID: "root",
     pendingDeleteFileID: "",
     pendingDeleteFileName: "",
     pendingShareFileID:"",
@@ -66,12 +64,6 @@ const reducer = function signupReducer(state = initialState, action) {
                 uploadfiles: state.uploadfiles.filter(f => f.path !== action.path)
             }
         }
-        case SWITCH_FOLDER:
-            return {
-                ...state,
-                deleteStatus: false,
-                folderID: action.folderID,
-            }
         default:
             return state
     }

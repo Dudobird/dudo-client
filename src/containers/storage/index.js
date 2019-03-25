@@ -6,24 +6,22 @@ import style from './styles.module.css';
 import FilesList from './fileslist'
 import {
     createFolderRequest,
-    switchFolder,
     listFiles,
     uploadfiles,
 } from './actions';
 
 import {
+    switchFolder,
     showViewModal,
 } from '../controller/actions'
 
 import Popup from './Popup';
 class Storage extends Component {
-    state = {
-        currentFolderID: "root",
-    }
     static propTypes = {
         createFolderRequest: PropTypes.func,
         controller: PropTypes.shape({
             modalName: PropTypes.string,
+            currentFolderID: PropTypes.string,
         }),
         storage: PropTypes.shape({
             pendingDeleteFileID: PropTypes.string,
@@ -44,41 +42,23 @@ class Storage extends Component {
             NotificationManager.error('待上传文件列表为空')
             return
         }
-        var folderID = "root"
-        if (this.props.storage && this.props.storage.folderID !== "") {
-            folderID = this.props.storage.folderID;
-        }
-        this.props.uploadfiles(this.props.storage.uploadfiles, folderID);
-    }
-    submitCreateFolder = (folderName) => {
-        const name = folderName.trim()
-        if (name === "") {
-            NotificationManager.error('请输入有效的文件名')
-            return
-        }
-        if (name.length > 50) {
-            NotificationManager.error('输入的文件名太长')
-            return
-        }
-        this.props.createFolderRequest({
-            name,
-            folderID: this.state.currentFolderID
-        })
+
+        this.props.uploadfiles(this.props.storage.uploadfiles,  this.props.controller.currentFolderID);
     }
     componentWillReceiveProps(nextProps) {
         let folderID = "root"
         if (nextProps.match.params && nextProps.match.params.id) {
             folderID = nextProps.match.params.id
         }
-        if (folderID !== this.state.currentFolderID) {
+        if (folderID !== this.props.controller.currentFolderID) {
             this.props.switchFolder(folderID)
-            this.setState({ currentFolderID: folderID })
+            // this.setState({ currentFolderID: folderID })
             this.props.listFiles(folderID)
         }
     }
 
     componentDidMount() {
-        this.props.listFiles(this.state.currentFolderID)
+        this.props.listFiles(this.props.controller.currentFolderID)
     }
     render() {
         let renderFiles = [];

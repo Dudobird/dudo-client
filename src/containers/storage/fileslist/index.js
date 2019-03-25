@@ -59,6 +59,21 @@ class FileList extends Component {
             this.props.afterSubmit();
         }
     }
+    submitCreateFolder = (folderName) => {
+        const name = folderName.trim()
+        if (name === "") {
+            NotificationManager.error('请输入有效的文件名')
+            return
+        }
+        if (name.length > 50) {
+            NotificationManager.error('输入的文件名太长')
+            return
+        }
+        this.props.createFolderRequest({
+            name,
+            folderID: this.props.controller.currentFolderID
+        })
+    }
     submitDeleteFile = () => {
         var folderID = "root"
         if (this.props.storage && this.props.storage.folderID !== "") {
@@ -104,6 +119,7 @@ class FileList extends Component {
         }
         NotificationManager.error('待下载文件找不到')
     }
+
     showRenameFileModal = (id, filename) => {
         if (id === "") {
             NotificationManager.error('待重命名文件找不到')
