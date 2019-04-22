@@ -45,6 +45,13 @@
     color: rgba(255, 0, 0, 0.80);
 }
 
+.btn{
+    background-color: transparent;
+    border: 0px;
+    margin: 1px 5px;
+    color: #00000080;
+}
+
 .btn-group{
     color: #adacac;
 }
