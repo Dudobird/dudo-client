@@ -34,6 +34,18 @@ export function isAuthSuccess({dispatch,getState}){
     }
     return false
 }
+
+export function isAdminOnly({dispatch,getState}){
+    const client = getState().client;
+    if(client && client.token && (client.admin === true)){
+        return true
+    }
+    if(checkAuthorization(dispatch) && localStorage.getItem("admin") === "true"  ){
+        return true
+    }
+    return false    
+}
+
 export function checkStorageAuthorization({dispatch,getState}){
     return (nextState, replace, next)=>{
         const client = getState().client;

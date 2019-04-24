@@ -9,7 +9,16 @@ import 'moment/locale/zh-cn';
 import 'react-notifications/lib/notifications.css';
 import './index.css';
 
-import { Login, Signup, Storage, Logout, Profile,Share ,Controller, Search} from './containers';
+import { 
+  Login, 
+  Signup, 
+  Storage, 
+  Logout, 
+  Profile,
+  Share ,
+  Controller,
+  Admin, 
+  Search} from './containers';
 import { Header } from './components';
 import IndexReducer from './containers/reducers';
 import IndexSagas from './containers/sagas';
@@ -35,6 +44,7 @@ ReactDOM.render(
       <div>
           <Header store={store} />
           <Controller />
+          <PrivateRoute path="/admin" adminOnly={true} store={store} component={Admin}/>
           <PrivateRoute path="/share" store={store} component={Share} />
           <PrivateRoute path="/profile" store={store} component={Profile} />
           <PrivateRoute path="/search" exact store={store} component={Search} />

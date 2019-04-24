@@ -6,6 +6,7 @@ import Profile from './profile'
 import Share from './share'
 import Controller from './controller'
 import Search from './search'
+import Admin from './admin'
 export {
     Login,
     Signup,
@@ -15,4 +16,5 @@ export {
     Share,
     Controller,
     Search,
+    Admin,
 }

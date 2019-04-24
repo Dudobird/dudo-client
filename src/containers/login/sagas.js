@@ -37,7 +37,6 @@ function* loginFlow(email, password){
         token = yield call(loginApi,email,password)
         yield put(setClient(token))
         yield put({type: LOGIN_SUCCESS})
-        localStorage.setItem('token',JSON.stringify(token))
         history.push('/storage')
 
     }catch(error){

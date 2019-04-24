@@ -14,6 +14,7 @@ import {
 export function* logout(){
     yield put(unsetClient())
     localStorage.removeItem('token')
+    localStorage.removeItem('admin')
     history.push('/login')
 }
 
@@ -23,6 +24,7 @@ function* logoutFlow(){
         yield put(unsetClient())
         yield put({type: LOGOUT_SUCCESS})
         localStorage.removeItem('token')
+        localStorage.removeItem('admin')
         history.push('/login')
     }catch(error){
         yield put({type: LOGOUT_FAIL, error})
