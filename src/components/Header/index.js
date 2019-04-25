@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import style from './Header.module.css'
 import { isAuthSuccess, isAdminOnly} from '../../lib/check-auth';
 import {MdStorage, MdAccountCircle} from 'react-icons/md'
+import {GoTools} from 'react-icons/go'
 import {FaSignInAlt, FaSignOutAlt, FaWindowRestore,FaUserPlus,FaShareAltSquare,FaSearch} from 'react-icons/fa'
 
 const Header =({store})=>{
@@ -29,7 +30,7 @@ const Header =({store})=>{
 <li key={7} className="right">
   <Link to="/search"><FaSearch /><span className={style.headeritem}>搜索文件</span></Link>
 </li>,
-isAdmin === true ? <li key={8} className="right"><Link to="/admin"><FaSearch /><span className={style.headeritem}>系统管理</span></Link></li>:null
+isAdmin === true ? <li key={8} className="right"><Link to="/admin"><GoTools /><span className={style.headeritem}>系统管理</span></Link></li>:null
 ])
   return (<div className={style.Header}>
         <ul>

@@ -107,7 +107,18 @@ code {
     monospace;
 }
 
+.list-group-item.active{
+  border-radius: 0!important;
+  background: #2d2d2d!important;
+  border-color: white!important;
+}
 
+.ReactTable .rt-thead.-header {
+  box-shadow: none!important;
+  border-bottom: 1px solid #0000000f;
+  padding: 5px 0;
+  background-color: #00000008;
+}
 .rt-tr-group{
   text-align: center;
 }

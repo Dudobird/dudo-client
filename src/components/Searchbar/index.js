@@ -4,14 +4,14 @@ import style from './style.module.css'
 
 function SearchBar(props) {
   return (
-    <div className={style.searchbar + " container"}>
+    <div className={style.searchbar}>
         <div className="row">
-            <div className="col-md-6 col-md-offset-3">
+            <div className="col-md-6 col-md-offset-6">
                 <div id="custom-search-input">
                     <div className="input-group col-md-12">
-                        <input type="text" onChange={props.onChange} className="form-control input-lg" placeholder="输入文件名" />
+                        <input type="text" onChange={props.onChange} className="form-control" placeholder="输入搜索内容" />
                         <span className="input-group-btn">
-                            <button className="btn btn-lg" type="button"onClick={props.onSearch}>
+                            <button className="btn" type="button"onClick={props.onSearch}>
                                 <i className="glyphicon glyphicon-search"></i>
                             </button>
                         </span>

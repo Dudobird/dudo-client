@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { connect } from 'react-redux';
 import ProfileInfo from './ProfileInfo'
@@ -23,6 +23,14 @@ class Profile extends Component {
     const routers = [
       {
         path: "/",
+        exact: true,
+        main: () => <ProfileInfo
+        onSubmit = {this.props.updateProfileInfo}
+        profile={this.props.profile.profile}/>
+  
+      },
+      {
+        path: "/info",
         exact: true,
         main: () => <ProfileInfo
           onSubmit = {this.props.updateProfileInfo}
@@ -51,12 +59,9 @@ class Profile extends Component {
 
   getSideBar = () => {
     return (<div className="list-group">
-      <a href="/" className="list-group-item disabled">
-        我的个人页面
-    </a>
-      <Link to="/" className="list-group-item">个人信息</Link>
-      <Link to="/password" className="list-group-item">密码管理</Link>
-      <Link to="/billing" className="list-group-item">配额信息</Link>
+      <NavLink to="/info" className="list-group-item">个人信息</NavLink>
+      <NavLink to="/password" className="list-group-item">密码管理</NavLink>
+      <NavLink to="/billing" className="list-group-item">配额信息</NavLink>
     </div>)
   }
   render() {

@@ -6,6 +6,7 @@ import LogoutSaga from './logout/sagas';
 import ProfileSaga from './profile/sagas';
 import ShareSaga from './share/sagas';
 import SearchSaga from './search/sagas';
+import AdminSaga from './admin/sagas';
 
 export default function* IndexSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* IndexSaga() {
     ProfileSaga(),
     ShareSaga(),
     SearchSaga(),
+    AdminSaga(),
   ])
 }
