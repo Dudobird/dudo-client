@@ -1,6 +1,13 @@
 .errorMessage{
     color: red;
 }
+.infoMessage{
+    font-size: .5em;
+    font-weight: normal;
+    color: #12191f;
+    padding-top: 0;
+    text-align: center;
+}
 
 .modalForm label{
     margin-right: 20px;
@@ -11,7 +18,7 @@
 
 .modalContent{
     padding: 40px 10px;
-    font-weight: 200;
+    font-weight: normal;
     text-align: center;
     min-height: 150px;
 }
@@ -19,7 +26,7 @@
     text-align: left
 }
 .modalContent > div{
-    font-weight: 200;
-    color: #ff4646;
-    font-size: 1.2em;
+    font-weight: normal;
+    color: #12191f;
+    font-size: 1em;
 }

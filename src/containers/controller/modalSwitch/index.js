@@ -1,17 +1,20 @@
 import React ,{Component}from 'react'
+import { NotificationManager } from 'react-notifications';
 import {
     Modal,
     Dropbox
 } from '../../../components';
 
 import style from './styles.module.css';
-
+const DefaultPass = 'Password123'
 class ModalSwitch extends Component {
   state = {
     folderName: "",
     folderNameChanged: false,
     renameFileName: "",
     renameFileNameChanged:false,
+    settingUserStorageLimit: "",
+    settingUserStorageLimitChanged:false,
     shareExpire: 7,
     shareDescription: "",
     error:"",
@@ -90,7 +93,51 @@ class ModalSwitch extends Component {
         </Modal>   
     )
   }
-
+  renderDeleteUserModal=(id,email)=>{
+    return(
+      <Modal
+          title={this.props.controller.modalData.toggleSoftDelete?"确认删除用户":"恢复用户状态"}
+          onSubmit={this.props.onDeleteUserSubmit}
+          onClose={this.props.onClose}
+      >
+         <div className={style.modalContent}>
+         {this.props.controller.modalData.toggleSoftDelete?
+            "是否确定禁用该用户:":"恢复的用户账号如下:"}
+              <div className={style.modalContentSpan}>
+              Email: {this.props.controller.modalData.email} 
+              <br/>
+              ID:{this.props.controller.modalData.id}
+              </div>
+          </div>
+      </Modal>   
+  )
+}
+handleUserResetPassword=()=>{
+    let id = this.props.controller.modalData.id
+    if(id){
+        this.props.onResetUserPassword(id,DefaultPass)
+        return
+    }
+    NotificationManager.error("无法获取用户ID")
+}
+renderResetPassword=(id)=>{
+    return(
+      <Modal
+          title="重置用户密码"
+          onSubmit={this.handleUserResetPassword}
+          onClose={this.props.onClose}
+      >
+         <div className={style.modalContent}>
+            是否确定重置用户密码信息为以下内容:
+              <div className={style.modalContentSpan}>
+              ID:{this.props.controller.modalData.id}
+              <br/>
+              Password: {DefaultPass}
+              </div>
+          </div>
+      </Modal>   
+  )
+}
   renderRenameFileModal = () =>{
     return(
         <Modal
@@ -108,7 +155,7 @@ class ModalSwitch extends Component {
                                 type="text" 
                                 className="form-control" 
                                 name="renameFileName"
-                                value = {
+                                value = {this.state.controller.modalData.user
                                     (!this.state.renameFileNameChanged && this.props.storage.pendingRenameFileName) 
                                     || this.state.renameFileName 
                                 }
@@ -122,8 +169,44 @@ class ModalSwitch extends Component {
         </Modal>   
     )    
   }
-
-
+  handlerSettingUserLimit=()=>{
+    if(this.state.settingUserStorageLimitChanged === false){
+        NotificationManager.error("请修改用户存储空间后提交")
+        return 
+    }
+    this.props.onSettingUserLimit(this.props.controller.modalData.id, this.state.settingUserStorageLimit)
+  }
+  renderSettingUserLimit = () =>{
+    return(
+        <Modal
+            title="调整用户存储限度"
+            onSubmit={this.handlerSettingUserLimit}
+            onClose={this.props.onClose}
+        >
+           <div className={style.modalContent}>
+                <div className={style.modalForm}>
+                    <form className="form-inline">
+                        <div className="form-group col-md-12">
+                            <label htmlFor="renameFile">调整容量大小: </label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="settingUserStorageLimit"
+                                value = {
+                                    (!this.state.settingUserStorageLimitChanged && this.props.controller.modalData.currentLimit) 
+                                    || this.state.settingUserStorageLimit 
+                                }
+                                onChange = {this.handleInputChange}/>
+                        </div>
+                                          
+                    </form>
+                    <div className={style.infoMessage}>输入的格式如下：50MB,50GB,50GB 无输入单位的按照MB计算</div>
+                    <div className={style.errorMessage}>{this.state.error}</div>
+                </div>
+            </div>
+        </Modal>   
+    )    
+  }
   renderShareFileModal = () =>{
     return(
         <Modal
@@ -185,6 +268,12 @@ class ModalSwitch extends Component {
                 return this.renderRenameFileModal()
             case "shareFileModal":
                 return this.renderShareFileModal()
+            case "deleteUserModal":
+                return this.renderDeleteUserModal()
+            case "showSettingUserLimit":
+                return this.renderSettingUserLimit()
+            case "resetUserPasswordModal":
+                return this.renderResetPassword()
             default :
                 return null;
             }

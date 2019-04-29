@@ -7,7 +7,9 @@ import {
     SET_DEFAULT_STATUS,
     SWITCH_FOLDER
 } from './constants'
+
 const initialState = {
+    modalData: {},
     modalName: "",
     currentFolderID: "root",
     requesting: false,
@@ -16,12 +18,17 @@ const initialState = {
     errors: [],
 }
 
-const reducer = function signupReducer(state = initialState, action) {
+const reducer = function controllerReducer(state = initialState, action) {
     switch (action.type) {
         case SHOW_VIEW_MODAL:
+            let modalData = {}
+            if(action.modal !== ""){
+                modalData = action.data
+            }
             return {
                 ...state,
                 modalName: action.modal,
+                modalData: modalData,
             }
         case SWITCH_FOLDER:
             return {

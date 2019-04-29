@@ -38,6 +38,7 @@ const store = createStore(IndexReducer, composeSetup(applyMiddleware(sagaMiddlew
 
 sagaMiddleware.run(IndexSagas);
 
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

@@ -16,8 +16,8 @@ export default class Modal extends Component {
                 {this.props.children}
             </div>
             <div className={style.footer}> 
-            <button className="btn btn-primary" onClick={this.props.onSubmit}> 确认 </button>
-            <button className="btn btn-default" onClick={this.props.onClose}> 关闭 </button>
+            <button className="btn btn-primary btn-custom" onClick={this.props.onSubmit}> 确认 </button>
+            <button className="btn btn-default btn-custom" onClick={this.props.onClose}> 关闭 </button>
             </div>
         </div>
       </div>

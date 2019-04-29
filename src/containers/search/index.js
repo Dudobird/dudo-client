@@ -45,7 +45,6 @@ class Search extends Component {
             onSearch={this.onSearch}
             onChange={this.onSearchUpdate}
         />
-        {/* <hr/> */}
         {renderFilesView}
       </div>
     )

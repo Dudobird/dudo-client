@@ -9,13 +9,13 @@
     border-radius: 25px;
     font-size: 2em;
     font-weight: 200;
-    background-color: hsla(221, 100%, 72%, 0.911);
+    background-color: #2c3d50;
     color: white;
     padding-bottom: 5px;
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 .btn:hover{
-    background-color: rgb(155, 186, 253);
+    background-color: #292929;
 }
 
 
@@ -35,7 +35,7 @@
     padding-left: 10px;
 }
 .menuitem:hover{
-    background: hsla(221, 100%, 72%, 0.911);
+    background: #2c3d50;
     color:white;
 }
 

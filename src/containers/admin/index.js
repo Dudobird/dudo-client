@@ -7,11 +7,10 @@ import AdminDashBoard from './AdminDashboard'
 import AdminUsers from './AdminUsers'
 import AdminFiles from './AdminFiles'
 import styles from './styles.module.css'
-import {} from './actions'
 
 class Admin extends Component {
   componentDidMount() {
-  
+    
   }
   getSubPages = () => {
     const routers = [
@@ -82,4 +81,5 @@ const mapStateToProps = state => ({
     // search: state.search,
 })
 
-export default connect(mapStateToProps,{})(Admin);
+export default connect(mapStateToProps,{
+})(Admin);

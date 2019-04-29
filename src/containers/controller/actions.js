@@ -5,10 +5,11 @@ import {
 } from './constants';
 
 
-const showViewModal = function showViewModal(modalName){
+const showViewModal = function showViewModal(modalName,data){
     return {
         type: SHOW_VIEW_MODAL,
         modal: modalName,
+        data
     }
 } 
 
