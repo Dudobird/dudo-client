@@ -14,7 +14,7 @@ class ProfileInfo extends React.Component {
             <form onSubmit={handleSubmit}>
             <div className="form-group">
                 <label htmlFor="inputName">用户名</label>
-                <Field name="name" className="form-control"  type="text" label="inputName" component="input" />
+                <Field readOnly name="name" className="form-control"  type="text" label="inputName" component="input" />
             </div>
             <div className="form-group">
                 <label htmlFor="inputPhone">电话</label>

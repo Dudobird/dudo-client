@@ -19,9 +19,6 @@ import {
     changeDeleteStatus,
     deleteFile,
     renameFile,
-    updatePendingDeleteFile,
-    updatePendingRenameFile,
-    updatePendingShareFileID,
     updateUploadFiles,
 } from '../actions';
 
@@ -33,15 +30,10 @@ class FileList extends Component {
         changeDeleteStatus: PropTypes.func,
         renameFile: PropTypes.func,
         deleteFile: PropTypes.func,
-        updatePendingDeleteFile: PropTypes.func,
-        updatePendingRenameFile: PropTypes.func,
-        updatePendingShareFileID: PropTypes.func,
         controller: PropTypes.shape({
             modalName: PropTypes.string,
         }),
         storage: PropTypes.shape({
-            pendingDeleteFileID: PropTypes.string,
-            pendingDeleteFileName: PropTypes.string,
             files: PropTypes.array,
             folderID: PropTypes.string,
             requesting: PropTypes.bool,
@@ -79,23 +71,23 @@ class FileList extends Component {
         if (this.props.storage && this.props.storage.folderID !== "") {
             folderID = this.props.storage.folderID;
         }
-        this.props.deleteFile(this.props.storage.pendingDeleteFileID, folderID,this.afterSubmit)
+        this.props.deleteFile(this.props.controller.modalData.id, folderID,this.afterSubmit)
     }
-    submitRenameFile = (newName) => {
+    submitRenameFile = (id,newName) => {
         if (newName.trim() === "") {
             NotificationManager.error("重命名不能为空")
             return
         }
         this.props.renameFile(
-            this.props.storage.pendingRenameFileID,
+            id,
             newName.trim(),
             this.props.storage.folderID,
             this.afterSubmit
         )
     }
-    submitShareFile = (days,descriptions) =>{
+    submitShareFile = (id,days,descriptions) =>{
         this.props.shareFile(
-            this.props.storage.pendingShareFileID,
+            id,
             days,
             descriptions,
             this.afterSubmit
@@ -125,24 +117,21 @@ class FileList extends Component {
             NotificationManager.error('待重命名文件找不到')
             return
         }
-        this.props.updatePendingRenameFile(id, filename)
-        this.props.showViewModal("renameFileModal")
+        this.props.showViewModal("renameFileModal",{id,filename})
     }
     showShareFileModal = (id) => {
         if (id === "") {
             NotificationManager.error('待重命名文件找不到')
             return
         }
-        this.props.updatePendingShareFileID(id)
-        this.props.showViewModal("shareFileModal")
+        this.props.showViewModal("shareFileModal",{id})
     }
     showDeleteFileModal = (id, filename) => {
         if (id === "") {
             NotificationManager.error('待删除文件找不到')
             return
         }
-        this.props.updatePendingDeleteFile(id, filename)
-        this.props.showViewModal("deleteFileModal")
+        this.props.showViewModal("deleteFileModal",{id,filename})
     }
   render() {
     return (
@@ -183,9 +172,6 @@ export default connect(
         deleteFile,
         renameFile,
         shareFile,
-        updatePendingDeleteFile,
-        updatePendingRenameFile,
-        updatePendingShareFileID,
         updateUploadFiles,
         showViewModal
     })(FileList);

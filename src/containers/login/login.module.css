@@ -4,7 +4,13 @@
 .panelHeading {
     background-color: #f1f1f1;
 }
-
+.panelTitle{
+    font-weight: bold;
+    color: #2c3d50;
+    font-size: 25px;
+    padding: 20px;
+    text-shadow: -2px 2px 2px #949494
+}
 .panelBody {
     padding-top: 30px;
     background-color: rgba(2555,255,255,.3);

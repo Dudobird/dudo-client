@@ -41,16 +41,20 @@ class AdminUsers extends Component {
   }
   render() {
     return (
-      <div >
-          <SearchBar onSearch={this.onSearch} onChange={this.onSearchUpdate}/>
-          <div className={styles.tableBox}>
-            <UserList 
-                users={this.props.admin.users} 
-                onSetUserStorageLimit = {(id, currentLimit)=>this.props.showViewModal("showSettingUserLimit",{id,currentLimit})}
-                onDeleteUser={(id,email,toggleSoftDelete)=>this.props.showViewModal("deleteUserModal",{id,email,toggleSoftDelete})}
-                onResetPassword={(id)=>{this.props.showViewModal("resetUserPasswordModal",{id})}}
-                onChangeStorageLimit={()=>{}}
-            />
+      <div className="row">
+          <div className="col-md-6 col-md-offset-6 col-sm-12">
+            <SearchBar onSearch={this.onSearch} onChange={this.onSearchUpdate}/>
+          </div>
+          <div className="col-md-12">
+            <div className={styles.tableBox}>
+              <UserList 
+                  users={this.props.admin.users} 
+                  onSetUserStorageLimit = {(id, currentLimit)=>this.props.showViewModal("showSettingUserLimit",{id,currentLimit})}
+                  onDeleteUser={(id,email,toggleSoftDelete)=>this.props.showViewModal("deleteUserModal",{id,email,toggleSoftDelete})}
+                  onResetPassword={(id)=>{this.props.showViewModal("resetUserPasswordModal",{id})}}
+                  onChangeStorageLimit={()=>{}}
+              />
+            </div>
           </div>
           <ModalSwitch
                 modalName={this.props.controller.modalName}

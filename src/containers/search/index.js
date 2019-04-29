@@ -40,12 +40,16 @@ class Search extends Component {
         renderFilesView = <FilesList files={files} afterSubmit={this.onSearch} />
     }
     return (
-      <div>
-        <SearchBar 
-            onSearch={this.onSearch}
-            onChange={this.onSearchUpdate}
-        />
-        {renderFilesView}
+        <div className="row">
+        <div className="col-md-6 col-md-offset-3 col-sm-12">
+            <SearchBar 
+                onSearch={this.onSearch}
+                onChange={this.onSearchUpdate}
+            />
+        </div>
+        <div className="col-md-12">
+            {renderFilesView}
+        </div>
       </div>
     )
   }

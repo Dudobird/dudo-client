@@ -24,8 +24,6 @@ class Storage extends Component {
             currentFolderID: PropTypes.string,
         }),
         storage: PropTypes.shape({
-            pendingDeleteFileID: PropTypes.string,
-            pendingDeleteFileName: PropTypes.string,
             files: PropTypes.array,
             folderID: PropTypes.string,
             requesting: PropTypes.bool,
@@ -52,7 +50,6 @@ class Storage extends Component {
         }
         if (folderID !== this.props.controller.currentFolderID) {
             this.props.switchFolder(folderID)
-            // this.setState({ currentFolderID: folderID })
             this.props.listFiles(folderID)
         }
     }

@@ -5,9 +5,8 @@ const initialState = {
     admin: false,
 }
 function isAdmin(token){
-    console.log(token)
-    if(token && token.data && typeof token.data.roleid === 'number'){
-        return token.data.roleid === 1
+    if(token && token.data && token.data.isAdmin === true){
+        return true
     }
     return false
 }

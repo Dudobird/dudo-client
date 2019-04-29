@@ -32,7 +32,7 @@ class ModalSwitch extends Component {
         this.setState({error:"请输入正确的共享时间长度，默认为7天"})
         return
     }
-    this.props.onShareFileSubmit(date,this.state.shareDescription)
+    this.props.onShareFileSubmit(this.props.controller.modalData.id,date,this.state.shareDescription)
   }
 
   handleRenameSubmit = ()=>{
@@ -44,7 +44,7 @@ class ModalSwitch extends Component {
         this.setState({error:"不能重命名为空"})
         return 
     }    
-    this.props.onRenameModalSubmit(this.state.renameFileName)
+    this.props.onRenameModalSubmit(this.props.controller.modalData.id,this.state.renameFileName)
   }
   renderNewFolderModal = () =>{
       return (<Modal
@@ -82,62 +82,61 @@ class ModalSwitch extends Component {
       return(
         <Modal
             title="删除文件"
-            onSubmit={this.props.onDeleteModalSubmit}
-            onClose={this.props.onClose}
-        >
+            onSubmit={()=>this.props.onDeleteModalSubmit(this.props.controller.modalData.id)}
+            onClose={this.props.onClose}>
            <div className={style.modalContent}>是否确定删除文件：
                 <div className={style.modalContentSpan}>
-                    {this.props.storage.pendingDeleteFileName}
+                    {this.props.controller.modalData.filename}
                 </div>
             </div>
         </Modal>   
     )
   }
-  renderDeleteUserModal=(id,email)=>{
-    return(
-      <Modal
-          title={this.props.controller.modalData.toggleSoftDelete?"确认删除用户":"恢复用户状态"}
-          onSubmit={this.props.onDeleteUserSubmit}
-          onClose={this.props.onClose}
-      >
-         <div className={style.modalContent}>
-         {this.props.controller.modalData.toggleSoftDelete?
-            "是否确定禁用该用户:":"恢复的用户账号如下:"}
-              <div className={style.modalContentSpan}>
-              Email: {this.props.controller.modalData.email} 
-              <br/>
-              ID:{this.props.controller.modalData.id}
-              </div>
-          </div>
-      </Modal>   
-  )
-}
-handleUserResetPassword=()=>{
-    let id = this.props.controller.modalData.id
-    if(id){
-        this.props.onResetUserPassword(id,DefaultPass)
-        return
+  renderDeleteUserModal=()=>{
+        return(
+            <Modal
+                title={this.props.controller.modalData.toggleSoftDelete?"确认删除用户":"恢复用户状态"}
+                onSubmit={this.props.onDeleteUserSubmit}
+                onClose={this.props.onClose}
+            >
+                <div className={style.modalContent}>
+                {this.props.controller.modalData.toggleSoftDelete?
+                    "是否确定禁用该用户:":"恢复的用户账号如下:"}
+                    <div className={style.modalContentSpan}>
+                    Email: {this.props.controller.modalData.email} 
+                    <br/>
+                    ID:{this.props.controller.modalData.id}
+                    </div>
+                </div>
+            </Modal>   
+        )
     }
-    NotificationManager.error("无法获取用户ID")
-}
-renderResetPassword=(id)=>{
-    return(
-      <Modal
-          title="重置用户密码"
-          onSubmit={this.handleUserResetPassword}
-          onClose={this.props.onClose}
-      >
-         <div className={style.modalContent}>
-            是否确定重置用户密码信息为以下内容:
-              <div className={style.modalContentSpan}>
-              ID:{this.props.controller.modalData.id}
-              <br/>
-              Password: {DefaultPass}
-              </div>
-          </div>
-      </Modal>   
-  )
-}
+    handleUserResetPassword=()=>{
+        let id = this.props.controller.modalData.id
+        if(id){
+            this.props.onResetUserPassword(id,DefaultPass)
+            return
+        }
+        NotificationManager.error("无法获取用户ID")
+    }
+    renderResetPassword=()=>{
+        return(
+        <Modal
+            title="重置用户密码"
+            onSubmit={this.handleUserResetPassword}
+            onClose={this.props.onClose}
+        >
+            <div className={style.modalContent}>
+                是否确定重置用户密码信息为以下内容:
+                <div className={style.modalContentSpan}>
+                ID:{this.props.controller.modalData.id}
+                <br/>
+                Password: {DefaultPass}
+                </div>
+            </div>
+        </Modal>   
+    )
+    }
   renderRenameFileModal = () =>{
     return(
         <Modal
@@ -155,8 +154,7 @@ renderResetPassword=(id)=>{
                                 type="text" 
                                 className="form-control" 
                                 name="renameFileName"
-                                value = {this.state.controller.modalData.user
-                                    (!this.state.renameFileNameChanged && this.props.storage.pendingRenameFileName) 
+                                value = {(!this.state.renameFileNameChanged && this.props.controller.modalData.filename) 
                                     || this.state.renameFileName 
                                 }
                                 onChange = {this.handleInputChange}/>

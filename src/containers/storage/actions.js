@@ -7,13 +7,10 @@ import {
     DOWNLOAD_FILE,
     CHANGE_DELETE_STATUS,
     DELETE_FILE,
-    UPDATE_PENDING_DELETE_FILE,
-    UPDATE_PENDING_RENAME_FILE,
     TOGGLE_FILE_DISPLAY_STYLE,
     TOGGLE_CONTROL_MODE,
     RENAME_FILE,
     SHARE_FILE,
-    UPDATE_PENDING_SHARE_FILE,
 } from './constants';
 
 const toggleFileDisplayStyle = function toggleFileDisplayStyle(){
@@ -61,32 +58,6 @@ const shareFile = function shareFile(id,days,description,cb){
         cb
     }
 }
-const updatePendingDeleteFile = function updatePendingDeleteFile(id,filename){
-    return {
-        type: UPDATE_PENDING_DELETE_FILE,
-        id,
-        filename,
-    }
-}
-
-const updatePendingRenameFile = function updatePendingRenameFile(id,filename){
-    return {
-        type: UPDATE_PENDING_RENAME_FILE,
-        id,
-        filename,
-    }
-}
-
-const updatePendingShareFileID = function updatePendingShareFile(id){
-    return {
-        type: UPDATE_PENDING_SHARE_FILE,
-        id,
-    }
-}
-
-
-
-
 
 const deleteFile = function deleteFile(id,folderID,cb){
     return {
@@ -149,9 +120,6 @@ export {
     downloadFile,
     changeDeleteStatus,
     deleteFile,
-    updatePendingDeleteFile,
-    updatePendingRenameFile,
-    updatePendingShareFileID,
     toggleFileDisplayStyle,
     toggleControlMode,
     renameFile,

@@ -2,46 +2,21 @@
 import {
     LIST_FILES,
     LIST_FILES_SUCCESS,
-    UPDATE_PENDING_DELETE_FILE,
-    UPDATE_PENDING_RENAME_FILE,
-    UPDATE_PENDING_SHARE_FILE,
     REMOVE_SUCCESS_UPLOADED_FILES,
     UPDATE_UPLOAD_LIST
 } from './constants'
 
 const initialState = {
-    pendingDeleteFileID: "",
-    pendingDeleteFileName: "",
-    pendingShareFileID:"",
-    pendingRenameFileID: "",
-    pendingRenameFileName: "",
     files: [],
     uploadfiles: [],
 }
 
 const reducer = function signupReducer(state = initialState, action) {
     switch (action.type) {
-        case UPDATE_PENDING_DELETE_FILE:
-            return {
-                ...state,
-                pendingDeleteFileID: action.id,
-                pendingDeleteFileName: action.filename,
-            }
         case UPDATE_UPLOAD_LIST:
             return{
                 ...state,
                 uploadfiles:action.files
-            }
-        case UPDATE_PENDING_SHARE_FILE:
-            return {
-                ...state,
-                pendingShareFileID: action.id,
-            }            
-        case UPDATE_PENDING_RENAME_FILE:
-            return {
-                ...state,
-                pendingRenameFileID: action.id,
-                pendingRenameFileName: action.filename,
             }
         case LIST_FILES_SUCCESS:
             let files = []
